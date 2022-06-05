@@ -1,5 +1,5 @@
-// +build go1.8
-// +build linux,!386
+//go:build go1.8 && linux && !386
+// +build go1.8,linux,!386
 
 package test
 
@@ -10,8 +10,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fiorix/go-diameter/v4/examples/s6a_proxy/protos"
-	"github.com/fiorix/go-diameter/v4/examples/s6a_proxy/service"
+	"github.com/ctrlzy/go-diameter/v4/examples/s6a_proxy/protos"
+	"github.com/ctrlzy/go-diameter/v4/examples/s6a_proxy/service"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 )

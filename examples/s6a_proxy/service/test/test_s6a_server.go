@@ -1,5 +1,5 @@
-// +build go1.8
-// +build linux,!386
+//go:build go1.8 && linux && !386
+// +build go1.8,linux,!386
 
 package test
 
@@ -9,11 +9,11 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/fiorix/go-diameter/v4/diam"
-	"github.com/fiorix/go-diameter/v4/diam/avp"
-	"github.com/fiorix/go-diameter/v4/diam/datatype"
-	"github.com/fiorix/go-diameter/v4/diam/sm"
-	"github.com/fiorix/go-diameter/v4/examples/s6a_proxy/service"
+	"github.com/ctrlzy/go-diameter/v4/diam"
+	"github.com/ctrlzy/go-diameter/v4/diam/avp"
+	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
+	"github.com/ctrlzy/go-diameter/v4/diam/sm"
+	"github.com/ctrlzy/go-diameter/v4/examples/s6a_proxy/service"
 )
 
 const (

@@ -13,9 +13,9 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/fiorix/go-diameter/v4/diam/avp"
-	"github.com/fiorix/go-diameter/v4/diam/datatype"
-	"github.com/fiorix/go-diameter/v4/diam/dict"
+	"github.com/ctrlzy/go-diameter/v4/diam/avp"
+	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
+	"github.com/ctrlzy/go-diameter/v4/diam/dict"
 )
 
 // testMessage is used by the test cases below and also in reflect_test.go.
