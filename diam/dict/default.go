@@ -24,6 +24,7 @@ func init() {
 		{"TGPP", tgpprorfXML},
 		{"TGPP_S6a", tgpps6aXML},
 		{"TGPP_Swx", tgppswxXML},
+		{"TGPP_Sh", tgppshXML},
 	}
 	var err error
 	Default, err = NewParser()
