@@ -708,6 +708,7 @@ const (
 	UsedServiceUnit                            = 446
 	UserCSGInformation                         = 2319
 	UserData                                   = 606
+	UserDataSh                                 = 702
 	UserEquipmentInfo                          = 458
 	UserEquipmentInfoType                      = 459
 	UserEquipmentInfoValue                     = 460
@@ -730,6 +731,8 @@ const (
 	VisitedNetworkIdentifier                   = 600
 	VisitedPLMNID                              = 1407
 	VolumeQuotaThreshold                       = 869
+	WildcardedIMPU                             = 636
+	WildcardedPublicIdentity                   = 634
 	XRES                                       = 1448
 	ePDGAddress                                = 3425
 )

@@ -71,6 +71,8 @@ const (
 	SNR = "SNR"
 	STA = "STA"
 	STR = "STR"
+	UDA = "UDA"
+	UDR = "UDR"
 	ULA = "ULA"
 	ULR = "ULR"
 )
