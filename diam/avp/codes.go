@@ -25,6 +25,7 @@ const (
 	ARAPSecurity                               = 73
 	ARAPSecurityData                           = 74
 	ARAPZoneAccess                             = 72
+	ASNumber                                   = 722
 	AUTN                                       = 1449
 	AccessNetworkChargingAddress               = 501
 	AccessNetworkChargingIdentifierGx          = 1022
@@ -125,6 +126,7 @@ const (
 	CSGSubscriptionData                        = 1436
 	CUGInformation                             = 2304
 	CallBarringInfo                            = 1488
+	CallReferenceInfo                          = 720
 	CallbackID                                 = 20
 	CallbackNumber                             = 19
 	CalledAssertedIdentity                     = 1250
@@ -170,6 +172,7 @@ const (
 	CurrentTariff                              = 2056
 	DRMContent                                 = 1221
 	DRMP                                       = 301
+	DSAITag                                    = 711
 	DataCodingScheme                           = 2001
 	DefaultEPSBearerQoS                        = 1049
 	DeferredLocationEventType                  = 1230
@@ -204,6 +207,7 @@ const (
 	ExperimentalResultCode                     = 298
 	ExpirationDate                             = 1439
 	Expires                                    = 888
+	ExpiryTime                                 = 709
 	Exponent                                   = 429
 	ExtPDPAddress                              = 1621
 	ExtPDPType                                 = 1620
@@ -276,6 +280,7 @@ const (
 	ISUPCauseLocation                          = 3423
 	ISUPCauseValue                             = 3424
 	ISUPLocationNumber                         = 3414
+	IdentitySet                                = 708
 	IdleTimeout                                = 28
 	ImmediateResponsePreferred                 = 1412
 	InbandSecurityID                           = 299
@@ -309,6 +314,7 @@ const (
 	LIPAPermission                             = 1618
 	LocalGWInsertedIndication                  = 2604
 	LocalSequenceNumber                        = 2063
+	LocalTimeZoneIndication                    = 718
 	LocationEstimate                           = 1242
 	LocationEstimateType                       = 1243
 	LocationType                               = 1244
@@ -401,6 +407,7 @@ const (
 	OMCID                                      = 1466
 	Offline                                    = 1008
 	OfflineCharging                            = 1278
+	OneTimeNotification                        = 712
 	Online                                     = 1009
 	OnlineChargingFlag                         = 2303
 	OperatorDeterminedBarring                  = 1425
@@ -469,6 +476,7 @@ const (
 	ProxyHost                                  = 280
 	ProxyInfo                                  = 284
 	ProxyState                                 = 33
+	PublicIdentity                             = 601
 	QoSClassIdentifier                         = 1028
 	QoSFilterRule                              = 407
 	QoSInformation                             = 1016
@@ -513,8 +521,11 @@ const (
 	ReplyMessage                               = 18
 	ReplyPathRequested                         = 2011
 	ReportingReason                            = 872
+	RepositoryDataID                           = 715
 	RequestedAction                            = 436
+	RequestedDomain                            = 706
 	RequestedEUTRANAuthenticationInfo          = 1408
+	RequestedNodes                             = 713
 	RequestedPartyAddress                      = 1251
 	RequestedServiceUnit                       = 437
 	RequestedUTRANGERANAuthenticationInfo      = 1409
@@ -575,6 +586,8 @@ const (
 	STNSR                                      = 1433
 	ScaleFactor                                = 2059
 	SecurityParameterIndex                     = 1056
+	SendDataIndication                         = 710
+	SequenceNumber                             = 716
 	ServedPartyIPAddress                       = 848
 	ServerAssignmentType                       = 614
 	ServerCapabilities                         = 603
@@ -583,6 +596,7 @@ const (
 	ServiceDataContainer                       = 2040
 	ServiceID                                  = 855
 	ServiceIdentifier                          = 439
+	ServiceIndication                          = 704
 	ServiceInformation                         = 873
 	ServiceMode                                = 2032
 	ServiceParameterInfo                       = 440
@@ -595,6 +609,7 @@ const (
 	ServiceType                                = 6
 	ServiceTypeIdentity                        = 1484
 	ServingNode                                = 2401
+	ServingNodeIndication                      = 714
 	ServingNodeType                            = 2047
 	SessionBinding                             = 270
 	SessionDirection                           = 2707
@@ -602,6 +617,7 @@ const (
 	SessionPriority                            = 650
 	SessionServerFailover                      = 271
 	SessionTimeout                             = 27
+	ShUserData                                 = 702
 	SoftwareVersion                            = 1403
 	SpecificAPNInfo                            = 1472
 	SponsorIdentity                            = 531
@@ -610,6 +626,7 @@ const (
 	StatusASCode                               = 2702
 	StopTime                                   = 2042
 	SubmissionTime                             = 1202
+	SubsReqType                                = 705
 	SubscribedPeriodicRAUTAUTimer              = 1619
 	SubscribedVSRVCC                           = 1636
 	SubscriberRole                             = 2033
@@ -694,6 +711,7 @@ const (
 	TunnelType                                 = 64
 	Tunneling                                  = 401
 	TypeNumber                                 = 1204
+	UDRFlags                                   = 719
 	UESRVCCCapability                          = 1615
 	ULAFlags                                   = 1406
 	ULRFlags                                   = 1405
@@ -713,6 +731,7 @@ const (
 	UserEquipmentInfoType                      = 459
 	UserEquipmentInfoValue                     = 460
 	UserID                                     = 1444
+	UserIdentity                               = 700
 	UserLocationInfoTime                       = 2812
 	UserName                                   = 1
 	UserParticipatingType                      = 1279

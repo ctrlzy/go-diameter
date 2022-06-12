@@ -6209,22 +6209,22 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <rule avp="Route-Record" required="false"/>
             </answer>
         </command>
-        <avp code="700" may="P" may-encrypt="N" must="M,V" name="User-Identity" vendor-id="10415">
+        <avp name="User-Identity" code="700" may="P" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Grouped">
                 <rule avp="Public-Identity" max="1" required="false"/>
                 <rule avp="MSISDN" max="1" required="false"/>
             </data>
         </avp>
-        <avp code="701" may-encrypt="N" must="M,V" name="MSISDN" vendor-id="10415">
+        <avp name="MSISDN" code="701" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="OctetString"/>
         </avp>
-        <avp code="601" may-encrypt="Y" must="M,V" name="Public-Identity" vendor-id="10415">
+        <avp name="Public-Identity" code="601" may-encrypt="Y" must="M,V" vendor-id="10415">
             <data type="UTF8String"/>
         </avp>
-        <avp code="702" may-encrypt="N" must="M,V" name="Sh-User-Data" vendor-id="10415">
+        <avp name="Sh-User-Data" code="702" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="OctetString"/>
         </avp>
-        <avp code="703" may-encrypt="N" must="M,V" name="Data-Reference" vendor-id="10415">
+        <avp  name="Data-Reference" code="703" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Enumerated">
                 <item code="0" name="RepositoryData"/>
                 <item code="1" name="Undefined"/>
@@ -6260,28 +6260,32 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <item code="31" name="ReferenceLocationInformation"/>
             </data>
         </avp>
-        <avp code="704" may="P" may-encrypt="N" must="M" name="Service-Indication" vendor-id="10415">
+
+        <avp name="Service-Indication" code="704" may="P" may-encrypt="N" must="M" vendor-id="10415">
             <data type="OctetString"/>
         </avp>
-        <avp code="705" may="P" may-encrypt="N" must="M,V" name="Subs-Req-Type" vendor-id="10415">
+
+        <avp name="Subs-Req-Type" code="705" may="P" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Enumerated">
                 <item code="0" name="Subscribe"/>
                 <item code="1" name="Unsubscribe"/>
             </data>
         </avp>
-        <avp code="706" may="P" may-encrypt="N" must="M,V" name="Requested-Domain" vendor-id="10415">
+
+        <avp name="Requested-Domain" code="706" may="P" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Enumerated">
                 <item code="0" name="CS-Domain"/>
                 <item code="1" name="PS-Domain"/>
             </data>
         </avp>
-        <avp code="707" may-encrypt="N" must="M,V" name="Current-Location" vendor-id="10415">
+        <avp  name="Current-Location" code="707" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Enumerated">
                 <item code="0" name="DoNotNeedInitiateActiveLocationRetrieval"/>
                 <item code="1" name="InitiateActiveLocationRetrieval"/>
             </data>
         </avp>
-        <avp code="708" may-encrypt="N" must="M,V" name="Identity-Set" vendor-id="10415">
+
+        <avp name="Identity-Set" code="708" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Enumerated">
                 <item code="0" name="ALL_IDENTITIES"/>
                 <item code="1" name="REGISTERED_IDENTITIES"/>
@@ -6289,76 +6293,76 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <item code="3" name="ALIAS_IDENTITIES"/>
             </data>
         </avp>
-        <avp code="709" may-encrypt="N" must="M,V" name="Expiry-Time" vendor-id="10415">
+        <avp name="Expiry-Time" code="709" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Time"/>
         </avp>
-        <avp code="710" may-encrypt="N" must="M,V" name="Send-Data-Indication" vendor-id="10415">
+        <avp name="Send-Data-Indication" code="710" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Enumerated">
                 <item code="0" name="USER_DATA_NOT_REQUESTED"/>
                 <item code="1" name="USER_DATA_REQUESTED"/>
             </data>
         </avp>
-        <avp code="711" may-encrypt="N" must="M,V" name="DSAI-Tag" vendor-id="10415">
+        <avp name="DSAI-Tag" code="711" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="OctetString"/>
         </avp>
-        <avp code="712" may-encrypt="N" must="M,V" name="One-Time-Notification" vendor-id="10415">
+        <avp name="One-Time-Notification" code="712" may-encrypt="N" must="M,V"  vendor-id="10415">
             <data type="Enumerated">
                 <item code="0" name="ONE_TIME_NOTIFICATION_REQUESTED"/>
             </data>
         </avp>
-        <avp code="713" may-encrypt="N" must="M,V" name="Requested-Nodes" vendor-id="10415">
+        <avp name="Requested-Nodes" code="713" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Enumerated">
                 <item code="1" name="MME"/>
                 <item code="2" name="SGSN"/>
                 <item code="3" name="MME,SGSN"/>
             </data>
         </avp>
-        <avp code="714" may-encrypt="N" must="M,V" name="Serving-Node-Indication" vendor-id="10415">
+        <avp name="Serving-Node-Indication" code="714" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Enumerated">
                 <item code="0" name="ONLY_SERVING_NODES_REQUIRED"/>
             </data>
         </avp>
-        <avp code="715" may-encrypt="N" must="M,V" name="Repository-Data-ID" vendor-id="10415">
+        <avp name="Repository-Data-ID" code="715" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Grouped">
                 <rule max="1" name="Service-Indication" required="true"/>
                 <rule max="1" name="Sequence-Number" required="true"/>
             </data>
         </avp>
-        <avp code="716" may-encrypt="N" must="M,V" name="Sequence-Number" vendor-id="10415">
+        <avp name="Sequence-Number" code="716" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Unsigned32"/>
         </avp>
-        <avp code="717" may-encrypt="N" must="M,V" name="Pre-paging-Supported" vendor-id="10415">
+        <avp  name="Pre-paging-Supported" code="717" may-encrypt="N" must="M,V"vendor-id="10415">
             <data type="Enumerated">
                 <item code="0" name="PREPAGING_NOT_SUPPORTED"/>
                 <item code="1" name="PREPAGING_SUPPORTED"/>
             </data>
         </avp>
-        <avp code="718" may-encrypt="N" must="M,V" name="Local-Time-Zone-Indication" vendor-id="10415">
+        <avp name="Local-Time-Zone-Indication" code="718" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Enumerated">
                 <item code="0" name="ONLY_LOCAL_TIME_ZONE_REQUESTED"/>
                 <item code="1" name="LOCAL_TIME_ZONE_WITH_LOCATION_INFO_REQUESTED"/>
             </data>
         </avp>
-        <avp code="719" may-encrypt="N" must="M,V" name="UDR-Flags" vendor-id="10415">
+        <avp name="UDR-Flags" code="719" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Enumerated">
                 <item code="1" name="Location-Information-EPS-Supported"/>
                 <item code="2" name="RAT-Type-Requested"/>
             </data>
         </avp>
-        <avp code="628" may="M" may-encrypt="N" must="V" name="Supported-Features" vendor-id="10415">
+        <avp  name="Supported-Features" code="628" may="M" may-encrypt="N" must="V" vendor-id="10415">
             <data type="Grouped">
                 <rule avp="Vendor-Id" max="1" required="true"/>
                 <rule avp="Feature-List-ID" max="1" required="true"/>
                 <rule avp="Feature-List" max="1" required="true"/>
             </data>
         </avp>
-        <avp code="629" may-encrypt="N" must="V" must_not="M" name="Feature-List-ID" vendor-id="10415">
+        <avp name="Feature-List-ID" code="629" may-encrypt="N" must="V" must_not="M" vendor-id="10415">
             <data type="Unsigned32"/>
         </avp>
-        <avp code="630" may-encrypt="N" must="V" must-not="M" name="Feature-List" vendor-id="10415">
+        <avp name="Feature-List" code="630" may-encrypt="N" must="V" must-not="M" vendor-id="10415">
             <data type="Unsigned32"/>
         </avp>
-        <avp code="602" may="P" may-encrypt="N" must="V,M" must-not="-" name="Server-Name" vendor-id="10415">
+        <avp name="Server-Name" code="602" may="P" may-encrypt="N" must="V,M" must-not="-" vendor-id="10415">
             <data type="UTF8String"/>
         </avp>
 
@@ -6376,18 +6380,18 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
             </data>
         </avp>
 
-        <avp code="720" may-encrypt="N" must_not="M" name="Call-Reference-Info" vendor-id="10415">
+        <avp name="Call-Reference-Info" code="720" may-encrypt="N" must_not="M" vendor-id="10415">
             <data type="Grouped">
                 <rule avp="Call-Reference-Number" max="1" required="true"/>
                 <rule avp="AS-Number" max="1" required="true"/>
             </data>
         </avp>
 
-        <avp code="721" may-encrypt="N" must_not="M" name="Call-Reference-Number" vendor-id="10415">
+        <avp  name="Call-Reference-Number" code="721" may-encrypt="N" must_not="M" vendor-id="10415">
             <data type="OctetString"/>
         </avp>
 
-        <avp code="722" may-encrypt="N" must_not="M" name="AS-Number" vendor-id="10415">
+        <avp name="AS-Number" code="722" may-encrypt="N" must_not="M" vendor-id="10415">
             <data type="OctetString"/>
         </avp>
 
