@@ -1,6 +1,6 @@
 # Diameter Base Protocol
 
-Package [go-diameter](http://godoc.org/github.com/fiorix/go-diameter) is an
+Package  [go-diameter](http://godoc.org/github.com/fiorix/go-diameter) is an
 implementation of the
 Diameter Base Protocol [RFC 6733](http://tools.ietf.org/html/rfc6733)
 and a stack for the [Go programming language](http://golang.org).
