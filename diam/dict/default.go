@@ -6030,7 +6030,7 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
 <diameter>
     <application id="16777217" name="TGPP Sh">
         <vendor id="10415" name="TGPP"/>
-        <command code="306" name="User-Data" short="UD">
+        <command code="306" short="UD" name="User-Data">
             <request>
                 <rule avp="Session-Id" max="1" required="true"/>
                 <rule avp="DRMP" max="1" required="false"/>
@@ -6084,7 +6084,7 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <rule avp="Route-Record" required="false"/>
             </answer>
         </command>
-        <command code="307" name="Profile-Update" short="PU">
+        <command code="307" short="PU" name="Profile-Update">
             <request>
                 <rule avp="Session-Id" max="1" required="true"/>
                 <rule avp="DRMP" max="1" required="false"/>
@@ -6126,7 +6126,7 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <rule avp="Route-Record" required="false"/>
             </answer>
         </command>
-        <command code="308" name="Subscribe-Notifications" short="SN">
+        <command code="308" short="SN" name="Subscribe-Notifications">
             <request>
                 <rule avp="Session-Id" max="1" required="true"/>
                 <rule avp="DRMP" max="1" required="false"/>
@@ -6175,7 +6175,7 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <rule avp="Route-Record" required="false"/>
             </answer>
         </command>
-        <command code="309" name="Push-Notification" short="PN">
+        <command code="309" short="PN" name="Push-Notification">
             <request>
                 <rule avp="Session-Id" max="1" required="true"/>
                 <rule avp="DRMP" max="1" required="false"/>
@@ -6209,6 +6209,7 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <rule avp="Route-Record" required="false"/>
             </answer>
         </command>
+
         <avp name="User-Identity" code="700" may="P" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Grouped">
                 <rule avp="Public-Identity" max="1" required="false"/>
@@ -6224,7 +6225,7 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
         <avp name="Sh-User-Data" code="702" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="OctetString"/>
         </avp>
-        <avp  name="Data-Reference" code="703" may-encrypt="N" must="M,V" vendor-id="10415">
+        <avp name="Data-Reference" code="703" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Enumerated">
                 <item code="0" name="RepositoryData"/>
                 <item code="1" name="Undefined"/>
@@ -6278,7 +6279,7 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <item code="1" name="PS-Domain"/>
             </data>
         </avp>
-        <avp  name="Current-Location" code="707" may-encrypt="N" must="M,V" vendor-id="10415">
+        <avp name="Current-Location" code="707" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Enumerated">
                 <item code="0" name="DoNotNeedInitiateActiveLocationRetrieval"/>
                 <item code="1" name="InitiateActiveLocationRetrieval"/>
@@ -6331,7 +6332,7 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
         <avp name="Sequence-Number" code="716" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Unsigned32"/>
         </avp>
-        <avp  name="Pre-paging-Supported" code="717" may-encrypt="N" must="M,V"vendor-id="10415">
+        <avp name="Pre-paging-Supported" code="717" may-encrypt="N" must="M,V"vendor-id="10415">
             <data type="Enumerated">
                 <item code="0" name="PREPAGING_NOT_SUPPORTED"/>
                 <item code="1" name="PREPAGING_SUPPORTED"/>
@@ -6349,7 +6350,7 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <item code="2" name="RAT-Type-Requested"/>
             </data>
         </avp>
-        <avp  name="Supported-Features" code="628" may="M" may-encrypt="N" must="V" vendor-id="10415">
+        <avp name="Supported-Features" code="628" may="M" may-encrypt="N" must="V" vendor-id="10415">
             <data type="Grouped">
                 <rule avp="Vendor-Id" max="1" required="true"/>
                 <rule avp="Feature-List-ID" max="1" required="true"/>
@@ -6387,7 +6388,7 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
             </data>
         </avp>
 
-        <avp  name="Call-Reference-Number" code="721" may-encrypt="N" must_not="M" vendor-id="10415">
+        <avp name="Call-Reference-Number" code="721" may-encrypt="N" must_not="M" vendor-id="10415">
             <data type="OctetString"/>
         </avp>
 

@@ -6,6 +6,7 @@ package sm
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/ctrlzy/go-diameter/v4/diam"
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
@@ -178,4 +179,11 @@ func (f handshakeOK) ServeDIAM(c diam.Conn, m *diam.Message) {
 	if _, ok := smpeer.FromContext(c.Context()); ok {
 		f(c, m)
 	}
+}
+
+var sessionId uint64 = 0
+
+func getSessionId(host datatype.DiameterIdentity) string {
+	sessionId += 1
+	return fmt.Sprintf("%v;%v;%v", host, time.Now(), sessionId)
 }

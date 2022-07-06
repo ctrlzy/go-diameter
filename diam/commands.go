@@ -19,14 +19,18 @@ const (
 	DisconnectPeer            = 282
 	MultimediaAuthentication  = 303
 	Notify                    = 323
+	ProfileUpdate             = 307
 	PurgeUE                   = 321
+	PushNotification          = 309
 	ReAuth                    = 258
 	RegistrationTermination   = 304
 	Reset                     = 322
 	ServerAssignment          = 301
 	SessionTermination        = 275
 	SpendingLimit             = 8388635
+	SubscribeNotifications    = 308
 	UpdateLocation            = 316
+	UserData                  = 306
 )
 
 // Short Command Names

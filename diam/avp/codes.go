@@ -127,6 +127,7 @@ const (
 	CUGInformation                             = 2304
 	CallBarringInfo                            = 1488
 	CallReferenceInfo                          = 720
+	CallReferenceNumber                        = 721
 	CallbackID                                 = 20
 	CallbackNumber                             = 19
 	CalledAssertedIdentity                     = 1250
@@ -169,11 +170,13 @@ const (
 	CreditControl                              = 426
 	CreditControlFailureHandling               = 427
 	CurrencyCode                               = 425
+	CurrentLocation                            = 707
 	CurrentTariff                              = 2056
 	DRMContent                                 = 1221
 	DRMP                                       = 301
 	DSAITag                                    = 711
 	DataCodingScheme                           = 2001
+	DataReference                              = 703
 	DefaultEPSBearerQoS                        = 1049
 	DeferredLocationEventType                  = 1230
 	DeliveryReportRequested                    = 1216
@@ -465,6 +468,7 @@ const (
 	PreemptionCapability                       = 1047
 	PreemptionVulnerability                    = 1048
 	PreferredAoCCurrency                       = 2315
+	PrepagingSupported                         = 717
 	PresenceReportingAreaIdentifier            = 2821
 	PresenceReportingAreaInformation           = 2822
 	PresenceReportingAreaStatus                = 2823
