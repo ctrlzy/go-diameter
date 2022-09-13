@@ -39,7 +39,7 @@
                 <rule avp="Additional-Serving-Node-T4" max="1" required="false"/>
                 <rule avp="LMSI" max="1" required="false"/>
                 <rule avp="User-Identifier" max="1" required="true"/>
-                <rule avp="MWD-status" max="1" required="false"/>
+                <rule avp="MWD-Status" max="1" required="false"/>
                 <rule avp="MME-Absent-User-Diagnostic-SM" max="1" required="false"/>
                 <rule avp="MSC-Absent-User-Diagnostic-SM" max="1" required="false"/>
                 <rule avp="SGSN-Absent-User-Diagnostic-SM" max="1" required="false"/>
@@ -61,7 +61,6 @@
                 <rule avp="SC-Address" max="1" required="false"/>
                 <rule avp="User-Identifier" max="1" required="true"/>
                 <rule avp="SMSMI-Correlation-ID" max="1" required="false"/>
-                <rule avp="Wildcarded-IMPU" max="1" required="false"/>
                 <rule avp="Maximum-UE-Availability-Time" max="1" required="false"/>
                 <rule avp="SMS-GMSC-Alert-Event" max="1" required="false"/>
                 <rule avp="Serving-Node-T4" max="1" required="false"/>
@@ -227,9 +226,6 @@
                 <rule avp="LMSI" max="1" required="false"/>
             </data>
         </avp>
-        <avp name="LMSI" code="3111" may-encrypt="N" must="M,V" vendor-id="10415">
-            <data type="UTF8String"/>
-        </avp>
         <avp name="External-Identifier" code="3111" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="UTF8String"/>
         </avp>
@@ -280,10 +276,20 @@
                 <rule avp="Feature-List" max="1" required="true"/>
             </data>
         </avp>
+        <avp name="Feature-List-ID" code="629" may-encrypt="N" must="V" must_not="M" vendor-id="10415">
+            <data type="Unsigned32"/>
+        </avp>
+        <avp name="Feature-List" code="630" may-encrypt="N" must="V" must-not="M" vendor-id="10415">
+            <data type="Unsigned32"/>
+        </avp>
 
         <avp name="Absent-User-Diagnostic-SM" code="3322" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Unsigned32"/>
         </avp>
+        <avp name="RDR-Flags" code="3323" may-encrypt="N" must="M,V" vendor-id="10415">
+            <data type="Unsigned32"/>
+        </avp>
+
         <avp name="MSC-Delivery-Outcome" code="3318" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Grouped"/>
                 <rule avp="SM-Delivery-Cause" max="1" required="false"/>

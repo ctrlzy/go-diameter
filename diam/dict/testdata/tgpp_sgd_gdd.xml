@@ -40,7 +40,7 @@
                 <rule avp="Route-Record" required="false"/>
             </answer>
         </command>
-        <command code="838646" short="TF" name="MT-Forward-Short-Message">
+        <command code="8388646" short="TF" name="MT-Forward-Short-Message">
             <request>
                 <rule avp="Session-Id" max="1" required="true"/>
                 <rule avp="DRMP" max="1" required="false"/>
@@ -49,42 +49,6 @@
                 <rule avp="Origin-Host" max="1" required="true"/>
                 <rule avp="Origin-Realm" max="1" required="true"/>
                 <rule avp="Destination-Host" max="1" required="true"/>
-                <rule avp="Destination-Realm" max="1" required="true"/>
-                <rule avp="SC-Address" max="1" required="false"/>
-                <rule avp="User-Identifier" max="1" required="true"/>
-                <rule avp="SMSMI-Correlation-ID" max="1" required="false"/>
-                <rule avp="Wildcarded-IMPU" max="1" required="false"/>
-                <rule avp="Maximum-UE-Availability-Time" max="1" required="false"/>
-                <rule avp="SMS-GMSC-Alert-Event" max="1" required="false"/>
-                <rule avp="Serving-Node-T4" max="1" required="false"/>
-                <rule avp="Supported-Features" required="false"/>
-                <rule avp="Proxy-Info" required="false"/>
-                <rule avp="Route-Record" required="false"/>
-            </request>
-            <answer>
-                <rule avp="Session-Id" max="1" required="true"/>
-                <rule avp="DRMP" max="1" required="false"/>
-                <rule avp="Vendor-Specific-Application-Id" max="1" required="true"/>
-                <rule avp="Result-Code" max="1" required="false"/>
-                <rule avp="Experimental-Result" max="1" required="false"/>
-                <rule avp="Auth-Session-State" max="1" required="true"/>
-                <rule avp="Origin-Host" max="1" required="true"/>
-                <rule avp="Origin-Realm" max="1" required="true"/>
-                <rule avp="Supported-Features" required="false"/>
-                <rule avp="Failed-AVP" max="1" required="false"/>
-                <rule avp="Proxy-Info" required="false"/>
-                <rule avp="Route-Record" required="false"/>
-            </answer>
-        </command>
-        <command code="8388649" short="RD" name="Report-SM-Delivery-Status">
-            <request>
-                <rule avp="Session-Id" max="1" required="true"/>
-                <rule avp="DRMP" max="1" required="false"/>
-                <rule avp="Vendor-Specific-Application-Id" max="1" required="true"/>
-                <rule avp="Auth-Session-State" max="1" required="true"/>
-                <rule avp="Origin-Host" max="1" required="true"/>
-                <rule avp="Origin-Realm" max="1" required="true"/>
-                <rule avp="Destination-Host" max="1" required="false"/>
                 <rule avp="Destination-Realm" max="1" required="true"/>
                 <rule avp="User-Name" max="1" required="false"/>
                 <rule avp="Supported-Features" required="false"/>
@@ -129,7 +93,12 @@
                 <rule avp="Feature-List" max="1" required="true"/>
             </data>
         </avp>
-
+        <avp name="Feature-List-ID" code="629" may-encrypt="N" must="V" must_not="M" vendor-id="10415">
+            <data type="Unsigned32"/>
+        </avp>
+        <avp name="Feature-List" code="630" may-encrypt="N" must="V" must-not="M" vendor-id="10415">
+            <data type="Unsigned32"/>
+        </avp>
         <avp name="SMSMI-Correlation-ID" code="3324" may="P" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Grouped">
                 <rule avp="HSS-ID" max="1" required="false"/>
@@ -137,6 +106,16 @@
                 <rule avp="Destination-SIP-URI" max="1" required="false"/>
             </data>
         </avp>
+        <avp name="HSS-ID" code="3325" may-encrypt="N" must="M,V" vendor-id="10415">
+            <data type="OctetString"/>
+        </avp>
+        <avp name="Originating-SIP-URI" code="3326" may-encrypt="N" must="M,V" vendor-id="10415">
+            <data type="Unsigned32"/>
+        </avp>
+        <avp name="Destination-SIP-URI" code="3327" may-encrypt="N" must="M,V" vendor-id="10415">
+            <data type="Unsigned32"/>
+        </avp>
+
         <avp name="OFR-Flags" code="3328" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Unsigned32"/>
         </avp>
@@ -151,8 +130,8 @@
                 <rule avp="LMSI" max="1" required="false"/>
             </data>
         </avp>
-        <avp name="LMSI" code="3111" may-encrypt="N" must="M,V" vendor-id="10415">
-            <data type="UTF8String"/>
+        <avp name="LMSI" code="2400" may-encrypt="N" must="M,V" vendor-id="10415">
+            <data type="OctetString"/>
         </avp>
 
         <avp name="Destination-SIP-URI" code="3327" may-encrypt="N" must="M,V" vendor-id="10415">
