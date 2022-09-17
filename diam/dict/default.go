@@ -6175,7 +6175,7 @@ var tgpps6cXML = `<?xml version="1.0" encoding="UTF-8"?>
             <data type="Enumerated"/>
                 <item code="0" name="SM_DELIVER"/>
                 <item code="1" name="SM_STATUS_REPORT"/>
-            </date>
+            </data>
         </avp>
         <avp name="SM-RP-SMEA" code="3309" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="OctetString"/>
