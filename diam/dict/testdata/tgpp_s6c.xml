@@ -264,7 +264,7 @@
         </avp>
         <avp name="SM-Delivery-Cause" code="3321" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Enumerated">
-                <item code="0" name="UE_ MEMORY_CAPACITY_EXCEEDED"/>
+                <item code="0" name="UE_MEMORY_CAPACITY_EXCEEDED"/>
                 <item code="1" name="ABSENT_USER"/>
                 <item code="2" name="SUCCESSFUL_TRANSFER"/>
             </data>
