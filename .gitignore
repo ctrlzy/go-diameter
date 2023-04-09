@@ -7,3 +7,5 @@ examples/server/server
 examples/snoop/snoop
 .idea
 .vscode
+test
+.gitignore
