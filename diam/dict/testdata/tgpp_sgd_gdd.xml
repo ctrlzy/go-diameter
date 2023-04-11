@@ -111,7 +111,7 @@
             </data>
         </avp>
         <avp name="HSS-ID" code="3325" may-encrypt="N" must="V" vendor-id="10415">
-            <data type="OctetString"/>
+            <data type="UTF8String"/>
         </avp>
         <avp name="Originating-SIP-URI" code="3326" may-encrypt="N" must="V" vendor-id="10415">
             <data type="UTF8String"/>
@@ -136,10 +136,6 @@
         </avp>
         <avp name="LMSI" code="2400" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="OctetString"/>
-        </avp>
-
-        <avp name="Destination-SIP-URI" code="3327" may-encrypt="N" must="M,V" vendor-id="10415">
-            <data type="Unsigned32"/>
         </avp>
         <avp name="MSISDN" code="701" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="OctetString"/>

@@ -95,20 +95,20 @@ retry:
 	case string:
 		avp, ok = p.avpname[nameIdx{appid, codeVal, vendorID}]
 		if !ok && appid == 0 {
-			err = fmt.Errorf("Could not find AVP %T(%q) for Vendor: %d", codeVal, codeVal, vendorID)
+			err = fmt.Errorf("could not find AVP %T(%q) for Vendor: %d", codeVal, codeVal, vendorID)
 		}
 	case uint32:
 		avp, ok = p.avpcode[codeIdx{appid, codeVal, vendorID}]
 		if !ok && appid == 0 {
-			err = fmt.Errorf("Could not find AVP %T(%d) for Vendor: %d", codeVal, codeVal, vendorID)
+			err = fmt.Errorf("could not find AVP %T(%d) for Vendor: %d", codeVal, codeVal, vendorID)
 		}
 	case int:
 		avp, ok = p.avpcode[codeIdx{appid, uint32(codeVal), vendorID}]
 		if !ok && appid == 0 {
-			err = fmt.Errorf("Could not find AVP %T(%d) for Vendor: %d", codeVal, codeVal, vendorID)
+			err = fmt.Errorf("could not find AVP %T(%d) for Vendor: %d", codeVal, codeVal, vendorID)
 		}
 	default:
-		return nil, fmt.Errorf("Unsupported AVP code type %T(%#v)", codeVal, code)
+		return nil, fmt.Errorf("unsupported AVP code type %T(%#v)", codeVal, code)
 	}
 	if ok {
 		return avp, nil
@@ -152,30 +152,30 @@ func (p *Parser) FindAVP(appid uint32, code interface{}) (*AVP, error) {
 func (p *Parser) ScanAVP(code interface{}) (*AVP, error) {
 	//p.mu.Lock()
 	//defer p.mu.Unlock()
-	switch code.(type) {
+	switch codeVal := code.(type) {
 	case string:
 		for idx, avp := range p.avpname {
-			if idx.name == code.(string) {
+			if idx.name == codeVal {
 				return avp, nil
 			}
 		}
-		return nil, fmt.Errorf("Could not find AVP %s", code.(string))
+		return nil, fmt.Errorf("could not find AVP %s", code.(string))
 	case uint32:
 		for idx, avp := range p.avpcode {
-			if idx.code == code.(uint32) {
+			if idx.code == codeVal {
 				return avp, nil
 			}
 		}
-		return nil, fmt.Errorf("Could not find AVP code %d", code.(uint32))
+		return nil, fmt.Errorf("could not find AVP code %d", code.(uint32))
 	case int:
 		for idx, avp := range p.avpcode {
-			if idx.code == uint32(code.(int)) {
+			if idx.code == uint32(codeVal) {
 				return avp, nil
 			}
 		}
-		return nil, fmt.Errorf("Could not find AVP code %d", code.(int))
+		return nil, fmt.Errorf("could not find AVP code %d", code.(int))
 	}
-	return nil, fmt.Errorf("Unsupported AVP code type %#v", code)
+	return nil, fmt.Errorf("unsupported AVP code type %#v", code)
 }
 
 // FindCommand returns a pre-loaded Command from the Parser.

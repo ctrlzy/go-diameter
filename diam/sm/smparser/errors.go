@@ -24,6 +24,30 @@ var (
 	// the message does not contain an Origin-Realm AVP.
 	ErrMissingOriginRealm = errors.New("missing Origin-Realm")
 
+	// ErrMissingDestHost is returned by Parse when
+	// the message does not contain an Destination-Host AVP.
+	ErrMissingDestHost = errors.New("missing Destination-Host")
+
+	// ErrMissingDestRealm is returned by Parse when
+	// the message does not contain an Destination-Realm AVP.
+	ErrMissingDestRealm = errors.New("missing Destination-Realm")
+
+	// ErrMissingUserName is returned by Parse when
+	// the message does not contain an User-Name AVP.
+	ErrMissingUserName = errors.New("missing User-Name")
+
+	// ErrMissingScAddress is returned by Parse when
+	// the message does not contain an SC-Address AVP.
+	ErrMissingScAddress = errors.New("missing SC-Address")
+
+	// ErrMissingSmRpUi is returned by Parse when
+	// the message does not contain an SM-RP-UI AVP.
+	ErrMissingSmRpUi = errors.New("missing SM-RP-UI")
+
+	// ErrMissingUserIdentifier is returned by Parse when
+	// the message does not contain an User-Identifier AVP.
+	ErrMissingUserIdentifier = errors.New("missing User-Identifier")
+
 	// ErrMissingApplication is returned by Parse when
 	// the CER does not contain any Acct-Application-Id or
 	// Auth-Application-Id, or their embedded versions in

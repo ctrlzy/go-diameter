@@ -272,7 +272,7 @@
             </data>
         </avp>
         <avp name="SMSF-Non-3GPP-SM-Delivery-Outcome" code="3337" may-encrypt="N" must="V" vendor-id="10415">
-            <data type="Grouped"/>
+            <data type="Grouped">
                 <rule avp="SM-Delivery-Cause" max="1" required="false"/>
                 <rule avp="Absent-User-Diagnostic-SM" max="1" required="false"/>
             </data>
