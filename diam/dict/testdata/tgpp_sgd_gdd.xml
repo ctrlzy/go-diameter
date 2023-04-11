@@ -96,10 +96,10 @@
                 <rule avp="Feature-List" max="1" required="true"/>
             </data>
         </avp>
-        <avp name="Feature-List-ID" code="629" may-encrypt="N" must="V" must_not="M" vendor-id="10415">
+        <avp name="Feature-List-ID" code="629" may-encrypt="N" must="V" must_not="V" vendor-id="10415">
             <data type="Unsigned32"/>
         </avp>
-        <avp name="Feature-List" code="630" may-encrypt="N" must="V" must-not="M" vendor-id="10415">
+        <avp name="Feature-List" code="630" may-encrypt="N" must="V" must-not="V" vendor-id="10415">
             <data type="Unsigned32"/>
         </avp>
         <avp name="SMSMI-Correlation-ID" code="3324" may="P" may-encrypt="N" must="V" vendor-id="10415">
