@@ -9,9 +9,9 @@ type Supported_Features struct {
 }
 
 type SMSMI_Correlation_ID struct {
-	HssId             datatype.OctetString `avp:"HSS-ID,omitempty"`
-	OriginatingSipUri datatype.UTF8String  `avp:"Originating-SIP-URI,omitempty"`
-	DestinationSipUri datatype.UTF8String  `avp:"Destination-SIP-URI,omitempty"`
+	HssId             datatype.UTF8String `avp:"HSS-ID,omitempty"`
+	OriginatingSipUri datatype.UTF8String `avp:"Originating-SIP-URI,omitempty"`
+	DestinationSipUri datatype.UTF8String `avp:"Destination-SIP-URI,omitempty"`
 }
 
 type User_Identifier struct {

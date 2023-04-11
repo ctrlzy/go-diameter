@@ -6159,7 +6159,7 @@ var tgpps6cXML = `<?xml version="1.0" encoding="UTF-8"?>
             </answer>
         </command>
 
-        <avp name="SMSMI-Correlation-ID" code="3324" may="P" may-encrypt="N" must="M,V" vendor-id="10415">
+        <avp name="SMSMI-Correlation-ID" code="3324" may="P" may-encrypt="N" must="V" vendor-id="10415">
             <data type="Grouped">
                 <rule avp="HSS-ID" max="1" required="false"/>
                 <rule avp="Originating-SIP-URI" max="1" required="false"/>
@@ -6167,13 +6167,13 @@ var tgpps6cXML = `<?xml version="1.0" encoding="UTF-8"?>
             </data>
         </avp>
         <avp name="HSS-ID" code="3325" may-encrypt="N" must="M,V" vendor-id="10415">
-            <data type="OctetString"/>
+            <data type="UTF8String"/>
         </avp>
         <avp name="Originating-SIP-URI" code="3326" may-encrypt="N" must="M,V" vendor-id="10415">
-            <data type="Unsigned32"/>
+            <data type="UTF8String"/>
         </avp>
         <avp name="Destination-SIP-URI" code="3327" may-encrypt="N" must="M,V" vendor-id="10415">
-            <data type="Unsigned32"/>
+            <data type="UTF8String"/>
         </avp>
         <avp name="MSISDN" code="701" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="OctetString"/>
@@ -6515,7 +6515,7 @@ var tgppsgdgddXML = `<?xml version="1.0" encoding="UTF-8"?>
             </data>
         </avp>
         <avp name="HSS-ID" code="3325" may-encrypt="N" must="V" vendor-id="10415">
-            <data type="OctetString"/>
+            <data type="UTF8String"/>
         </avp>
         <avp name="Originating-SIP-URI" code="3326" may-encrypt="N" must="V" vendor-id="10415">
             <data type="UTF8String"/>
