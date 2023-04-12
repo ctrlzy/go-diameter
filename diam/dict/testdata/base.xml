@@ -521,8 +521,9 @@
 				<item code="15" name="PRIORITY_15"/>
 			</data>
 		</avp>
-
-
+        <avp name="External-Identifier" code="3111" may-encrypt="N" must="M,V" vendor-id="10415">
+            <data type="UTF8String"/>
+        </avp>
 	</application>
 	<application id="3" type="acct" name="Base Accounting"> <!-- Diameter Base Accounting Messages -->
 	</application>

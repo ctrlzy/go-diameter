@@ -59,7 +59,7 @@ const (
 	ActiveAPN                                  = 1612
 	Adaptations                                = 1217
 	AdditionalContentInformation               = 1207
-	AdditionalServingNodeT4                    = 2406
+	AdditionalServingNode                      = 2406
 	AdditionalTypeInformation                  = 1205
 	AddressData                                = 897
 	AddressDomain                              = 898
@@ -694,6 +694,7 @@ const (
 	SubscriptionIDData                         = 444
 	SubscriptionIDType                         = 450
 	SupplementaryService                       = 2048
+	SupportedApplications                      = 631
 	SupportedFeatures                          = 628
 	SupportedVendorID                          = 265
 	TADIdentifier                              = 2717

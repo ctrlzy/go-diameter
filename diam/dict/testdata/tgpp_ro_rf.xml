@@ -2486,7 +2486,7 @@
       </data>
     </avp>
 
-    <avp name="Feature-List-ID" code="629" must="V" must_not="M" may-encrypt="N" vendor-id="10415">
+    <avp name="Feature-List-ID" code="629" must="V" must-not="M" may-encrypt="N" vendor-id="10415">
       <data type="Unsigned32"/>
     </avp>
 

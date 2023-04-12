@@ -564,8 +564,9 @@ var baseXML = `<?xml version="1.0" encoding="UTF-8"?>
 				<item code="15" name="PRIORITY_15"/>
 			</data>
 		</avp>
-
-
+        <avp name="External-Identifier" code="3111" may-encrypt="N" must="M,V" vendor-id="10415">
+            <data type="UTF8String"/>
+        </avp>
 	</application>
 	<application id="3" type="acct" name="Base Accounting"> <!-- Diameter Base Accounting Messages -->
 	</application>
@@ -4949,7 +4950,7 @@ var tgpprorfXML = `<?xml version="1.0" encoding="UTF-8"?>
       </data>
     </avp>
 
-    <avp name="Feature-List-ID" code="629" must="V" must_not="M" may-encrypt="N" vendor-id="10415">
+    <avp name="Feature-List-ID" code="629" must="V" must-not="M" may-encrypt="N" vendor-id="10415">
       <data type="Unsigned32"/>
     </avp>
 
@@ -6164,15 +6165,16 @@ var tgpps6cXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <rule avp="HSS-ID" max="1" required="false"/>
                 <rule avp="Originating-SIP-URI" max="1" required="false"/>
                 <rule avp="Destination-SIP-URI" max="1" required="false"/>
+                <rule avp="AVP" required="false"/>
             </data>
         </avp>
-        <avp name="HSS-ID" code="3325" may-encrypt="N" must="M,V" vendor-id="10415">
+        <avp name="HSS-ID" code="3325" may-encrypt="N" must="V" vendor-id="10415">
+            <data type="OctetString"/>
+        </avp>
+        <avp name="Originating-SIP-URI" code="3326" may-encrypt="N" must="V" vendor-id="10415">
             <data type="UTF8String"/>
         </avp>
-        <avp name="Originating-SIP-URI" code="3326" may-encrypt="N" must="M,V" vendor-id="10415">
-            <data type="UTF8String"/>
-        </avp>
-        <avp name="Destination-SIP-URI" code="3327" may-encrypt="N" must="M,V" vendor-id="10415">
+        <avp name="Destination-SIP-URI" code="3327" may-encrypt="N" must="V" vendor-id="10415">
             <data type="UTF8String"/>
         </avp>
         <avp name="MSISDN" code="701" may-encrypt="N" must="M,V" vendor-id="10415">
@@ -6214,10 +6216,10 @@ var tgpps6cXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <rule avp="IP-SM-GW-Realm" max="1" required="false"/>
             </data>
         </avp>
-        <avp name="SGSN-Name" code="2409" may-encrypt="N" must="M,V" vendor-id="10415">
+        <avp name="SGSN-Name" code="2409" may-encrypt="N" must="V" vendor-id="10415">
             <data type="DiameterIdentity"/>
         </avp>
-        <avp name="SGSN-Realm" code="2410" may-encrypt="N" must="M,V" vendor-id="10415">
+        <avp name="SGSN-Realm" code="2410" may-encrypt="N" must="V" vendor-id="10415">
             <data type="DiameterIdentity"/>
         </avp>
         <avp name="SGSN-Number" code="1489" may-encrypt="N" must="M,V" vendor-id="10415">
@@ -6226,10 +6228,10 @@ var tgpps6cXML = `<?xml version="1.0" encoding="UTF-8"?>
         <avp name="MME-Name" code="2402" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="DiameterIdentity"/>
         </avp>
-        <avp name="MME-Realm" code="2408" may-encrypt="N" must="M,V" vendor-id="10415">
+        <avp name="MME-Realm" code="2408" may-encrypt="N" must="V" vendor-id="10415">
             <data type="DiameterIdentity"/>
         </avp>
-        <avp name="MME-Number-for-MT-SMS" code="1645" may-encrypt="N" must="M,V" vendor-id="10415">
+        <avp name="MME-Number-for-MT-SMS" code="1645" may-encrypt="N" must="V" vendor-id="10415">
             <data type="OctetString"/>
         </avp>
         <avp name="MSC-Number" code="2403" may-encrypt="N" must="M,V" vendor-id="10415">
@@ -6244,7 +6246,7 @@ var tgpps6cXML = `<?xml version="1.0" encoding="UTF-8"?>
         <avp name="IP-SM-GW-Realm" code="3112" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="OctetString"/>
         </avp>
-        <avp name="Additional-Serving-Node-T4" code="2406" may="P" may-encrypt="N" must="M,V" vendor-id="10415">
+        <avp name="Additional-Serving-Node" code="2406" may="P" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Grouped">
                 <rule avp="SGSN-Name" max="1" required="false"/>
                 <rule avp="SGSN-Realm" max="1" required="false"/>
@@ -6366,10 +6368,10 @@ var tgpps6cXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <rule avp="Feature-List" max="1" required="true"/>
             </data>
         </avp>
-        <avp name="Feature-List-ID" code="629" may-encrypt="N" must="V" must_not="M" vendor-id="10415">
+        <avp name="Feature-List-ID" code="629" may-encrypt="N" must="V" must-not="V" vendor-id="10415">
             <data type="Unsigned32"/>
         </avp>
-        <avp name="Feature-List" code="630" may-encrypt="N" must="V" must-not="M" vendor-id="10415">
+        <avp name="Feature-List" code="630" may-encrypt="N" must="V" must-not="V" vendor-id="10415">
             <data type="Unsigned32"/>
         </avp>
 
@@ -6500,10 +6502,10 @@ var tgppsgdgddXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <rule avp="Feature-List" max="1" required="true"/>
             </data>
         </avp>
-        <avp name="Feature-List-ID" code="629" may-encrypt="N" must="V" must_not="M" vendor-id="10415">
+        <avp name="Feature-List-ID" code="629" may-encrypt="N" must="V" must-not="V" vendor-id="10415">
             <data type="Unsigned32"/>
         </avp>
-        <avp name="Feature-List" code="630" may-encrypt="N" must="V" must-not="M" vendor-id="10415">
+        <avp name="Feature-List" code="630" may-encrypt="N" must="V" must-not="V" vendor-id="10415">
             <data type="Unsigned32"/>
         </avp>
         <avp name="SMSMI-Correlation-ID" code="3324" may="P" may-encrypt="N" must="V" vendor-id="10415">
@@ -6665,7 +6667,6 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <rule avp="Wildcarded-IMPU" max="1" required="false"/>
                 <rule avp="Service-Indication" required="false"/>
                 <rule avp="Server-Name" max="1" required="false"/>
-                <rule avp="Subs-Req-Type" max="1" required="true"/>
                 <rule avp="Data-Reference" required="true"/>
                 <rule avp="Identity-Set" required="false"/>
                 <rule avp="Requested-Domain" max="1" required="false"/>
@@ -6688,8 +6689,8 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <rule avp="DRMP" max="1" required="false"/>
                 <rule avp="Vendor-Specific-Application-Id" max="1" required="true"/>
                 <rule avp="Result-Code" max="1" required="false"/>
+                <rule avp="Experimental-Result" max="1" required="false"/>
                 <rule avp="Auth-Session-State" max="1" required="true"/>
-                <rule avp="Result-Code" max="1" required="false"/>
                 <rule avp="Origin-Host" max="1" required="true"/>
                 <rule avp="Origin-Realm" max="1" required="true"/>
                 <rule avp="Supported-Features" required="false"/>
@@ -6718,7 +6719,7 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <rule avp="Wildcarded-Public-Identity" max="1" required="false"/>
                 <rule avp="Wildcarded-IMPU" max="1" required="false"/>
                 <rule avp="User-Name" max="1" required="false"/>
-                <rule avp="Data-Reference" max="1" required="true"/>
+                <rule avp="Data-Reference" required="true"/>
                 <rule avp="User-Data-Sh" max="1" required="true"/>
                 <rule avp="OC-Supported-Features" max="1" required="false"/>
                 <rule avp="Proxy-Info" required="false"/>
@@ -6729,8 +6730,8 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <rule avp="DRMP" max="1" required="false"/>
                 <rule avp="Vendor-Specific-Application-Id" max="1" required="true"/>
                 <rule avp="Result-Code" max="1" required="false"/>
+                <rule avp="Experimental-Result" max="1" required="false"/>
                 <rule avp="Auth-Session-State" max="1" required="true"/>
-                <rule avp="Result-Code" max="1" required="false"/>
                 <rule avp="Origin-Host" max="1" required="true"/>
                 <rule avp="Origin-Realm" max="1" required="true"/>
                 <rule avp="Wildcarded-Public-Identity" max="1" required="false"/>
@@ -6802,7 +6803,7 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <rule avp="Auth-Session-State" max="1" required="true"/>
                 <rule avp="Origin-Host" max="1" required="true"/>
                 <rule avp="Origin-Realm" max="1" required="true"/>
-                <rule avp="Destination-Host" max="1" required="false"/>
+                <rule avp="Destination-Host" max="1" required="true"/>
                 <rule avp="Destination-Realm" max="1" required="true"/>
                 <rule avp="Supported-Features" required="false"/>
                 <rule avp="User-Identity" max="1" required="true"/>
@@ -6828,18 +6829,15 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <rule avp="Route-Record" required="false"/>
             </answer>
         </command>
-
         <avp name="User-Identity" code="700" may="P" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Grouped">
                 <rule avp="Public-Identity" max="1" required="false"/>
                 <rule avp="MSISDN" max="1" required="false"/>
+                <rule avp="External-Identifier" max="1" required="false"/>
             </data>
         </avp>
         <avp name="MSISDN" code="701" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="OctetString"/>
-        </avp>
-        <avp name="Public-Identity" code="601" may-encrypt="Y" must="M,V" vendor-id="10415">
-            <data type="UTF8String"/>
         </avp>
         <avp name="Sh-User-Data" code="702" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="OctetString"/>
@@ -6878,20 +6876,21 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <item code="29" name="ExtendedPriority"/>
                 <item code="30" name="CSRN"/>
                 <item code="31" name="ReferenceLocationInformation"/>
+                <item code="32" name="IMSI"/>
+                <item code="33" name="IMSPrivateUserIdentity"/>
+                <item code="34" name="IMEISV"/>
+                <item code="34" name="UE-5G-SRVCC-Capability"/>
             </data>
         </avp>
-
-        <avp name="Service-Indication" code="704" may="P" may-encrypt="N" must="M" vendor-id="10415">
+        <avp name="Service-Indication" code="704" may="P" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="OctetString"/>
         </avp>
-
         <avp name="Subs-Req-Type" code="705" may="P" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Enumerated">
                 <item code="0" name="Subscribe"/>
                 <item code="1" name="Unsubscribe"/>
             </data>
         </avp>
-
         <avp name="Requested-Domain" code="706" may="P" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Enumerated">
                 <item code="0" name="CS-Domain"/>
@@ -6904,8 +6903,7 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <item code="1" name="InitiateActiveLocationRetrieval"/>
             </data>
         </avp>
-
-        <avp name="Identity-Set" code="708" may-encrypt="N" must="M,V" vendor-id="10415">
+        <avp name="Identity-Set" code="708" may-encrypt="N" must="V" must-not="M" vendor-id="10415">
             <data type="Enumerated">
                 <item code="0" name="ALL_IDENTITIES"/>
                 <item code="1" name="REGISTERED_IDENTITIES"/>
@@ -6913,10 +6911,10 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <item code="3" name="ALIAS_IDENTITIES"/>
             </data>
         </avp>
-        <avp name="Expiry-Time" code="709" may-encrypt="N" must="M,V" vendor-id="10415">
+        <avp name="Expiry-Time" code="709" may-encrypt="N" must="V" must-not="M" vendor-id="10415">
             <data type="Time"/>
         </avp>
-        <avp name="Send-Data-Indication" code="710" may-encrypt="N" must="M,V" vendor-id="10415">
+        <avp name="Send-Data-Indication" code="710" may-encrypt="N" must="V" must-not="M" vendor-id="10415">
             <data type="Enumerated">
                 <item code="0" name="USER_DATA_NOT_REQUESTED"/>
                 <item code="1" name="USER_DATA_REQUESTED"/>
@@ -6925,49 +6923,54 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
         <avp name="DSAI-Tag" code="711" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="OctetString"/>
         </avp>
-        <avp name="One-Time-Notification" code="712" may-encrypt="N" must="M,V"  vendor-id="10415">
+        <avp name="One-Time-Notification" code="712" may-encrypt="N" must="V" must-not="M" vendor-id="10415">
             <data type="Enumerated">
                 <item code="0" name="ONE_TIME_NOTIFICATION_REQUESTED"/>
             </data>
         </avp>
-        <avp name="Requested-Nodes" code="713" may-encrypt="N" must="M,V" vendor-id="10415">
-            <data type="Enumerated">
-                <item code="1" name="MME"/>
-                <item code="2" name="SGSN"/>
-                <item code="3" name="MME,SGSN"/>
-            </data>
+        <avp name="Requested-Nodes" code="713" may-encrypt="N" must="V" must-not="M" vendor-id="10415">
+            <data type="Unsigned32"/>
         </avp>
-        <avp name="Serving-Node-Indication" code="714" may-encrypt="N" must="M,V" vendor-id="10415">
+        <avp name="Serving-Node-Indication" code="714" may-encrypt="N" must="V" must-not="M" vendor-id="10415">
             <data type="Enumerated">
                 <item code="0" name="ONLY_SERVING_NODES_REQUIRED"/>
             </data>
         </avp>
-        <avp name="Repository-Data-ID" code="715" may-encrypt="N" must="M,V" vendor-id="10415">
+        <avp name="Repository-Data-ID" code="715" may-encrypt="N" must="V" must-not="M" vendor-id="10415">
             <data type="Grouped">
                 <rule max="1" name="Service-Indication" required="true"/>
                 <rule max="1" name="Sequence-Number" required="true"/>
             </data>
         </avp>
-        <avp name="Sequence-Number" code="716" may-encrypt="N" must="M,V" vendor-id="10415">
+        <avp name="Sequence-Number" code="716" may-encrypt="N" must="V" must-not="M" vendor-id="10415">
             <data type="Unsigned32"/>
         </avp>
-        <avp name="Pre-paging-Supported" code="717" may-encrypt="N" must="M,V"vendor-id="10415">
+        <avp name="Pre-paging-Supported" code="717" may-encrypt="N" must="V" must-not="M" vendor-id="10415">
             <data type="Enumerated">
                 <item code="0" name="PREPAGING_NOT_SUPPORTED"/>
                 <item code="1" name="PREPAGING_SUPPORTED"/>
             </data>
         </avp>
-        <avp name="Local-Time-Zone-Indication" code="718" may-encrypt="N" must="M,V" vendor-id="10415">
+        <avp name="Local-Time-Zone-Indication" code="718" may-encrypt="N" must="V" must-not="M" vendor-id="10415">
             <data type="Enumerated">
                 <item code="0" name="ONLY_LOCAL_TIME_ZONE_REQUESTED"/>
                 <item code="1" name="LOCAL_TIME_ZONE_WITH_LOCATION_INFO_REQUESTED"/>
             </data>
         </avp>
-        <avp name="UDR-Flags" code="719" may-encrypt="N" must="M,V" vendor-id="10415">
-            <data type="Enumerated">
-                <item code="1" name="Location-Information-EPS-Supported"/>
-                <item code="2" name="RAT-Type-Requested"/>
+        <avp name="UDR-Flags" code="719" may-encrypt="N" must="V" must-not="M" vendor-id="10415">
+            <data type="Unsigned32"/>
+        </avp>
+        <avp name="Call-Reference-Info" code="720" may-encrypt="N" must-not="M" vendor-id="10415">
+            <data type="Grouped">
+                <rule avp="Call-Reference-Number" max="1" required="true"/>
+                <rule avp="AS-Number" max="1" required="true"/>
             </data>
+        </avp>
+        <avp name="Call-Reference-Number" code="721" may-encrypt="N" must="V" must-not="M" vendor-id="10415">
+            <data type="OctetString"/>
+        </avp>
+        <avp name="AS-Number" code="722" may-encrypt="N" must="V" must-not="M" vendor-id="10415">
+            <data type="OctetString"/>
         </avp>
         <avp name="Supported-Features" code="628" may="M" may-encrypt="N" must="V" vendor-id="10415">
             <data type="Grouped">
@@ -6976,17 +6979,27 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <rule avp="Feature-List" max="1" required="true"/>
             </data>
         </avp>
-        <avp name="Feature-List-ID" code="629" may-encrypt="N" must="V" must_not="M" vendor-id="10415">
+        <avp name="Feature-List-ID" code="629" may-encrypt="N" must="V" must-not="M" vendor-id="10415">
             <data type="Unsigned32"/>
         </avp>
         <avp name="Feature-List" code="630" may-encrypt="N" must="V" must-not="M" vendor-id="10415">
             <data type="Unsigned32"/>
         </avp>
-        <avp name="Server-Name" code="602" may="P" may-encrypt="N" must="V,M" must-not="-" vendor-id="10415">
+        <avp name="Supported-Applications" code="631" may-encrypt="N" must="V" must-not="M" vendor-id="10415">
+            <data type="Grouped">
+                <rule avp="Auth-Application-Id" required="False"/>
+                <rule avp="Acct-Application-Id" required="False"/>
+                <rule avp="Vendor-Specific-Application-Id" required="False"/>
+            </data>
+        </avp>
+        <avp name="Public-Identity" code="601" may-encrypt="Y" must="M,V" vendor-id="10415">
+            <data type="UTF8String"/>
+        </avp>
+        <avp name="Server-Name" code="602" may="P" may-encrypt="N" must="M,V" must-not="-" vendor-id="10415">
             <data type="UTF8String"/>
         </avp>
 
-        <avp name="Wildcarded-IMPU" code="636" must_not="M" must="V" vendor-id="10415" may-encrypt="no">
+        <avp name="Wildcarded-IMPU" code="636" must-not="M" must="V" vendor-id="10415" may-encrypt="no">
             <data type="UTF8String"/>
         </avp>
 
@@ -7000,22 +7013,11 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
             </data>
         </avp>
 
-        <avp name="Call-Reference-Info" code="720" may-encrypt="N" must_not="M" vendor-id="10415">
-            <data type="Grouped">
-                <rule avp="Call-Reference-Number" max="1" required="true"/>
-                <rule avp="AS-Number" max="1" required="true"/>
-            </data>
-        </avp>
 
-        <avp name="Call-Reference-Number" code="721" may-encrypt="N" must_not="M" vendor-id="10415">
-            <data type="OctetString"/>
-        </avp>
 
-        <avp name="AS-Number" code="722" may-encrypt="N" must_not="M" vendor-id="10415">
-            <data type="OctetString"/>
-        </avp>
 
-        <avp name="Wildcarded-Public-Identity" code="634" must="M,V" vendor-id="10415" may-encrypt="N">
+
+        <avp name="Wildcarded-Public-Identity" code="634" must="V" must-not="M" vendor-id="10415" may-encrypt="N">
             <data type="UTF8String"/>
         </avp>
 
