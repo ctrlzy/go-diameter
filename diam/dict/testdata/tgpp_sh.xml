@@ -16,8 +16,8 @@
                 <rule avp="User-Identity" max="1" required="true"/>
                 <rule avp="Wildcarded-Public-Identity" max="1" required="false"/>
                 <rule avp="Wildcarded-IMPU" max="1" required="false"/>
-                <rule avp="Service-Indication" required="false"/>
                 <rule avp="Server-Name" max="1" required="false"/>
+                <rule avp="Service-Indication" required="false"/>
                 <rule avp="Data-Reference" required="true"/>
                 <rule avp="Identity-Set" required="false"/>
                 <rule avp="Requested-Domain" max="1" required="false"/>

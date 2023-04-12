@@ -23,3 +23,7 @@ type Supported_Applications struct {
 	AcctApplicationId           datatype.Unsigned32            `avp:"Acct-Application-Id,omitempty"`
 	VendorSpecificApplicationId Vendor_Specific_Application_Id `avp:"Vendor-Specific-Application-Id,omitempty"`
 }
+
+func (ui User_Identity) Empty() bool {
+	return (len(ui.PublicIdentity) + len(ui.MSISDN) + len(ui.ExternalIdentifier)) == 0
+}

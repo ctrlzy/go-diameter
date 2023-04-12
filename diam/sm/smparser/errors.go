@@ -36,6 +36,18 @@ var (
 	// the message does not contain an User-Name AVP.
 	ErrMissingUserName = errors.New("missing User-Name")
 
+	// ErrMissingUserName is returned by Parse when
+	// the message does not contain an User-Identity AVP.
+	ErrMissingUserIdentity = errors.New("missing User-Identity")
+
+	// ErrMissingUserName is returned by Parse when
+	// the message does not contain an Server-Name AVP.
+	ErrMissingServerName = errors.New("missing Server-Name")
+
+	// ErrMissingUserName is returned by Parse when
+	// the message does not contain an Data-Reference AVP.
+	ErrMissingDataReference = errors.New("missing Data-Reference")
+
 	// ErrMissingScAddress is returned by Parse when
 	// the message does not contain an SC-Address AVP.
 	ErrMissingScAddress = errors.New("missing SC-Address")
