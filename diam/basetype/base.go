@@ -31,3 +31,7 @@ type Experimental_Result struct {
 
 type Failed_AVP struct {
 }
+
+func (vsai *Vendor_Specific_Application_Id) Empty() bool {
+	return vsai.AcctApplicationId == 0 && vsai.AuthApplicationId == 0
+}
