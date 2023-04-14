@@ -7,18 +7,18 @@ import (
 )
 
 type ALA struct {
-	SessionId                   datatype.UTF8String                     `avp:"Session-Id"`
-	Drmp                        datatype.Enumerated                     `avp:"DRMP,omitempty"`
-	VendorSpecificApplicationId basetype.Vendor_Specific_Application_Id `avp:"Vendor-Specific-Application-Id,omitempty"`
-	ResultCode                  datatype.Unsigned32                     `avp:"Result-Code,omitempty"`
-	ExperimentalResult          basetype.Experimental_Result            `avp:"Experimental-Result,omitempty"`
-	AuthSessionState            datatype.Enumerated                     `avp:"Auth-Session-State"`
-	OriginHost                  datatype.DiameterIdentity               `avp:"Origin-Host"`
-	OriginRealm                 datatype.DiameterIdentity               `avp:"Origin-Realm"`
-	SupportedFeatures           []basetype.Supported_Features           `avp:"Supported-Features,omitempty"`
-	FailedAvp                   basetype.Failed_AVP                     `avp:"Failed-AVP,omitempty"`
-	ProxyInfo                   []basetype.Proxy_Info                   `avp:"Proxy-Info,omitempty"`
-	RouteRecord                 []datatype.DiameterIdentity             `avp:"Route-Record,omitempty"`
+	SessionId                   datatype.UTF8String                      `avp:"Session-Id"`
+	Drmp                        *datatype.Enumerated                     `avp:"DRMP,omitempty"`
+	VendorSpecificApplicationId *basetype.Vendor_Specific_Application_Id `avp:"Vendor-Specific-Application-Id,omitempty"`
+	ResultCode                  *datatype.Unsigned32                     `avp:"Result-Code,omitempty"`
+	ExperimentalResult          *basetype.Experimental_Result            `avp:"Experimental-Result,omitempty"`
+	AuthSessionState            datatype.Enumerated                      `avp:"Auth-Session-State"`
+	OriginHost                  datatype.DiameterIdentity                `avp:"Origin-Host"`
+	OriginRealm                 datatype.DiameterIdentity                `avp:"Origin-Realm"`
+	SupportedFeatures           []basetype.Supported_Features            `avp:"Supported-Features,omitempty"`
+	FailedAvp                   *basetype.Failed_AVP                     `avp:"Failed-AVP,omitempty"`
+	ProxyInfo                   []basetype.Proxy_Info                    `avp:"Proxy-Info,omitempty"`
+	RouteRecord                 []datatype.DiameterIdentity              `avp:"Route-Record,omitempty"`
 }
 
 // Parse parses the given message.

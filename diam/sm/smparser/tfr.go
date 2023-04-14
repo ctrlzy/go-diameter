@@ -9,28 +9,28 @@ import (
 // OFR refers to Mt-Forward-Short-Message-Request.
 // See 3GPP TS 29.338 Clause 6.3.2.5 for details
 type TFR struct {
-	SessionId                   datatype.UTF8String                     `avp:"Session-Id"`
-	Drmp                        datatype.Enumerated                     `avp:"DRMP,omitempty"`
-	VendorSpecificApplicationId basetype.Vendor_Specific_Application_Id `avp:"Vendor-Specific-Application-Id,omitempty"`
-	AuthSessionState            datatype.Enumerated                     `avp:"Auth-Session-State"`
-	OriginHost                  datatype.DiameterIdentity               `avp:"Origin-Host"`
-	OriginRealm                 datatype.DiameterIdentity               `avp:"Origin-Realm"`
-	DestinationHost             datatype.DiameterIdentity               `avp:"Destination-Host"`
-	DestinationRealm            datatype.DiameterIdentity               `avp:"Destination-Realm"`
-	UserName                    datatype.UTF8String                     `avp:"User-Name"`
-	SupportedFeatures           []basetype.Supported_Features           `avp:"Supported-Features,omitempty"`
-	SmsmiCorrelationId          basetype.SMSMI_Correlation_ID           `avp:"SMSMI-Correlation-ID,omitempty"`
-	ScAddress                   datatype.OctetString                    `avp:"SC-Address"`
-	SmRpUi                      datatype.OctetString                    `avp:"SM-RP-UI"`
-	MmeNumberForMtSms           datatype.OctetString                    `avp:"MME-Number-for-MT-SMS,omitempty"`
-	SgsnNumber                  datatype.OctetString                    `avp:"SGSN-Number,omitempty"`
-	TfrFlags                    datatype.Unsigned32                     `avp:"TFR-Flags,omitempty"`
-	SmDeliveryTimer             datatype.Unsigned32                     `avp:"SM-Delivery-Timer,omitempty"`
-	SmDeliveryStartTime         datatype.Time                           `avp:"SM-Delivery-Start-Time,omitempty"`
-	MaximumRetransmissionTime   datatype.Time                           `avp:"Maximum-Retransmission-Time,omitempty"`
-	SmsGmscAddress              datatype.OctetString                    `avp:"SMS-GMSC-Address,omitempty"`
-	ProxyInfo                   []basetype.Proxy_Info                   `avp:"Proxy-Info,omitempty"`
-	RouteRecord                 []datatype.DiameterIdentity             `avp:"Route-Record,omitempty"`
+	SessionId                   datatype.UTF8String                      `avp:"Session-Id"`
+	Drmp                        *datatype.Enumerated                     `avp:"DRMP,omitempty"`
+	VendorSpecificApplicationId *basetype.Vendor_Specific_Application_Id `avp:"Vendor-Specific-Application-Id,omitempty"`
+	AuthSessionState            datatype.Enumerated                      `avp:"Auth-Session-State"`
+	OriginHost                  datatype.DiameterIdentity                `avp:"Origin-Host"`
+	OriginRealm                 datatype.DiameterIdentity                `avp:"Origin-Realm"`
+	DestinationHost             datatype.DiameterIdentity                `avp:"Destination-Host"`
+	DestinationRealm            datatype.DiameterIdentity                `avp:"Destination-Realm"`
+	UserName                    datatype.UTF8String                      `avp:"User-Name"`
+	SupportedFeatures           []basetype.Supported_Features            `avp:"Supported-Features,omitempty"`
+	SmsmiCorrelationId          *basetype.SMSMI_Correlation_ID           `avp:"SMSMI-Correlation-ID,omitempty"`
+	ScAddress                   datatype.OctetString                     `avp:"SC-Address"`
+	SmRpUi                      datatype.OctetString                     `avp:"SM-RP-UI"`
+	MmeNumberForMtSms           *datatype.OctetString                    `avp:"MME-Number-for-MT-SMS,omitempty"`
+	SgsnNumber                  *datatype.OctetString                    `avp:"SGSN-Number,omitempty"`
+	TfrFlags                    *datatype.Unsigned32                     `avp:"TFR-Flags,omitempty"`
+	SmDeliveryTimer             *datatype.Unsigned32                     `avp:"SM-Delivery-Timer,omitempty"`
+	SmDeliveryStartTime         *datatype.Time                           `avp:"SM-Delivery-Start-Time,omitempty"`
+	MaximumRetransmissionTime   *datatype.Time                           `avp:"Maximum-Retransmission-Time,omitempty"`
+	SmsGmscAddress              *datatype.OctetString                    `avp:"SMS-GMSC-Address,omitempty"`
+	ProxyInfo                   []basetype.Proxy_Info                    `avp:"Proxy-Info,omitempty"`
+	RouteRecord                 []datatype.DiameterIdentity              `avp:"Route-Record,omitempty"`
 }
 
 // Parse parses the given message.
