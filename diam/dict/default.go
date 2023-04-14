@@ -6348,7 +6348,7 @@ var tgpps6cXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <rule avp="IP-SM-GW-SM-Delivery-Outcome" max="1" required="false"/>
             </data>
         </avp>
-        <avp name="MME-Delivery-Outcome" code="3317" may-encrypt="N" must="M,V" vendor-id="10415">
+        <avp name="MME-SM-Delivery-Outcome" code="3317" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Grouped">
                 <rule avp="SM-Delivery-Cause" max="1" required="false"/>
                 <rule avp="Absent-User-Diagnostic-SM" max="1" required="false"/>
@@ -6382,13 +6382,13 @@ var tgpps6cXML = `<?xml version="1.0" encoding="UTF-8"?>
             <data type="Unsigned32"/>
         </avp>
 
-        <avp name="MSC-Delivery-Outcome" code="3318" may-encrypt="N" must="M,V" vendor-id="10415">
+        <avp name="MSC-SM-Delivery-Outcome" code="3318" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Grouped">
                 <rule avp="SM-Delivery-Cause" max="1" required="false"/>
                 <rule avp="Absent-User-Diagnostic-SM" max="1" required="false"/>
             </data>
         </avp>
-        <avp name="SGSN-Delivery-Outcome" code="3319" may-encrypt="N" must="M,V" vendor-id="10415">
+        <avp name="SGSN-SM-Delivery-Outcome" code="3319" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Grouped">
                 <rule avp="SM-Delivery-Cause" max="1" required="false"/>
                 <rule avp="Absent-User-Diagnostic-SM" max="1" required="false"/>
@@ -6581,7 +6581,7 @@ var tgppsgdgddXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <rule avp="IP-SM-GW-SM-Delivery-Outcome" max="1" required="false"/>
             </data>
         </avp>
-        <avp name="MME-Delivery-Outcome" code="3317" may-encrypt="N" must="M,V" vendor-id="10415">
+        <avp name="MME-SM-Delivery-Outcome" code="3317" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Grouped">
                 <rule avp="SM-Delivery-Cause" max="1" required="false"/>
                 <rule avp="Absent-User-Diagnostic-SM" max="1" required="false"/>
@@ -6598,13 +6598,13 @@ var tgppsgdgddXML = `<?xml version="1.0" encoding="UTF-8"?>
         <avp name="Absent-User-Diagnostic-SM" code="3322" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Unsigned32"/>
         </avp>
-        <avp name="MSC-Delivery-Outcome" code="3318" may-encrypt="N" must="M,V" vendor-id="10415">
+        <avp name="MSC-SM-Delivery-Outcome" code="3318" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Grouped">
                 <rule avp="SM-Delivery-Cause" max="1" required="false"/>
                 <rule avp="Absent-User-Diagnostic-SM" max="1" required="false"/>
             </data>
         </avp>
-        <avp name="SGSN-Delivery-Outcome" code="3319" may-encrypt="N" must="M,V" vendor-id="10415">
+        <avp name="SGSN-SM-Delivery-Outcome" code="3319" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="Grouped">
                 <rule avp="SM-Delivery-Cause" max="1" required="false"/>
                 <rule avp="Absent-User-Diagnostic-SM" max="1" required="false"/>
@@ -6665,8 +6665,8 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <rule avp="User-Identity" max="1" required="true"/>
                 <rule avp="Wildcarded-Public-Identity" max="1" required="false"/>
                 <rule avp="Wildcarded-IMPU" max="1" required="false"/>
-                <rule avp="Service-Indication" required="false"/>
                 <rule avp="Server-Name" max="1" required="false"/>
+                <rule avp="Service-Indication" required="false"/>
                 <rule avp="Data-Reference" required="true"/>
                 <rule avp="Identity-Set" required="false"/>
                 <rule avp="Requested-Domain" max="1" required="false"/>

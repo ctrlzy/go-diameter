@@ -359,10 +359,10 @@ const (
 	MMBoxStorageRequested                      = 1248
 	MMContentType                              = 1203
 	MMEAbsentUserDiagnosticSM                  = 3313
-	MMEDeliveryOutcome                         = 3317
 	MMEName                                    = 2402
 	MMENumberforMTSMS                          = 1645
 	MMERealm                                   = 2408
+	MMESMDeliveryOutcome                       = 3317
 	MMSInformation                             = 877
 	MMTelInformation                           = 2030
 	MMTelSServiceType                          = 2031
@@ -370,8 +370,8 @@ const (
 	MPSPriority                                = 1616
 	MSCAbsentUserDiagnosticSM                  = 3314
 	MSCAddress                                 = 3417
-	MSCDeliveryOutcome                         = 3318
 	MSCNumber                                  = 2403
+	MSCSMDeliveryOutcome                       = 3318
 	MSISDN                                     = 701
 	MTCIWFAddress                              = 3406
 	MWDStatus                                  = 3312
@@ -578,10 +578,10 @@ const (
 	SDPType                                    = 2036
 	SGSNAbsentUserDiagnosticSM                 = 3315
 	SGSNAddress                                = 1228
-	SGSNDeliveryOutcome                        = 3319
 	SGSNName                                   = 2409
 	SGSNNumber                                 = 1489
 	SGSNRealm                                  = 2410
+	SGSNSMDeliveryOutcome                      = 3319
 	SGWAddress                                 = 2067
 	SGWChange                                  = 2065
 	SIPAuthDataItem                            = 612

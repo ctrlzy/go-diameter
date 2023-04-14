@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/ctrlzy/go-diameter/v4/diam"
+	"github.com/ctrlzy/go-diameter/v4/diam/basetype"
 	"github.com/ctrlzy/go-diameter/v4/diam/dict"
 	"github.com/ctrlzy/go-diameter/v4/diam/sm/smparser"
 	"github.com/stretchr/testify/assert"
@@ -12,7 +13,7 @@ import (
 func TestMarshalPUA(t *testing.T) {
 	pua := &smparser.PUA{
 		SessionID: "test-session-id",
-		VendorSpecificApplicationId: smparser.VendorSpecificApplicationId{
+		VendorSpecificApplicationId: basetype.Vendor_Specific_Application_Id{
 			VendorId:          10405,
 			AuthApplicationId: 123,
 			AcctApplicationId: 456,
