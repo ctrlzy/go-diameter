@@ -5,6 +5,7 @@ import (
 
 	"github.com/ctrlzy/go-diameter/v4/diam"
 	"github.com/ctrlzy/go-diameter/v4/diam/avp"
+	"github.com/ctrlzy/go-diameter/v4/diam/basetype"
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
 	"github.com/ctrlzy/go-diameter/v4/diam/dict"
 	"github.com/ctrlzy/go-diameter/v4/diam/sm/smparser"
@@ -74,4 +75,37 @@ func TestOFA_PARSE_OK(t *testing.T) {
 	assert.Nil(t, ofa.FailedAvp)
 	assert.Equal(t, len(ofa.ProxyInfo), 0)
 	assert.Equal(t, len(ofa.RouteRecord), 0)
+}
+
+func TestOFA_Marshal_OK(t *testing.T) {
+	resultCode := datatype.Unsigned32(1001)
+	ofa := smparser.OFA{
+		SessionId:        datatype.UTF8String("session-id"),
+		ResultCode:       &resultCode,
+		AuthSessionState: datatype.Enumerated(1),
+		OriginHost:       datatype.DiameterIdentity("orig-host"),
+		OriginRealm:      datatype.DiameterIdentity("orig-realm"),
+		SmDeliveryFailureCause: &basetype.SM_Delivery_Failure_Cause{
+			SmEnumeratedDeliveryFailureCause: datatype.Enumerated(1),
+		},
+	}
+	m1 := diam.NewMessage(diam.MOForwardShortMessage, 0, diam.TGPP_SGD_GDD_APP_ID, 0, 0, dict.Default)
+	err := m1.Marshal(&ofa)
+	assert.Nil(t, err)
+
+	m2 := diam.NewMessage(diam.MOForwardShortMessage, 0, diam.TGPP_SGD_GDD_APP_ID, 0, 0, dict.Default)
+	m2.NewAVP(avp.SessionID, avp.Mbit, 0, datatype.UTF8String("session-id"))
+	m2.NewAVP(avp.ResultCode, avp.Mbit, 0, datatype.Unsigned32(1001))
+	m2.NewAVP(avp.AuthSessionState, avp.Mbit, 0, datatype.Enumerated(1))
+	m2.NewAVP(avp.OriginHost, avp.Mbit, 0, datatype.DiameterIdentity("orig-host"))
+	m2.NewAVP(avp.OriginRealm, avp.Mbit, 0, datatype.DiameterIdentity("orig-realm"))
+	m2.NewAVP(avp.SMDeliveryFailureCause, avp.Mbit|avp.Vbit, 10415, &diam.GroupedAVP{
+		AVP: []*diam.AVP{
+			diam.NewAVP(avp.SMEnumeratedDeliveryFailureCause, avp.Mbit|avp.Vbit, 10415, datatype.Enumerated(1)),
+		},
+	})
+	m2.Header.HopByHopID = m1.Header.HopByHopID
+	m2.Header.EndToEndID = m1.Header.EndToEndID
+
+	assert.Equal(t, m1.String(), m2.String())
 }

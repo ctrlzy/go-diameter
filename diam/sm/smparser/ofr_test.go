@@ -5,6 +5,7 @@ import (
 
 	"github.com/ctrlzy/go-diameter/v4/diam"
 	"github.com/ctrlzy/go-diameter/v4/diam/avp"
+	"github.com/ctrlzy/go-diameter/v4/diam/basetype"
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
 	"github.com/ctrlzy/go-diameter/v4/diam/dict"
 	"github.com/ctrlzy/go-diameter/v4/diam/sm/smparser"
@@ -212,4 +213,75 @@ func TestOFR_PARSE_OK(t *testing.T) {
 	assert.Nil(t, ofr.SmDeliveryOutcome.SgsnSmDeliveryOutcome)
 	assert.Equal(t, len(ofr.ProxyInfo), 0)
 	assert.Equal(t, len(ofr.RouteRecord), 0)
+}
+
+func TestOFR_Marshal_OK(t *testing.T) {
+	drmp := datatype.Enumerated(1)
+	vendorId := datatype.Unsigned32(10415)
+	vsai := basetype.Vendor_Specific_Application_Id{
+		VendorId:          &vendorId,
+		AuthApplicationId: datatype.Unsigned32(diam.TGPP_SGD_GDD_APP_ID),
+		AcctApplicationId: datatype.Unsigned32(diam.TGPP_SGD_GDD_APP_ID),
+	}
+	destHost := datatype.DiameterIdentity("dest-host")
+	supportedFeatures := basetype.Supported_Features{
+		VendorId:      datatype.Unsigned32(10415),
+		FeatureListId: datatype.Unsigned32(1),
+		FeatureList:   datatype.Unsigned32(2),
+	}
+	msisdn := datatype.OctetString("12345678")
+	userIdentifier := basetype.User_Identifier{
+		Msisdn: &msisdn,
+	}
+	ofr := smparser.OFR{
+		SessionId:                   datatype.UTF8String("session_id"),
+		Drmp:                        &drmp,
+		VendorSpecificApplicationId: &vsai,
+		AuthSessionState:            datatype.Enumerated(0),
+		OriginHost:                  datatype.DiameterIdentity("orig-host"),
+		OriginRealm:                 datatype.DiameterIdentity("orig-realm"),
+		DestinationHost:             &destHost,
+		DestinationRealm:            datatype.DiameterIdentity("dest-realm"),
+		ScAddress:                   datatype.OctetString("1238888888"),
+		SupportedFeatures:           []basetype.Supported_Features{supportedFeatures},
+		UserIdentifier:              userIdentifier,
+		SmRpUi:                      datatype.OctetString("sm-rp-ui"),
+	}
+	m1 := diam.NewRequest(diam.MOForwardShortMessage, diam.TGPP_SGD_GDD_APP_ID, dict.Default)
+	err := m1.Marshal(&ofr)
+	assert.Nil(t, err)
+
+	m2 := diam.NewRequest(diam.MOForwardShortMessage, diam.TGPP_SGD_GDD_APP_ID, dict.Default)
+	m2.NewAVP(avp.SessionID, avp.Mbit, 0, datatype.UTF8String("session_id"))
+	m2.NewAVP(avp.DRMP, 0, 0, datatype.Enumerated(1))
+	m2.NewAVP(avp.VendorSpecificApplicationID, avp.Mbit, 0, &diam.GroupedAVP{
+		AVP: []*diam.AVP{
+			diam.NewAVP(avp.VendorID, avp.Mbit, 0, datatype.Unsigned32(10415)),
+			diam.NewAVP(avp.AuthApplicationID, avp.Mbit, 0, datatype.Unsigned32(diam.TGPP_SGD_GDD_APP_ID)),
+			diam.NewAVP(avp.AcctApplicationID, avp.Mbit, 0, datatype.Unsigned32(diam.TGPP_SGD_GDD_APP_ID)),
+		},
+	})
+	m2.NewAVP(avp.AuthSessionState, avp.Mbit, 0, datatype.Enumerated(0))
+	m2.NewAVP(avp.OriginHost, avp.Mbit, 0, datatype.DiameterIdentity("orig-host"))
+	m2.NewAVP(avp.OriginRealm, avp.Mbit, 0, datatype.DiameterIdentity("orig-realm"))
+	m2.NewAVP(avp.DestinationHost, avp.Mbit, 0, datatype.DiameterIdentity("dest-host"))
+	m2.NewAVP(avp.DestinationRealm, avp.Mbit, 0, datatype.DiameterIdentity("dest-realm"))
+	m2.NewAVP(avp.SCAddress, avp.Mbit|avp.Vbit, 10415, datatype.OctetString("1238888888"))
+	m2.NewAVP(avp.SupportedFeatures, 0, 10415, &diam.GroupedAVP{
+		AVP: []*diam.AVP{
+			diam.NewAVP(avp.VendorID, avp.Mbit, 0, datatype.Unsigned32(10415)),
+			diam.NewAVP(avp.FeatureListID, avp.Vbit, 10415, datatype.Unsigned32(1)),
+			diam.NewAVP(avp.FeatureList, avp.Vbit, 10415, datatype.Unsigned32(2)),
+		},
+	})
+	m2.NewAVP(avp.UserIdentifier, avp.Mbit|avp.Vbit, 10415, &diam.GroupedAVP{
+		AVP: []*diam.AVP{
+			diam.NewAVP(avp.MSISDN, avp.Mbit|avp.Vbit, 10415, datatype.OctetString("12345678")),
+		},
+	})
+	m2.NewAVP(avp.SMRPUI, avp.Mbit|avp.Vbit, 10415, datatype.OctetString("sm-rp-ui"))
+
+	m2.Header.HopByHopID = m1.Header.HopByHopID
+	m2.Header.EndToEndID = m1.Header.EndToEndID
+	assert.Equal(t, m1.String(), m2.String())
 }
