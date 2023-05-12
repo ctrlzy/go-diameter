@@ -47,5 +47,5 @@ func (do *Delivery_Outcome) Empty() bool {
 }
 
 func (sdo *SM_Delivery_Outcome) Empty() bool {
-	return sdo.MmeSmDeliveryOutcome.Empty() && sdo.MscSmDeliveryOutcome.Empty() && sdo.SgsnSmDeliveryOutcome.Empty() && sdo.IpsmgwSmDeliveryOutcome.Empty()
+	return (sdo.MmeSmDeliveryOutcome == nil || sdo.MmeSmDeliveryOutcome.Empty()) && (sdo.SgsnSmDeliveryOutcome == nil || sdo.SgsnSmDeliveryOutcome.Empty()) && (sdo.IpsmgwSmDeliveryOutcome == nil || sdo.IpsmgwSmDeliveryOutcome.Empty()) && (sdo.MscSmDeliveryOutcome == nil || sdo.MscSmDeliveryOutcome.Empty())
 }

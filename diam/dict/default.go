@@ -6293,7 +6293,7 @@ var tgpps6cXML = `<?xml version="1.0" encoding="UTF-8"?>
         <avp name="SMSF-3GPP-Absent-User-Diagnostic-SM" code="3334" may-encrypt="N" must="V" vendor-id="10415">
             <data type="Unsigned32"/>
         </avp>
-        <avp name="SMSF-Non-3GPP-Absent-User-Diagnostic-SM" code="3335" may-encrypt="N" must="M,V" vendor-id="10415">
+        <avp name="SMSF-Non-3GPP-Absent-User-Diagnostic-SM" code="3335" may-encrypt="N" must="V" vendor-id="10415">
             <data type="Unsigned32"/>
         </avp>
         <avp name="SMSF-3GPP-SM-Delivery-Outcome" code="3336" may-encrypt="N" must="V" vendor-id="10415">
@@ -6621,7 +6621,7 @@ var tgppsgdgddXML = `<?xml version="1.0" encoding="UTF-8"?>
         </avp>
 
 
-        <avp name="MME-Number-for-MT-SMS" code="1645" may-encrypt="N" must="M,V" vendor-id="10415">
+        <avp name="MME-Number-for-MT-SMS" code="1645" may-encrypt="N" must="V" vendor-id="10415">
             <data type="OctetString"/>
         </avp>
         <avp name="TFR-Flags" code="3302" may-encrypt="N" must="M,V" vendor-id="10415">

@@ -15,7 +15,7 @@ type Serving_Node struct {
 	IpsmgwRealm       *datatype.DiameterIdentity `avp:"IP-SM-GW-Realm,omitempty"`
 }
 
-type Additional_Serving_Node_T4 struct {
+type Additional_Serving_Node struct {
 	SgsnName          *datatype.DiameterIdentity `avp:"SGSN-Name,omitempty"`
 	SgsnRealm         *datatype.DiameterIdentity `avp:"SGSN-Realm,omitempty"`
 	SgsnNumber        *datatype.OctetString      `avp:"SGSN-Number,omitempty"`

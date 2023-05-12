@@ -52,6 +52,10 @@ var (
 	// the message does not contain an SC-Address AVP.
 	ErrMissingScAddress = errors.New("missing SC-Address")
 
+	// ErrMissingSmDeliveryOutcome is returned by Parse when
+	// the message does not contain an SM-Delivery-Outcome AVP.
+	ErrMissingSmDeliveryOutcome = errors.New("missing SM-Delivery-Outcome")
+
 	// ErrMissingSmRpUi is returned by Parse when
 	// the message does not contain an SM-RP-UI AVP.
 	ErrMissingSmRpUi = errors.New("missing SM-RP-UI")

@@ -262,7 +262,7 @@
         <avp name="SMSF-3GPP-Absent-User-Diagnostic-SM" code="3334" may-encrypt="N" must="V" vendor-id="10415">
             <data type="Unsigned32"/>
         </avp>
-        <avp name="SMSF-Non-3GPP-Absent-User-Diagnostic-SM" code="3335" may-encrypt="N" must="M,V" vendor-id="10415">
+        <avp name="SMSF-Non-3GPP-Absent-User-Diagnostic-SM" code="3335" may-encrypt="N" must="V" vendor-id="10415">
             <data type="Unsigned32"/>
         </avp>
         <avp name="SMSF-3GPP-SM-Delivery-Outcome" code="3336" may-encrypt="N" must="V" vendor-id="10415">
