@@ -6031,7 +6031,7 @@ var tgpps6aXML = `<?xml version="1.0" encoding="UTF-8"?>
 
 var tgpps6cXML = `<?xml version="1.0" encoding="UTF-8"?>
 <diameter>
-    <application id="16777312" name="TGPP S6C">
+    <application id="16777312" type="auth" name="TGPP S6C">
         <vendor id="10415" name="TGPP"/>
         <command code="8388647" short="SR" name="Send-Routing-Info-for-SM">
             <request>
@@ -6406,7 +6406,7 @@ var tgpps6cXML = `<?xml version="1.0" encoding="UTF-8"?>
 
 var tgppsgdgddXML = `<?xml version="1.0" encoding="UTF-8"?>
 <diameter>
-    <application id="16777313" name="TGPP SGd GDd">
+    <application id="16777313" type="auth" name="TGPP SGd GDd">
         <vendor id="10415" name="TGPP"/>
         <command code="8388645" short="OF" name="MO-Forward-Short-Message">
             <request>
@@ -6649,7 +6649,7 @@ var tgppsgdgddXML = `<?xml version="1.0" encoding="UTF-8"?>
 
 var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
 <diameter>
-    <application id="16777217" name="TGPP Sh">
+    <application id="16777217" type="auth" name="TGPP Sh">
         <vendor id="10415" name="TGPP"/>
         <command code="306" short="UD" name="User-Data">
             <request>

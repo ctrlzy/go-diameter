@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <diameter>
-    <application id="16777217" name="TGPP Sh">
+    <application id="16777217" type="auth" name="TGPP Sh">
         <vendor id="10415" name="TGPP"/>
         <command code="306" short="UD" name="User-Data">
             <request>

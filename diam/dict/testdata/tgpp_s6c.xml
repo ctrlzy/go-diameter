@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <diameter>
-    <application id="16777312" name="TGPP S6C">
+    <application id="16777312" type="auth" name="TGPP S6C">
         <vendor id="10415" name="TGPP"/>
         <command code="8388647" short="SR" name="Send-Routing-Info-for-SM">
             <request>

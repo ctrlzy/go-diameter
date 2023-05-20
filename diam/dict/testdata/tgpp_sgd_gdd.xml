@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <diameter>
-    <application id="16777313" name="TGPP SGd GDd">
+    <application id="16777313" type="auth" name="TGPP SGd GDd">
         <vendor id="10415" name="TGPP"/>
         <command code="8388645" short="OF" name="MO-Forward-Short-Message">
             <request>
