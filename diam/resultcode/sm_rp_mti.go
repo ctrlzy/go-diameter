@@ -7,6 +7,6 @@ package resultcode
 type SmRpMti int32
 
 const (
-	SM_DELIVER       SmRpMti = 0
-	SM_STATUS_REPORT SmRpMti = 1
+	SmRpMti_SM_DELIVER       SmRpMti = 0
+	SmRpMti_SM_STATUS_REPORT SmRpMti = 1
 )

@@ -9,7 +9,7 @@ package resultcode
 type SMDeliveryCause int32
 
 const (
-	UE_MEMORY_CAPACITY_EXCEEDED SMDeliveryCause = 0
-	ABSENT_USER                 SMDeliveryCause = 1
-	SUCCESSFUL_TRANSFER         SMDeliveryCause = 2
+	SMDeliveryCause_UE_MEMORY_CAPACITY_EXCEEDED SMDeliveryCause = 0
+	SMDeliveryCause_ABSENT_USER                 SMDeliveryCause = 1
+	SMDeliveryCause_SUCCESSFUL_TRANSFER         SMDeliveryCause = 2
 )

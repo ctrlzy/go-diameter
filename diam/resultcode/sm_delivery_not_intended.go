@@ -7,6 +7,6 @@ package resultcode
 type SmDeliveryNotIntended int32
 
 const (
-	ONLY_IMSI_REQUESTED    SmDeliveryNotIntended = 0
-	ONLY_MCC_MNC_REQUESTED SmDeliveryNotIntended = 1
+	SmDeliveryNotIntended_ONLY_IMSI_REQUESTED    SmDeliveryNotIntended = 0
+	SmDeliveryNotIntended_ONLY_MCC_MNC_REQUESTED SmDeliveryNotIntended = 1
 )

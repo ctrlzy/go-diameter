@@ -8,7 +8,7 @@ package resultcode
 type SrrFlags int32
 
 const (
-	GPRSIndicator         SrrFlags = 1
-	SmRpPri               SrrFlags = 1 << 1
-	SingleAttemptDelivery SrrFlags = 1 << 2
+	SrrFlags_GPRSIndicator         SrrFlags = 1
+	SrrFlags_SmRpPri               SrrFlags = 1 << 1
+	SrrFlags_SingleAttemptDelivery SrrFlags = 1 << 2
 )
