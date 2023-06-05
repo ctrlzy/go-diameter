@@ -1,6 +1,10 @@
 package basetype
 
-import "github.com/ctrlzy/go-diameter/v4/diam/datatype"
+import (
+	"fmt"
+
+	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
+)
 
 type User_Identity struct {
 	PublicIdentity     *datatype.UTF8String  `avp:"Public-Identity,omitempty"`
@@ -26,4 +30,42 @@ type Supported_Applications struct {
 
 func (ui User_Identity) Empty() bool {
 	return (ui.PublicIdentity == nil) && (ui.MSISDN == nil) && (ui.ExternalIdentifier == nil)
+}
+
+func (u *User_Identity) String() string {
+	result := "User_Identity { "
+	if u.PublicIdentity != nil {
+		result += fmt.Sprintf("PublicIdentity: %s, ", u.PublicIdentity.String())
+	}
+	if u.MSISDN != nil {
+		result += fmt.Sprintf("MSISDN: %s, ", u.MSISDN.String())
+	}
+	if u.ExternalIdentifier != nil {
+		result += fmt.Sprintf("ExternalIdentifier: %s, ", u.ExternalIdentifier.String())
+	}
+	result += "}"
+	return result
+}
+
+func (r *Repository_Data_ID) String() string {
+	return fmt.Sprintf("Repository_Data_ID { ServiceIndication: %s, SequenceNumber: %d }", r.ServiceIndication.String(), r.SequenceNumber)
+}
+
+func (c *Call_Reference_Info) String() string {
+	return fmt.Sprintf("Call_Reference_Info { CallReferenceNumber: %s, AsNumber: %s }", c.CallReferenceNumber.String(), c.AsNumber.String())
+}
+
+func (s *Supported_Applications) String() string {
+	result := "Supported_Applications { "
+	if s.AuthApplicationId != nil {
+		result += fmt.Sprintf("AuthApplicationId: %d, ", *s.AuthApplicationId)
+	}
+	if s.AcctApplicationId != nil {
+		result += fmt.Sprintf("AcctApplicationId: %d, ", *s.AcctApplicationId)
+	}
+	if s.VendorSpecificApplicationId != nil {
+		result += fmt.Sprintf("VendorSpecificApplicationId: %s, ", s.VendorSpecificApplicationId.String())
+	}
+	result += "}"
+	return result
 }

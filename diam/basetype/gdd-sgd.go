@@ -1,6 +1,10 @@
 package basetype
 
-import "github.com/ctrlzy/go-diameter/v4/diam/datatype"
+import (
+	"fmt"
+
+	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
+)
 
 type Supported_Features struct {
 	VendorId      datatype.Unsigned32 `avp:"Vendor-Id"`
@@ -48,4 +52,81 @@ func (do *Delivery_Outcome) Empty() bool {
 
 func (sdo *SM_Delivery_Outcome) Empty() bool {
 	return (sdo.MmeSmDeliveryOutcome == nil || sdo.MmeSmDeliveryOutcome.Empty()) && (sdo.SgsnSmDeliveryOutcome == nil || sdo.SgsnSmDeliveryOutcome.Empty()) && (sdo.IpsmgwSmDeliveryOutcome == nil || sdo.IpsmgwSmDeliveryOutcome.Empty()) && (sdo.MscSmDeliveryOutcome == nil || sdo.MscSmDeliveryOutcome.Empty())
+}
+
+func (sf *Supported_Features) String() string {
+	return fmt.Sprintf("VendorId: %d, FeatureListId: %d, FeatureList: %d",
+		sf.VendorId, sf.FeatureListId, sf.FeatureList)
+}
+
+func (smi *SMSMI_Correlation_ID) String() string {
+	result := "SMSMI_Correlation_ID{"
+	result += fmt.Sprintf("HssId: %s, ", smi.HssId)
+
+	if smi.OriginatingSipUri != nil {
+		result += fmt.Sprintf("OriginatingSipUri: %s, ", *smi.OriginatingSipUri)
+	}
+	if smi.DestinationSipUri != nil {
+		result += fmt.Sprintf("DestinationSipUri: %s", *smi.DestinationSipUri)
+	}
+	result += "}"
+	return result
+}
+
+func (ui *User_Identifier) String() string {
+	result := "User_Identifier{"
+	if ui.UserName != nil {
+		result += fmt.Sprintf("UserName: %s, ", *ui.UserName)
+	}
+	if ui.Msisdn != nil {
+		result += fmt.Sprintf("Msisdn: %s, ", *ui.Msisdn)
+	}
+	if ui.ExternalIdentifier != nil {
+		result += fmt.Sprintf("ExternalIdentifier: %s, ", *ui.ExternalIdentifier)
+	}
+	if ui.Lmsi != nil {
+		result += fmt.Sprintf("Lmsi: %s", *ui.Lmsi)
+	}
+	result += "}"
+	return result
+}
+
+func (smdf *SM_Delivery_Failure_Cause) String() string {
+	result := "SM_Delivery_Failure_Cause{"
+	result += fmt.Sprintf("SmEnumeratedDeliveryFailureCause: %s", smdf.SmEnumeratedDeliveryFailureCause)
+	if smdf.SmDiagnosticInfo != nil {
+		result += fmt.Sprintf(", SmDiagnosticInfo: %s", *smdf.SmDiagnosticInfo)
+	}
+	result += "}"
+	return result
+}
+
+func (smo *SM_Delivery_Outcome) String() string {
+	result := "SM_Delivery_Outcome{"
+	if smo.MmeSmDeliveryOutcome != nil {
+		result += fmt.Sprintf("MmeSmDeliveryOutcome: %s, ", smo.MmeSmDeliveryOutcome.String())
+	}
+	if smo.MscSmDeliveryOutcome != nil {
+		result += fmt.Sprintf("MscSmDeliveryOutcome: %s, ", smo.MscSmDeliveryOutcome.String())
+	}
+	if smo.SgsnSmDeliveryOutcome != nil {
+		result += fmt.Sprintf("SgsnSmDeliveryOutcome: %s, ", smo.SgsnSmDeliveryOutcome.String())
+	}
+	if smo.IpsmgwSmDeliveryOutcome != nil {
+		result += fmt.Sprintf("IpsmgwSmDeliveryOutcome: %s", smo.IpsmgwSmDeliveryOutcome.String())
+	}
+	result += "}"
+	return result
+}
+
+func (d *Delivery_Outcome) String() string {
+	result := "Delivery_Outcome{"
+	if d.SmDeliveryCause != nil {
+		result += fmt.Sprintf("SmDeliveryCause: %s, ", *d.SmDeliveryCause)
+	}
+	if d.AbsentUserDiagnosticSm != nil {
+		result += fmt.Sprintf("AbsentUserDiagnosticSm: %d", *d.AbsentUserDiagnosticSm)
+	}
+	result += "}"
+	return result
 }

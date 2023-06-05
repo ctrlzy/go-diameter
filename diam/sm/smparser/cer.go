@@ -5,6 +5,8 @@
 package smparser
 
 import (
+	"fmt"
+
 	"github.com/ctrlzy/go-diameter/v4/diam"
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
 )
@@ -68,4 +70,43 @@ func (cer *CER) sanityCheck() error {
 // Applications return a list of supported Application IDs.
 func (cer *CER) Applications() []uint32 {
 	return cer.appID
+}
+
+func (r *CER) String() string {
+	result := "CER { "
+	result += fmt.Sprintf("OriginHost: %s, ", r.OriginHost)
+	result += fmt.Sprintf("OriginRealm: %s, ", r.OriginRealm)
+	if r.OriginStateID != nil {
+		result += fmt.Sprintf("OriginStateID: %s, ", r.OriginStateID.String())
+	}
+	if r.InbandSecurityID != nil {
+		result += fmt.Sprintf("InbandSecurityID: %s, ", r.InbandSecurityID.String())
+	}
+	result += "AcctApplicationID: ["
+	for i, avp := range r.AcctApplicationID {
+		if i > 0 {
+			result += ", "
+		}
+		result += avp.String()
+	}
+	result += "], "
+	result += "AuthApplicationID: ["
+	for i, avp := range r.AuthApplicationID {
+		if i > 0 {
+			result += ", "
+		}
+		result += avp.String()
+	}
+	result += "], "
+	result += "VendorSpecificApplicationID: ["
+	for i, avp := range r.VendorSpecificApplicationID {
+		if i > 0 {
+			result += ", "
+		}
+		result += avp.String()
+	}
+	result += "], "
+	result += fmt.Sprintf("appID: %v, ", r.appID)
+	result += "}"
+	return result
 }

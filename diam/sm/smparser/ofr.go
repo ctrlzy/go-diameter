@@ -5,13 +5,15 @@
 package smparser
 
 import (
+	"fmt"
+
 	"github.com/ctrlzy/go-diameter/v4/diam"
 	"github.com/ctrlzy/go-diameter/v4/diam/basetype"
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
 )
 
 // OFR refers to Mo-Forward-Short-Message-Request.
-// See 3GPP TS 29.338 Clause 6.2.1 for details
+// See 3GPP TS 29.338 Clause 6.3.2.3 for details
 type OFR struct {
 	SessionId                   datatype.UTF8String                      `avp:"Session-Id"`
 	Drmp                        *datatype.Enumerated                     `avp:"DRMP,omitempty"`
@@ -63,4 +65,73 @@ func (ofr *OFR) sanityCheck() error {
 		return ErrMissingSmRpUi
 	}
 	return nil
+}
+
+func (r *OFR) String() string {
+	result := "OFR { "
+	if r != nil {
+		result += fmt.Sprintf("SessionId: %s, AuthSessionState: %v, OriginHost: %s, OriginRealm: %s, DestinationRealm: %s, ScAddress: %s, UserIdentifier: %v, SmRpUi: %s",
+			r.SessionId, r.AuthSessionState, r.OriginHost, r.OriginRealm, r.DestinationRealm, r.ScAddress, r.UserIdentifier, r.SmRpUi)
+
+		if r.Drmp != nil {
+			result += fmt.Sprintf(", Drmp: %v", r.Drmp.String())
+		}
+
+		if r.VendorSpecificApplicationId != nil {
+			result += fmt.Sprintf(", VendorSpecificApplicationId: %v", r.VendorSpecificApplicationId.String())
+		}
+
+		if r.DestinationHost != nil {
+			result += fmt.Sprintf(", DestinationHost: %s", r.DestinationHost.String())
+		}
+
+		if r.OfrFlags != nil {
+			result += fmt.Sprintf(", OfrFlags: %v", r.OfrFlags.String())
+		}
+
+		if len(r.SupportedFeatures) > 0 {
+			result += ", SupportedFeatures: ["
+			for i, feature := range r.SupportedFeatures {
+				if i > 0 {
+					result += ", "
+				}
+				result += feature.String()
+			}
+			result += "]"
+		}
+
+		if r.SmsmiCorrelationId != nil {
+			result += fmt.Sprintf(", SmsmiCorrelationId: %v", r.SmsmiCorrelationId.String())
+		}
+
+		if r.SmDeliveryOutcome != nil {
+			result += fmt.Sprintf(", SmDeliveryOutcome: %v", r.SmDeliveryOutcome.String())
+		}
+
+		if len(r.ProxyInfo) > 0 {
+			result += ", ProxyInfo: ["
+			for i, info := range r.ProxyInfo {
+				if i > 0 {
+					result += ", "
+				}
+				result += info.String()
+			}
+			result += "]"
+		}
+
+		if len(r.RouteRecord) > 0 {
+			result += ", RouteRecord: ["
+			for i, record := range r.RouteRecord {
+				if i > 0 {
+					result += ", "
+				}
+				result += record.String()
+			}
+			result += "]"
+		}
+	} else {
+		result += "nil"
+	}
+	result += " }"
+	return result
 }

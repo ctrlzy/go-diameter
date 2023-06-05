@@ -9,6 +9,7 @@ import (
 	"github.com/ctrlzy/go-diameter/v4/diam/basetype"
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
 	"github.com/ctrlzy/go-diameter/v4/diam/dict"
+	"github.com/ctrlzy/go-diameter/v4/diam/resultcode"
 	"github.com/ctrlzy/go-diameter/v4/diam/sm/smparser"
 	"github.com/stretchr/testify/assert"
 )
@@ -165,7 +166,7 @@ func TestALR_Decode_OK(t *testing.T) {
 			diam.NewAVP(avp.AcctApplicationID, avp.Mbit, 0, datatype.Unsigned32(456)),
 		},
 	})
-	m2.NewAVP(avp.AuthSessionState, avp.Mbit, 0, datatype.Enumerated(1))
+	m2.NewAVP(avp.AuthSessionState, avp.Mbit, 0, datatype.Enumerated(resultcode.AuthSessionState_NO_STATE_MAINTAINED))
 	m2.NewAVP(avp.OriginHost, avp.Mbit, 0, datatype.DiameterIdentity("orig-host"))
 	m2.NewAVP(avp.OriginRealm, avp.Mbit, 0, datatype.DiameterIdentity("orig-realm"))
 	m2.NewAVP(avp.DestinationHost, avp.Mbit, 0, datatype.DiameterIdentity("dest-host"))

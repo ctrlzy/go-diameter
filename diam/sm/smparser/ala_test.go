@@ -8,6 +8,7 @@ import (
 	"github.com/ctrlzy/go-diameter/v4/diam/basetype"
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
 	"github.com/ctrlzy/go-diameter/v4/diam/dict"
+	"github.com/ctrlzy/go-diameter/v4/diam/resultcode"
 	"github.com/ctrlzy/go-diameter/v4/diam/sm/smparser"
 	"github.com/stretchr/testify/assert"
 )
@@ -74,7 +75,7 @@ func TestALA_Decode_OK(t *testing.T) {
 		VendorSpecificApplicationId: &vsai,
 		ResultCode:                  &resultCode,
 		ExperimentalResult:          &experimentalResult,
-		AuthSessionState:            datatype.Enumerated(1),
+		AuthSessionState:            datatype.Enumerated(resultcode.AuthSessionState_NO_STATE_MAINTAINED),
 		OriginHost:                  datatype.DiameterIdentity("orig-host"),
 		OriginRealm:                 datatype.DiameterIdentity("orig-realm"),
 	}

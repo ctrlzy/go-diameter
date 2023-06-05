@@ -4,7 +4,11 @@
 
 package smparser
 
-import "github.com/ctrlzy/go-diameter/v4/diam"
+import (
+	"fmt"
+
+	"github.com/ctrlzy/go-diameter/v4/diam"
+)
 
 // DWA is a Device-Watchdog-Answer message.
 // See RFC 6733 section 5.5.2 for details.
@@ -19,4 +23,8 @@ func (dwa *DWA) Parse(m *diam.Message) error {
 		return err
 	}
 	return nil
+}
+
+func (r *DWA) String() string {
+	return fmt.Sprintf("DWA { ResultCode: %d, OriginStateID: %d }", r.ResultCode, r.OriginStateID)
 }

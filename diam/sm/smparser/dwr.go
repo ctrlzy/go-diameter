@@ -5,6 +5,8 @@
 package smparser
 
 import (
+	"fmt"
+
 	"github.com/ctrlzy/go-diameter/v4/diam"
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
 )
@@ -39,4 +41,18 @@ func (dwr *DWR) sanityCheck() error {
 		return ErrMissingOriginRealm
 	}
 	return nil
+}
+
+func (r *DWR) String() string {
+	result := "DWR { "
+	if r != nil {
+		result += fmt.Sprintf("OriginHost: %s, OriginRealm: %s", r.OriginHost, r.OriginRealm)
+		if r.OriginStateID != nil {
+			result += fmt.Sprintf(", OriginStateID: %v", r.OriginStateID.String())
+		}
+	} else {
+		result += "nil"
+	}
+	result += " }"
+	return result
 }

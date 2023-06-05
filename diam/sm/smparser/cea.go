@@ -78,3 +78,47 @@ func (cea *CEA) sanityCheck() error {
 func (cea *CEA) Applications() []uint32 {
 	return cea.appID
 }
+
+func (r *CEA) String() string {
+	result := "CEA { "
+	result += fmt.Sprintf("ResultCode: %d, ", r.ResultCode)
+	result += fmt.Sprintf("OriginHost: %s, ", r.OriginHost)
+	result += fmt.Sprintf("OriginRealm: %s, ", r.OriginRealm)
+	result += fmt.Sprintf("OriginStateID: %d, ", r.OriginStateID)
+	result += "AcctApplicationID: ["
+	for i, avp := range r.AcctApplicationID {
+		if i > 0 {
+			result += ", "
+		}
+		result += avp.String()
+	}
+	result += "], "
+	result += "AuthApplicationID: ["
+	for i, avp := range r.AuthApplicationID {
+		if i > 0 {
+			result += ", "
+		}
+		result += avp.String()
+	}
+	result += "], "
+	result += "VendorSpecificApplicationID: ["
+	for i, avp := range r.VendorSpecificApplicationID {
+		if i > 0 {
+			result += ", "
+		}
+		result += avp.String()
+	}
+	result += "], "
+	result += "FailedAVP: ["
+	for i, avp := range r.FailedAVP {
+		if i > 0 {
+			result += ", "
+		}
+		result += avp.String()
+	}
+	result += "], "
+	result += fmt.Sprintf("ErrorMessage: %s, ", r.ErrorMessage)
+	result += fmt.Sprintf("appID: %v, ", r.appID)
+	result += "}"
+	return result
+}
