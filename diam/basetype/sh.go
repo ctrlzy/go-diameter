@@ -58,10 +58,10 @@ func (c *Call_Reference_Info) String() string {
 func (s *Supported_Applications) String() string {
 	result := "Supported_Applications { "
 	if s.AuthApplicationId != nil {
-		result += fmt.Sprintf("AuthApplicationId: %d, ", *s.AuthApplicationId)
+		result += fmt.Sprintf("AuthApplicationId: %s, ", s.AuthApplicationId.String())
 	}
 	if s.AcctApplicationId != nil {
-		result += fmt.Sprintf("AcctApplicationId: %d, ", *s.AcctApplicationId)
+		result += fmt.Sprintf("AcctApplicationId: %s, ", s.AcctApplicationId.String())
 	}
 	if s.VendorSpecificApplicationId != nil {
 		result += fmt.Sprintf("VendorSpecificApplicationId: %s, ", s.VendorSpecificApplicationId.String())

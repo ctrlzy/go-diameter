@@ -52,7 +52,7 @@ func (vsa *Vendor_Specific_Application_Id) String() string {
 
 func (osf *OC_Supported_Features) String() string {
 	if osf.OcFeatureVector != nil {
-		return fmt.Sprintf("OcFeatureVector: %v", *osf.OcFeatureVector)
+		return fmt.Sprintf("OcFeatureVector: %v", osf.OcFeatureVector.String())
 	} else {
 		return "OcFeatureVector: nil"
 	}
@@ -61,12 +61,12 @@ func (osf *OC_Supported_Features) String() string {
 func (olr *OC_OLR) String() string {
 	redPct := "nil"
 	if olr.OcReductionPercentage != nil {
-		redPct = fmt.Sprintf("%v", *olr.OcReductionPercentage)
+		redPct = fmt.Sprintf("%v", olr.OcReductionPercentage.String())
 	}
 
 	valDur := "nil"
 	if olr.OcValidityDuration != nil {
-		valDur = fmt.Sprintf("%v", *olr.OcValidityDuration)
+		valDur = fmt.Sprintf("%v", olr.OcValidityDuration.String())
 	}
 
 	return fmt.Sprintf("OCSequenceNumber: %v, OCReportType: %v, OCReductionPercentage: %v, OCValidityDuration: %v",
@@ -74,7 +74,7 @@ func (olr *OC_OLR) String() string {
 }
 
 func (info *Proxy_Info) String() string {
-	return fmt.Sprintf("ProxyHost: %s, ProxyState: %s", info.ProxyHost, info.ProxyState)
+	return fmt.Sprintf("ProxyHost: %s, ProxyState: %s", info.ProxyHost.String(), info.ProxyState.String())
 }
 
 func (result *Experimental_Result) String() string {

@@ -61,13 +61,13 @@ func (sf *Supported_Features) String() string {
 
 func (smi *SMSMI_Correlation_ID) String() string {
 	result := "SMSMI_Correlation_ID{"
-	result += fmt.Sprintf("HssId: %s, ", smi.HssId)
+	result += fmt.Sprintf("HssId: %s, ", smi.HssId.String())
 
 	if smi.OriginatingSipUri != nil {
-		result += fmt.Sprintf("OriginatingSipUri: %s, ", *smi.OriginatingSipUri)
+		result += fmt.Sprintf("OriginatingSipUri: %s, ", smi.OriginatingSipUri.String())
 	}
 	if smi.DestinationSipUri != nil {
-		result += fmt.Sprintf("DestinationSipUri: %s", *smi.DestinationSipUri)
+		result += fmt.Sprintf("DestinationSipUri: %s", smi.DestinationSipUri.String())
 	}
 	result += "}"
 	return result
@@ -76,16 +76,16 @@ func (smi *SMSMI_Correlation_ID) String() string {
 func (ui *User_Identifier) String() string {
 	result := "User_Identifier{"
 	if ui.UserName != nil {
-		result += fmt.Sprintf("UserName: %s, ", *ui.UserName)
+		result += fmt.Sprintf("UserName: %s, ", ui.UserName.String())
 	}
 	if ui.Msisdn != nil {
-		result += fmt.Sprintf("Msisdn: %s, ", *ui.Msisdn)
+		result += fmt.Sprintf("Msisdn: %s, ", ui.Msisdn.String())
 	}
 	if ui.ExternalIdentifier != nil {
-		result += fmt.Sprintf("ExternalIdentifier: %s, ", *ui.ExternalIdentifier)
+		result += fmt.Sprintf("ExternalIdentifier: %s, ", ui.ExternalIdentifier.String())
 	}
 	if ui.Lmsi != nil {
-		result += fmt.Sprintf("Lmsi: %s", *ui.Lmsi)
+		result += fmt.Sprintf("Lmsi: %s", ui.Lmsi.String())
 	}
 	result += "}"
 	return result
@@ -93,9 +93,9 @@ func (ui *User_Identifier) String() string {
 
 func (smdf *SM_Delivery_Failure_Cause) String() string {
 	result := "SM_Delivery_Failure_Cause{"
-	result += fmt.Sprintf("SmEnumeratedDeliveryFailureCause: %s", smdf.SmEnumeratedDeliveryFailureCause)
+	result += fmt.Sprintf("SmEnumeratedDeliveryFailureCause: %s", smdf.SmEnumeratedDeliveryFailureCause.String())
 	if smdf.SmDiagnosticInfo != nil {
-		result += fmt.Sprintf(", SmDiagnosticInfo: %s", *smdf.SmDiagnosticInfo)
+		result += fmt.Sprintf(", SmDiagnosticInfo: %s", smdf.SmDiagnosticInfo.String())
 	}
 	result += "}"
 	return result
@@ -122,10 +122,10 @@ func (smo *SM_Delivery_Outcome) String() string {
 func (d *Delivery_Outcome) String() string {
 	result := "Delivery_Outcome{"
 	if d.SmDeliveryCause != nil {
-		result += fmt.Sprintf("SmDeliveryCause: %s, ", *d.SmDeliveryCause)
+		result += fmt.Sprintf("SmDeliveryCause: %s, ", d.SmDeliveryCause.String())
 	}
 	if d.AbsentUserDiagnosticSm != nil {
-		result += fmt.Sprintf("AbsentUserDiagnosticSm: %d", *d.AbsentUserDiagnosticSm)
+		result += fmt.Sprintf("AbsentUserDiagnosticSm: %s", d.AbsentUserDiagnosticSm.String())
 	}
 	result += "}"
 	return result
