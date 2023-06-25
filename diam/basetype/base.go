@@ -43,11 +43,11 @@ func (vsa *Vendor_Specific_Application_Id) Empty() bool {
 func (vsa *Vendor_Specific_Application_Id) String() string {
 	vendorID := "nil"
 	if vsa.VendorId != nil {
-		vendorID = fmt.Sprintf("%v", *vsa.VendorId)
+		vendorID = vsa.VendorId.String()
 	}
 
-	return fmt.Sprintf("VendorId: %v, AuthApplicationId: %v, AcctApplicationId: %v",
-		vendorID, vsa.AuthApplicationId, vsa.AcctApplicationId)
+	return fmt.Sprintf("VendorId: %s, AuthApplicationId: %v, AcctApplicationId: %v",
+		vendorID, vsa.AuthApplicationId.String(), vsa.AcctApplicationId.String())
 }
 
 func (osf *OC_Supported_Features) String() string {
