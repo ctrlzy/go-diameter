@@ -1,5 +1,4 @@
-//go:build go1.8 && linux && !386
-// +build go1.8,linux,!386
+//go:build linux && !386
 
 package test
 
