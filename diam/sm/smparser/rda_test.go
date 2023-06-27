@@ -58,6 +58,43 @@ func TestRDA_PARSE_OK(t *testing.T) {
 }
 
 func TestRDA_Decode_OK(t *testing.T) {
+	rda := createStructRDA()
+
+	m1 := diam.NewMessage(diam.ReportSMDeliveryStatus, 0, diam.TGPP_S6C_APP_ID, 0, 0, dict.Default)
+	err := m1.Marshal(rda)
+	assert.Nil(t, err)
+
+	m2 := createDiamRDA()
+
+	m2.Header.HopByHopID = m1.Header.HopByHopID
+	m2.Header.EndToEndID = m1.Header.EndToEndID
+
+	assert.Equal(t, m1.String(), m2.String())
+}
+
+func createDiamRDA() *diam.Message {
+	m2 := diam.NewMessage(diam.ReportSMDeliveryStatus, 0, diam.TGPP_S6C_APP_ID, 0, 0, dict.Default)
+	m2.NewAVP(avp.SessionID, avp.Mbit, 0, datatype.UTF8String("session-id"))
+	m2.NewAVP(avp.VendorSpecificApplicationID, avp.Mbit, 0, &diam.GroupedAVP{
+		AVP: []*diam.AVP{
+			diam.NewAVP(avp.AuthApplicationID, avp.Mbit, 0, datatype.Unsigned32(123)),
+			diam.NewAVP(avp.AcctApplicationID, avp.Mbit, 0, datatype.Unsigned32(456)),
+		},
+	})
+	m2.NewAVP(avp.ResultCode, avp.Mbit, 0, datatype.Unsigned32(10))
+	m2.NewAVP(avp.ExperimentalResult, avp.Mbit, 0, &diam.GroupedAVP{
+		AVP: []*diam.AVP{
+			diam.NewAVP(avp.VendorID, avp.Mbit, 0, datatype.Unsigned32(10415)),
+			diam.NewAVP(avp.ExperimentalResultCode, avp.Mbit, 0, datatype.Unsigned32(20)),
+		},
+	})
+	m2.NewAVP(avp.AuthSessionState, avp.Mbit, 0, datatype.Enumerated(1))
+	m2.NewAVP(avp.OriginHost, avp.Mbit, 0, datatype.DiameterIdentity("orig-host"))
+	m2.NewAVP(avp.OriginRealm, avp.Mbit, 0, datatype.DiameterIdentity("orig-realm"))
+	return m2
+}
+
+func createStructRDA() *smparser.RDA {
 	vsai := basetype.Vendor_Specific_Application_Id{
 		AuthApplicationId: 123,
 		AcctApplicationId: 456,
@@ -77,32 +114,21 @@ func TestRDA_Decode_OK(t *testing.T) {
 		OriginHost:                  datatype.DiameterIdentity("orig-host"),
 		OriginRealm:                 datatype.DiameterIdentity("orig-realm"),
 	}
+	return rda
+}
 
+func BenchmarkEncodeRDA(b *testing.B) {
+	rda := createStructRDA()
 	m1 := diam.NewMessage(diam.ReportSMDeliveryStatus, 0, diam.TGPP_S6C_APP_ID, 0, 0, dict.Default)
-	err := m1.Marshal(rda)
-	assert.Nil(t, err)
+	for n := 0; n < b.N; n++ {
+		m1.Marshal(rda)
+	}
+}
 
-	m2 := diam.NewMessage(diam.ReportSMDeliveryStatus, 0, diam.TGPP_S6C_APP_ID, 0, 0, dict.Default)
-	m2.NewAVP(avp.SessionID, avp.Mbit, 0, datatype.UTF8String("session-id"))
-	m2.NewAVP(avp.VendorSpecificApplicationID, avp.Mbit, 0, &diam.GroupedAVP{
-		AVP: []*diam.AVP{
-			diam.NewAVP(avp.AuthApplicationID, avp.Mbit, 0, datatype.Unsigned32(123)),
-			diam.NewAVP(avp.AcctApplicationID, avp.Mbit, 0, datatype.Unsigned32(456)),
-		},
-	})
-	m2.NewAVP(avp.ResultCode, avp.Mbit, 0, datatype.Unsigned32(10))
-	m2.NewAVP(avp.ExperimentalResult, avp.Mbit, 0, &diam.GroupedAVP{
-		AVP: []*diam.AVP{
-			diam.NewAVP(avp.VendorID, avp.Mbit, 0, datatype.Unsigned32(10415)),
-			diam.NewAVP(avp.ExperimentalResultCode, avp.Mbit, 0, datatype.Unsigned32(20)),
-		},
-	})
-	m2.NewAVP(avp.AuthSessionState, avp.Mbit, 0, datatype.Enumerated(1))
-	m2.NewAVP(avp.OriginHost, avp.Mbit, 0, datatype.DiameterIdentity("orig-host"))
-	m2.NewAVP(avp.OriginRealm, avp.Mbit, 0, datatype.DiameterIdentity("orig-realm"))
-
-	m2.Header.HopByHopID = m1.Header.HopByHopID
-	m2.Header.EndToEndID = m1.Header.EndToEndID
-
-	assert.Equal(t, m1.String(), m2.String())
+func BenchmarkDecodeRDA(b *testing.B) {
+	m := createDiamRDA()
+	rda := smparser.RDA{}
+	for n := 0; n < b.N; n++ {
+		rda.Parse(m)
+	}
 }

@@ -78,21 +78,19 @@ func TestOFA_PARSE_OK(t *testing.T) {
 }
 
 func TestOFA_Marshal_OK(t *testing.T) {
-	resultCode := datatype.Unsigned32(1001)
-	ofa := smparser.OFA{
-		SessionId:        datatype.UTF8String("session-id"),
-		ResultCode:       &resultCode,
-		AuthSessionState: datatype.Enumerated(1),
-		OriginHost:       datatype.DiameterIdentity("orig-host"),
-		OriginRealm:      datatype.DiameterIdentity("orig-realm"),
-		SmDeliveryFailureCause: &basetype.SM_Delivery_Failure_Cause{
-			SmEnumeratedDeliveryFailureCause: datatype.Enumerated(1),
-		},
-	}
+	ofa := createStructOFA()
 	m1 := diam.NewMessage(diam.MOForwardShortMessage, 0, diam.TGPP_SGD_GDD_APP_ID, 0, 0, dict.Default)
-	err := m1.Marshal(&ofa)
+	err := m1.Marshal(ofa)
 	assert.Nil(t, err)
 
+	m2 := createDiamOFA()
+	m2.Header.HopByHopID = m1.Header.HopByHopID
+	m2.Header.EndToEndID = m1.Header.EndToEndID
+
+	assert.Equal(t, m1.String(), m2.String())
+}
+
+func createDiamOFA() *diam.Message {
 	m2 := diam.NewMessage(diam.MOForwardShortMessage, 0, diam.TGPP_SGD_GDD_APP_ID, 0, 0, dict.Default)
 	m2.NewAVP(avp.SessionID, avp.Mbit, 0, datatype.UTF8String("session-id"))
 	m2.NewAVP(avp.ResultCode, avp.Mbit, 0, datatype.Unsigned32(1001))
@@ -104,8 +102,36 @@ func TestOFA_Marshal_OK(t *testing.T) {
 			diam.NewAVP(avp.SMEnumeratedDeliveryFailureCause, avp.Mbit|avp.Vbit, 10415, datatype.Enumerated(1)),
 		},
 	})
-	m2.Header.HopByHopID = m1.Header.HopByHopID
-	m2.Header.EndToEndID = m1.Header.EndToEndID
+	return m2
+}
 
-	assert.Equal(t, m1.String(), m2.String())
+func createStructOFA() *smparser.OFA {
+	resultCode := datatype.Unsigned32(1001)
+	ofa := smparser.OFA{
+		SessionId:        datatype.UTF8String("session-id"),
+		ResultCode:       &resultCode,
+		AuthSessionState: datatype.Enumerated(1),
+		OriginHost:       datatype.DiameterIdentity("orig-host"),
+		OriginRealm:      datatype.DiameterIdentity("orig-realm"),
+		SmDeliveryFailureCause: &basetype.SM_Delivery_Failure_Cause{
+			SmEnumeratedDeliveryFailureCause: datatype.Enumerated(1),
+		},
+	}
+	return &ofa
+}
+
+func BenchmarkEncodeOFA(b *testing.B) {
+	ofa := createStructOFA()
+	m1 := diam.NewMessage(diam.MOForwardShortMessage, 0, diam.TGPP_SGD_GDD_APP_ID, 0, 0, dict.Default)
+	for n := 0; n < b.N; n++ {
+		m1.Marshal(ofa)
+	}
+}
+
+func BenchmarkDecodeOFA(b *testing.B) {
+	m := createDiamOFA()
+	ofa := smparser.OFA{}
+	for n := 0; n < b.N; n++ {
+		ofa.Parse(m)
+	}
 }

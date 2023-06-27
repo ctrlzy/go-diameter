@@ -71,6 +71,41 @@ func TestSRR_PARSE_OK(t *testing.T) {
 }
 
 func TestSRR_Decode_OK(t *testing.T) {
+	srr := createStructSRR()
+	m1 := diam.NewRequest(diam.SendRoutingInfoforSM, diam.TGPP_S6C_APP_ID, dict.Default)
+	err := m1.Marshal(srr)
+	assert.Nil(t, err)
+	m2 := createDiamSRR()
+	m2.Header.HopByHopID = m1.Header.HopByHopID
+	m2.Header.EndToEndID = m1.Header.EndToEndID
+
+	assert.Equal(t, m1.String(), m2.String())
+}
+
+func createDiamSRR() *diam.Message {
+	m2 := diam.NewRequest(diam.SendRoutingInfoforSM, diam.TGPP_S6C_APP_ID, dict.Default)
+	m2.NewAVP(avp.SessionID, avp.Mbit, 0, datatype.UTF8String("session-id"))
+	m2.NewAVP(avp.VendorSpecificApplicationID, avp.Mbit, 0, &diam.GroupedAVP{
+		AVP: []*diam.AVP{
+			diam.NewAVP(avp.AuthApplicationID, avp.Mbit, 0, datatype.Unsigned32(123)),
+			diam.NewAVP(avp.AcctApplicationID, avp.Mbit, 0, datatype.Unsigned32(456)),
+		},
+	})
+	m2.NewAVP(avp.AuthSessionState, avp.Mbit, 0, datatype.Enumerated(1))
+	m2.NewAVP(avp.OriginHost, avp.Mbit, 0, datatype.DiameterIdentity("orig-host"))
+	m2.NewAVP(avp.OriginRealm, avp.Mbit, 0, datatype.DiameterIdentity("orig-realm"))
+	m2.NewAVP(avp.DestinationHost, avp.Mbit, 0, datatype.DiameterIdentity("dest-host"))
+	m2.NewAVP(avp.DestinationRealm, avp.Mbit, 0, datatype.DiameterIdentity("dest-realm"))
+	m2.NewAVP(avp.MSISDN, avp.Mbit|avp.Vbit, 10415, datatype.OctetString("12345"))
+	m2.NewAVP(avp.UserName, avp.Mbit, 0, datatype.UTF8String("username"))
+	m2.NewAVP(avp.SCAddress, avp.Mbit|avp.Vbit, 10415, datatype.OctetString("sc-addr"))
+	m2.NewAVP(avp.SMRPMTI, avp.Mbit|avp.Vbit, 10415, datatype.Enumerated(2))
+	m2.NewAVP(avp.SMRPSMEA, avp.Mbit|avp.Vbit, 10415, datatype.OctetString("sm-rp-smea"))
+	m2.NewAVP(avp.SMDeliveryNotIntended, avp.Mbit|avp.Vbit, 10415, datatype.Enumerated(0))
+	return m2
+}
+
+func createStructSRR() *smparser.SRR {
 	vsai := basetype.Vendor_Specific_Application_Id{
 		AuthApplicationId: 123,
 		AcctApplicationId: 456,
@@ -97,32 +132,21 @@ func TestSRR_Decode_OK(t *testing.T) {
 		SmRpSmea:                    &smrpsmea,
 		SmDeliveryNotIntended:       &smDeliveryNotIntended,
 	}
+	return srr
+}
 
+func BenchmarkEncodeSRR(b *testing.B) {
+	srr := createStructSRR()
 	m1 := diam.NewRequest(diam.SendRoutingInfoforSM, diam.TGPP_S6C_APP_ID, dict.Default)
-	err := m1.Marshal(srr)
-	assert.Nil(t, err)
+	for n := 0; n < b.N; n++ {
+		m1.Marshal(srr)
+	}
+}
 
-	m2 := diam.NewRequest(diam.SendRoutingInfoforSM, diam.TGPP_S6C_APP_ID, dict.Default)
-	m2.NewAVP(avp.SessionID, avp.Mbit, 0, datatype.UTF8String("session-id"))
-	m2.NewAVP(avp.VendorSpecificApplicationID, avp.Mbit, 0, &diam.GroupedAVP{
-		AVP: []*diam.AVP{
-			diam.NewAVP(avp.AuthApplicationID, avp.Mbit, 0, datatype.Unsigned32(123)),
-			diam.NewAVP(avp.AcctApplicationID, avp.Mbit, 0, datatype.Unsigned32(456)),
-		},
-	})
-	m2.NewAVP(avp.AuthSessionState, avp.Mbit, 0, datatype.Enumerated(1))
-	m2.NewAVP(avp.OriginHost, avp.Mbit, 0, datatype.DiameterIdentity("orig-host"))
-	m2.NewAVP(avp.OriginRealm, avp.Mbit, 0, datatype.DiameterIdentity("orig-realm"))
-	m2.NewAVP(avp.DestinationHost, avp.Mbit, 0, datatype.DiameterIdentity("dest-host"))
-	m2.NewAVP(avp.DestinationRealm, avp.Mbit, 0, datatype.DiameterIdentity("dest-realm"))
-	m2.NewAVP(avp.MSISDN, avp.Mbit|avp.Vbit, 10415, datatype.OctetString("12345"))
-	m2.NewAVP(avp.UserName, avp.Mbit, 0, datatype.UTF8String("username"))
-	m2.NewAVP(avp.SCAddress, avp.Mbit|avp.Vbit, 10415, datatype.OctetString("sc-addr"))
-	m2.NewAVP(avp.SMRPMTI, avp.Mbit|avp.Vbit, 10415, datatype.Enumerated(2))
-	m2.NewAVP(avp.SMRPSMEA, avp.Mbit|avp.Vbit, 10415, datatype.OctetString("sm-rp-smea"))
-	m2.NewAVP(avp.SMDeliveryNotIntended, avp.Mbit|avp.Vbit, 10415, datatype.Enumerated(0))
-	m2.Header.HopByHopID = m1.Header.HopByHopID
-	m2.Header.EndToEndID = m1.Header.EndToEndID
-
-	assert.Equal(t, m1.String(), m2.String())
+func BenchmarkDecodeSRR(b *testing.B) {
+	m := createDiamSRR()
+	srr := smparser.SRR{}
+	for n := 0; n < b.N; n++ {
+		srr.Parse(m)
+	}
 }

@@ -4,8 +4,10 @@ import (
 	"fmt"
 
 	"github.com/ctrlzy/go-diameter/v4/diam"
+	"github.com/ctrlzy/go-diameter/v4/diam/avp"
 	"github.com/ctrlzy/go-diameter/v4/diam/basetype"
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
+	"github.com/ctrlzy/go-diameter/v4/diam/dict"
 )
 
 // TFR refers to Mt-Forward-Short-Message-Request.
@@ -152,4 +154,64 @@ func (t *TFR) String() string {
 	}
 	result += " }"
 	return result
+}
+
+func (tfr *TFR) ToDiam() *diam.Message {
+	// TODO: change dict.Default to base and SGD/GDD？
+	m := diam.NewRequest(diam.MTForwardShortMessage, diam.TGPP_SGD_GDD_APP_ID, dict.Default)
+	m.NewAVP(avp.SessionID, avp.Mbit, 0, tfr.SessionId)
+	if tfr.Drmp != nil {
+		m.NewAVP(avp.DRMP, 0, 0, *tfr.Drmp)
+	}
+	if tfr.VendorSpecificApplicationId != nil {
+		m.NewAVP(avp.VendorSpecificApplicationID, avp.Mbit, 0, tfr.VendorSpecificApplicationId.ToDiam())
+	}
+	m.NewAVP(avp.AuthSessionState, avp.Mbit, 0, tfr.AuthSessionState)
+	m.NewAVP(avp.OriginHost, avp.Mbit, 0, tfr.OriginHost)
+	m.NewAVP(avp.OriginRealm, avp.Mbit, 0, tfr.OriginRealm)
+	m.NewAVP(avp.DestinationHost, avp.Mbit, 0, tfr.DestinationHost)
+	m.NewAVP(avp.DestinationRealm, avp.Mbit, 0, tfr.DestinationRealm)
+	m.NewAVP(avp.UserName, avp.Mbit, 0, tfr.UserName)
+	if len(tfr.SupportedFeatures) > 0 {
+		for _, sf := range tfr.SupportedFeatures {
+			m.NewAVP(avp.SupportedFeatures, avp.Vbit, 10415, sf.ToDiam())
+		}
+	}
+	if tfr.SmsmiCorrelationId != nil {
+		m.NewAVP(avp.SMSMICorrelationID, avp.Vbit, 10415, tfr.SmsmiCorrelationId.ToDiam())
+	}
+	m.NewAVP(avp.SCAddress, avp.Mbit|avp.Vbit, 10415, tfr.ScAddress)
+	m.NewAVP(avp.SMRPUI, avp.Mbit|avp.Vbit, 10415, tfr.SmRpUi)
+	if tfr.MmeNumberForMtSms != nil {
+		m.NewAVP(avp.MMENumberforMTSMS, avp.Vbit, 10415, *tfr.MmeNumberForMtSms)
+	}
+	if tfr.SgsnNumber != nil {
+		m.NewAVP(avp.SGSNNumber, avp.Vbit, 10415, *tfr.SgsnNumber)
+	}
+	if tfr.TfrFlags != nil {
+		m.NewAVP(avp.TFRFlags, avp.Mbit|avp.Vbit, 10415, *tfr.TfrFlags)
+	}
+	if tfr.SmDeliveryTimer != nil {
+		m.NewAVP(avp.SMDeliveryTimer, avp.Mbit|avp.Vbit, 10415, *tfr.SmDeliveryTimer)
+	}
+	if tfr.SmDeliveryStartTime != nil {
+		m.NewAVP(avp.SMDeliveryStartTime, avp.Mbit|avp.Vbit, 10415, *tfr.SmDeliveryStartTime)
+	}
+	if tfr.MaximumRetransmissionTime != nil {
+		m.NewAVP(avp.MaximumRetransmissionTime, avp.Vbit, 10415, *tfr.MaximumRetransmissionTime)
+	}
+	if tfr.SmsGmscAddress != nil {
+		m.NewAVP(avp.SMSGMSCAddress, avp.Vbit, 10415, *tfr.SmsGmscAddress)
+	}
+	if len(tfr.ProxyInfo) > 0 {
+		for _, pi := range tfr.ProxyInfo {
+			m.NewAVP(avp.ProxyInfo, avp.Mbit, 0, pi.ToDiam())
+		}
+	}
+	if len(tfr.RouteRecord) > 0 {
+		for _, rr := range tfr.RouteRecord {
+			m.NewAVP(avp.RouteRecord, avp.Mbit, 0, rr)
+		}
+	}
+	return m
 }

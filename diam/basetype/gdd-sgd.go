@@ -3,6 +3,8 @@ package basetype
 import (
 	"fmt"
 
+	"github.com/ctrlzy/go-diameter/v4/diam"
+	"github.com/ctrlzy/go-diameter/v4/diam/avp"
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
 )
 
@@ -13,7 +15,7 @@ type Supported_Features struct {
 }
 
 type SMSMI_Correlation_ID struct {
-	HssId             datatype.UTF8String  `avp:"HSS-ID,omitempty"`
+	HssId             *datatype.UTF8String `avp:"HSS-ID,omitempty"`
 	OriginatingSipUri *datatype.UTF8String `avp:"Originating-SIP-URI,omitempty"`
 	DestinationSipUri *datatype.UTF8String `avp:"Destination-SIP-URI,omitempty"`
 }
@@ -129,4 +131,52 @@ func (d *Delivery_Outcome) String() string {
 	}
 	result += "}"
 	return result
+}
+
+// encode Supported-Features struct to grouped AVP
+func (sf *Supported_Features) ToDiam() *diam.GroupedAVP {
+	return &diam.GroupedAVP{
+		AVP: []*diam.AVP{
+			diam.NewAVP(avp.VendorID, avp.Mbit, 0, sf.VendorId),
+			diam.NewAVP(avp.FeatureListID, avp.Vbit, 10415, sf.FeatureListId),
+			diam.NewAVP(avp.FeatureList, avp.Vbit, 10415, sf.FeatureList),
+		},
+	}
+}
+
+// encode SMSMI-Correlation-ID struct to grouped AVP
+func (smiId *SMSMI_Correlation_ID) ToDiam() *diam.GroupedAVP {
+	a := diam.GroupedAVP{
+		AVP: []*diam.AVP{},
+	}
+	if smiId.HssId != nil {
+		a.AVP = append(a.AVP, diam.NewAVP(avp.HSSID, avp.Vbit, 10415, *smiId.HssId))
+	}
+	if smiId.OriginatingSipUri != nil {
+		a.AVP = append(a.AVP, diam.NewAVP(avp.OriginatingSIPURI, avp.Vbit, 10415, *smiId.OriginatingSipUri))
+	}
+	if smiId.DestinationSipUri != nil {
+		a.AVP = append(a.AVP, diam.NewAVP(avp.DestinationSIPURI, avp.Vbit, 10415, *smiId.DestinationSipUri))
+	}
+	return &a
+}
+
+// encode User-Identifier struct to grouped AVP
+func (ui *User_Identifier) ToDiam() *diam.GroupedAVP {
+	a := diam.GroupedAVP{
+		AVP: []*diam.AVP{},
+	}
+	if ui.UserName != nil {
+		a.AVP = append(a.AVP, diam.NewAVP(avp.UserName, avp.Mbit, 0, *ui.UserName))
+	}
+	if ui.Msisdn != nil {
+		a.AVP = append(a.AVP, diam.NewAVP(avp.MSISDN, avp.Mbit|avp.Vbit, 10415, *ui.Msisdn))
+	}
+	if ui.ExternalIdentifier != nil {
+		a.AVP = append(a.AVP, diam.NewAVP(avp.ExternalIdentifier, avp.Mbit|avp.Vbit, 10415, *ui.ExternalIdentifier))
+	}
+	if ui.Lmsi != nil {
+		a.AVP = append(a.AVP, diam.NewAVP(avp.LMSI, avp.Mbit|avp.Vbit, 10415, *ui.Lmsi))
+	}
+	return &a
 }

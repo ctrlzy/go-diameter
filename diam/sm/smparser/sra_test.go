@@ -103,6 +103,55 @@ func TestSRA_PARSE_OK(t *testing.T) {
 }
 
 func TestSRA_Decode_OK(t *testing.T) {
+	sra := createStructSRA()
+	m1 := diam.NewMessage(diam.SendRoutingInfoforSM, 0, diam.TGPP_S6C_APP_ID, 0, 0, dict.Default)
+	err := m1.Marshal(sra)
+	assert.Nil(t, err)
+	m2 := createDiamSRA()
+	m2.Header.HopByHopID = m1.Header.HopByHopID
+	m2.Header.EndToEndID = m1.Header.EndToEndID
+
+	assert.Equal(t, m1.String(), m2.String())
+}
+
+func createDiamSRA() *diam.Message {
+	m2 := diam.NewMessage(diam.SendRoutingInfoforSM, 0, diam.TGPP_S6C_APP_ID, 0, 0, dict.Default)
+	m2.NewAVP(avp.SessionID, avp.Mbit, 0, datatype.UTF8String("session-id"))
+	m2.NewAVP(avp.VendorSpecificApplicationID, avp.Mbit, 0, &diam.GroupedAVP{
+		AVP: []*diam.AVP{
+			diam.NewAVP(avp.AuthApplicationID, avp.Mbit, 0, datatype.Unsigned32(123)),
+			diam.NewAVP(avp.AcctApplicationID, avp.Mbit, 0, datatype.Unsigned32(456)),
+		},
+	})
+	m2.NewAVP(avp.ResultCode, avp.Mbit, 0, datatype.Unsigned32(12))
+	m2.NewAVP(avp.ExperimentalResult, avp.Mbit, 0, &diam.GroupedAVP{
+		AVP: []*diam.AVP{
+			diam.NewAVP(avp.VendorID, avp.Mbit, 0, datatype.Unsigned32(10415)),
+			diam.NewAVP(avp.ExperimentalResultCode, avp.Mbit, 0, datatype.Unsigned32(11)),
+		},
+	})
+	m2.NewAVP(avp.AuthSessionState, avp.Mbit, 0, datatype.Enumerated(1))
+	m2.NewAVP(avp.OriginHost, avp.Mbit, 0, datatype.DiameterIdentity("orig-host"))
+	m2.NewAVP(avp.OriginRealm, avp.Mbit, 0, datatype.DiameterIdentity("orig-realm"))
+	m2.NewAVP(avp.UserName, avp.Mbit, 0, datatype.UTF8String("username"))
+	m2.NewAVP(avp.ServingNode, avp.Mbit|avp.Vbit, 10415, &diam.GroupedAVP{
+		AVP: []*diam.AVP{
+			diam.NewAVP(avp.MMEName, avp.Mbit|avp.Vbit, 10415, datatype.DiameterIdentity("mme-name")),
+			diam.NewAVP(avp.MMERealm, avp.Vbit, 10415, datatype.DiameterIdentity("mme-realm")),
+			diam.NewAVP(avp.MMENumberforMTSMS, avp.Vbit, 10415, datatype.OctetString("mme number")),
+		},
+	})
+	m2.NewAVP(avp.AdditionalServingNode, avp.Mbit|avp.Vbit, 10415, &diam.GroupedAVP{
+		AVP: []*diam.AVP{
+			diam.NewAVP(avp.MSCNumber, avp.Mbit|avp.Vbit, 10415, datatype.OctetString("msc number")),
+		},
+	})
+	m2.NewAVP(avp.MWDStatus, avp.Mbit|avp.Vbit, 10415, datatype.Unsigned32(12))
+	m2.NewAVP(avp.MSCAbsentUserDiagnosticSM, avp.Mbit|avp.Vbit, 10415, datatype.Unsigned32(13))
+	return m2
+}
+
+func createStructSRA() *smparser.SRA {
 	vsai := basetype.Vendor_Specific_Application_Id{
 		AuthApplicationId: 123,
 		AcctApplicationId: 456,
@@ -141,47 +190,21 @@ func TestSRA_Decode_OK(t *testing.T) {
 		MwdStatus:                   &mwdStatus,
 		MscAbsentUserDiagnosticSm:   &mscAbsentUserDiagnosticSm,
 	}
+	return sra
+}
 
+func BenchmarkEncodeSRA(b *testing.B) {
+	sra := createStructSRA()
 	m1 := diam.NewMessage(diam.SendRoutingInfoforSM, 0, diam.TGPP_S6C_APP_ID, 0, 0, dict.Default)
-	err := m1.Marshal(sra)
-	assert.Nil(t, err)
+	for n := 0; n < b.N; n++ {
+		m1.Marshal(sra)
+	}
+}
 
-	m2 := diam.NewMessage(diam.SendRoutingInfoforSM, 0, diam.TGPP_S6C_APP_ID, 0, 0, dict.Default)
-	m2.NewAVP(avp.SessionID, avp.Mbit, 0, datatype.UTF8String("session-id"))
-	m2.NewAVP(avp.VendorSpecificApplicationID, avp.Mbit, 0, &diam.GroupedAVP{
-		AVP: []*diam.AVP{
-			diam.NewAVP(avp.AuthApplicationID, avp.Mbit, 0, datatype.Unsigned32(123)),
-			diam.NewAVP(avp.AcctApplicationID, avp.Mbit, 0, datatype.Unsigned32(456)),
-		},
-	})
-	m2.NewAVP(avp.ResultCode, avp.Mbit, 0, datatype.Unsigned32(12))
-	m2.NewAVP(avp.ExperimentalResult, avp.Mbit, 0, &diam.GroupedAVP{
-		AVP: []*diam.AVP{
-			diam.NewAVP(avp.VendorID, avp.Mbit, 0, datatype.Unsigned32(10415)),
-			diam.NewAVP(avp.ExperimentalResultCode, avp.Mbit, 0, datatype.Unsigned32(11)),
-		},
-	})
-	m2.NewAVP(avp.AuthSessionState, avp.Mbit, 0, datatype.Enumerated(1))
-	m2.NewAVP(avp.OriginHost, avp.Mbit, 0, datatype.DiameterIdentity("orig-host"))
-	m2.NewAVP(avp.OriginRealm, avp.Mbit, 0, datatype.DiameterIdentity("orig-realm"))
-	m2.NewAVP(avp.UserName, avp.Mbit, 0, datatype.UTF8String("username"))
-	m2.NewAVP(avp.ServingNode, avp.Mbit|avp.Vbit, 10415, &diam.GroupedAVP{
-		AVP: []*diam.AVP{
-			diam.NewAVP(avp.MMEName, avp.Mbit|avp.Vbit, 10415, datatype.DiameterIdentity("mme-name")),
-			diam.NewAVP(avp.MMERealm, avp.Vbit, 10415, datatype.DiameterIdentity("mme-realm")),
-			diam.NewAVP(avp.MMENumberforMTSMS, avp.Vbit, 10415, datatype.OctetString("mme number")),
-		},
-	})
-	m2.NewAVP(avp.AdditionalServingNode, avp.Mbit|avp.Vbit, 10415, &diam.GroupedAVP{
-		AVP: []*diam.AVP{
-			diam.NewAVP(avp.MSCNumber, avp.Mbit|avp.Vbit, 10415, datatype.OctetString("msc number")),
-		},
-	})
-	m2.NewAVP(avp.MWDStatus, avp.Mbit|avp.Vbit, 10415, datatype.Unsigned32(12))
-	m2.NewAVP(avp.MSCAbsentUserDiagnosticSM, avp.Mbit|avp.Vbit, 10415, datatype.Unsigned32(13))
-
-	m2.Header.HopByHopID = m1.Header.HopByHopID
-	m2.Header.EndToEndID = m1.Header.EndToEndID
-
-	assert.Equal(t, m1.String(), m2.String())
+func BenchmarkDecodeSRA(b *testing.B) {
+	m := createDiamSRA()
+	sra := smparser.SRA{}
+	for n := 0; n < b.N; n++ {
+		sra.Parse(m)
+	}
 }

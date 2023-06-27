@@ -38,24 +38,7 @@ func TestTFA_OK(t *testing.T) {
 }
 
 func TestTFA_PARSE_OK(t *testing.T) {
-	m := diam.NewRequest(diam.MTForwardShortMessage, diam.TGPP_SGD_GDD_APP_ID, dict.Default)
-	m.NewAVP(avp.SessionID, avp.Mbit, 0, datatype.UTF8String("session-id"))
-	m.NewAVP(avp.ExperimentalResult, avp.Mbit, 0, &diam.GroupedAVP{
-		AVP: []*diam.AVP{
-			diam.NewAVP(avp.VendorID, avp.Mbit, 0, datatype.Unsigned32(10415)),
-			diam.NewAVP(avp.ExperimentalResultCode, avp.Mbit, 0, datatype.Unsigned32(11)),
-		},
-	})
-	m.NewAVP(avp.AuthSessionState, avp.Mbit, 0, datatype.Enumerated(0))
-	m.NewAVP(avp.OriginHost, avp.Mbit, 0, datatype.DiameterIdentity("orig-host"))
-	m.NewAVP(avp.OriginRealm, avp.Mbit, 0, datatype.DiameterIdentity("orig-realm"))
-	m.NewAVP(avp.AbsentUserDiagnosticSM, avp.Mbit|avp.Vbit, 10415, datatype.Unsigned32(12))
-	m.NewAVP(avp.SMDeliveryFailureCause, avp.Mbit|avp.Vbit, 10415, &diam.GroupedAVP{
-		AVP: []*diam.AVP{
-			diam.NewAVP(avp.SMEnumeratedDeliveryFailureCause, avp.Mbit|avp.Vbit, 10415, datatype.Enumerated(0)),
-		},
-	})
-
+	m := createDiamTFA()
 	tfa := smparser.TFA{}
 	err := tfa.Parse(m)
 	assert.Nil(t, err)
@@ -81,6 +64,35 @@ func TestTFA_PARSE_OK(t *testing.T) {
 }
 
 func TestTFA_Decode_OK(t *testing.T) {
+	tfa := createStructTFA()
+	msg := diam.NewMessage(diam.MTForwardShortMessage, 0, diam.TGPP_SGD_GDD_APP_ID, 0, 0, dict.Default)
+	err := msg.Marshal(tfa)
+	assert.Nil(t, err)
+	fmt.Print(msg)
+}
+
+func createDiamTFA() *diam.Message {
+	m := diam.NewMessage(diam.MTForwardShortMessage, 0, diam.TGPP_SGD_GDD_APP_ID, 0, 0, dict.Default)
+	m.NewAVP(avp.SessionID, avp.Mbit, 0, datatype.UTF8String("session-id"))
+	m.NewAVP(avp.ExperimentalResult, avp.Mbit, 0, &diam.GroupedAVP{
+		AVP: []*diam.AVP{
+			diam.NewAVP(avp.VendorID, avp.Mbit, 0, datatype.Unsigned32(10415)),
+			diam.NewAVP(avp.ExperimentalResultCode, avp.Mbit, 0, datatype.Unsigned32(11)),
+		},
+	})
+	m.NewAVP(avp.AuthSessionState, avp.Mbit, 0, datatype.Enumerated(0))
+	m.NewAVP(avp.OriginHost, avp.Mbit, 0, datatype.DiameterIdentity("orig-host"))
+	m.NewAVP(avp.OriginRealm, avp.Mbit, 0, datatype.DiameterIdentity("orig-realm"))
+	m.NewAVP(avp.AbsentUserDiagnosticSM, avp.Mbit|avp.Vbit, 10415, datatype.Unsigned32(12))
+	m.NewAVP(avp.SMDeliveryFailureCause, avp.Mbit|avp.Vbit, 10415, &diam.GroupedAVP{
+		AVP: []*diam.AVP{
+			diam.NewAVP(avp.SMEnumeratedDeliveryFailureCause, avp.Mbit|avp.Vbit, 10415, datatype.Enumerated(0)),
+		},
+	})
+	return m
+}
+
+func createStructTFA() *smparser.TFA {
 	drmp := datatype.Enumerated(1)
 	vsai := basetype.Vendor_Specific_Application_Id{
 		AuthApplicationId: 123,
@@ -102,8 +114,21 @@ func TestTFA_Decode_OK(t *testing.T) {
 		OriginHost:                  datatype.DiameterIdentity("orig-host"),
 		OriginRealm:                 datatype.DiameterIdentity("orig-realm"),
 	}
-	msg := diam.NewRequest(diam.MTForwardShortMessage, diam.TGPP_SGD_GDD_APP_ID, dict.Default)
-	err := msg.Marshal(tfa)
-	assert.Nil(t, err)
-	fmt.Print(msg)
+	return tfa
+}
+
+func BenchmarkEncodeTFA(b *testing.B) {
+	tfa := createStructTFA()
+	m1 := diam.NewMessage(diam.MTForwardShortMessage, 0, diam.TGPP_SGD_GDD_APP_ID, 0, 0, dict.Default)
+	for n := 0; n < b.N; n++ {
+		m1.Marshal(tfa)
+	}
+}
+
+func BenchmarkDecodeTFA(b *testing.B) {
+	m := createDiamTFA()
+	tfa := smparser.TFA{}
+	for n := 0; n < b.N; n++ {
+		tfa.Parse(m)
+	}
 }

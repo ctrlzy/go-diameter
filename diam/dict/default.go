@@ -6616,7 +6616,7 @@ var tgppsgdgddXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <rule avp="Absent-User-Diagnostic-SM" max="1" required="false"/>
             </data>
         </avp>
-        <avp name="SGSN-Number" code="1489" may-encrypt="N" must="M,V" vendor-id="10415">
+        <avp name="SGSN-Number" code="1489" may-encrypt="N" must="V" vendor-id="10415">
             <data type="OctetString"/>
         </avp>
 

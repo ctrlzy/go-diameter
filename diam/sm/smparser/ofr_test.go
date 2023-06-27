@@ -216,6 +216,51 @@ func TestOFR_PARSE_OK(t *testing.T) {
 }
 
 func TestOFR_Marshal_OK(t *testing.T) {
+	ofr := createStructOFR()
+	m1 := diam.NewRequest(diam.MOForwardShortMessage, diam.TGPP_SGD_GDD_APP_ID, dict.Default)
+	err := m1.Marshal(ofr)
+	assert.Nil(t, err)
+
+	m2 := createDiamOFR()
+	m2.Header.HopByHopID = m1.Header.HopByHopID
+	m2.Header.EndToEndID = m1.Header.EndToEndID
+	assert.Equal(t, m1.String(), m2.String())
+}
+
+func createDiamOFR() *diam.Message {
+	m2 := diam.NewRequest(diam.MOForwardShortMessage, diam.TGPP_SGD_GDD_APP_ID, dict.Default)
+	m2.NewAVP(avp.SessionID, avp.Mbit, 0, datatype.UTF8String("session_id"))
+	m2.NewAVP(avp.DRMP, 0, 0, datatype.Enumerated(1))
+	m2.NewAVP(avp.VendorSpecificApplicationID, avp.Mbit, 0, &diam.GroupedAVP{
+		AVP: []*diam.AVP{
+			diam.NewAVP(avp.VendorID, avp.Mbit, 0, datatype.Unsigned32(10415)),
+			diam.NewAVP(avp.AuthApplicationID, avp.Mbit, 0, datatype.Unsigned32(diam.TGPP_SGD_GDD_APP_ID)),
+			diam.NewAVP(avp.AcctApplicationID, avp.Mbit, 0, datatype.Unsigned32(diam.TGPP_SGD_GDD_APP_ID)),
+		},
+	})
+	m2.NewAVP(avp.AuthSessionState, avp.Mbit, 0, datatype.Enumerated(0))
+	m2.NewAVP(avp.OriginHost, avp.Mbit, 0, datatype.DiameterIdentity("orig-host"))
+	m2.NewAVP(avp.OriginRealm, avp.Mbit, 0, datatype.DiameterIdentity("orig-realm"))
+	m2.NewAVP(avp.DestinationHost, avp.Mbit, 0, datatype.DiameterIdentity("dest-host"))
+	m2.NewAVP(avp.DestinationRealm, avp.Mbit, 0, datatype.DiameterIdentity("dest-realm"))
+	m2.NewAVP(avp.SCAddress, avp.Mbit|avp.Vbit, 10415, datatype.OctetString("1238888888"))
+	m2.NewAVP(avp.SupportedFeatures, 0, 10415, &diam.GroupedAVP{
+		AVP: []*diam.AVP{
+			diam.NewAVP(avp.VendorID, avp.Mbit, 0, datatype.Unsigned32(10415)),
+			diam.NewAVP(avp.FeatureListID, avp.Vbit, 10415, datatype.Unsigned32(1)),
+			diam.NewAVP(avp.FeatureList, avp.Vbit, 10415, datatype.Unsigned32(2)),
+		},
+	})
+	m2.NewAVP(avp.UserIdentifier, avp.Mbit|avp.Vbit, 10415, &diam.GroupedAVP{
+		AVP: []*diam.AVP{
+			diam.NewAVP(avp.MSISDN, avp.Mbit|avp.Vbit, 10415, datatype.OctetString("12345678")),
+		},
+	})
+	m2.NewAVP(avp.SMRPUI, avp.Mbit|avp.Vbit, 10415, datatype.OctetString("sm-rp-ui"))
+	return m2
+}
+
+func createStructOFR() *smparser.OFR {
 	drmp := datatype.Enumerated(1)
 	vendorId := datatype.Unsigned32(10415)
 	vsai := basetype.Vendor_Specific_Application_Id{
@@ -247,41 +292,21 @@ func TestOFR_Marshal_OK(t *testing.T) {
 		UserIdentifier:              userIdentifier,
 		SmRpUi:                      datatype.OctetString("sm-rp-ui"),
 	}
+	return &ofr
+}
+
+func BenchmarkEncodeOFR(b *testing.B) {
+	ofr := createStructOFR()
 	m1 := diam.NewRequest(diam.MOForwardShortMessage, diam.TGPP_SGD_GDD_APP_ID, dict.Default)
-	err := m1.Marshal(&ofr)
-	assert.Nil(t, err)
+	for n := 0; n < b.N; n++ {
+		m1.Marshal(ofr)
+	}
+}
 
-	m2 := diam.NewRequest(diam.MOForwardShortMessage, diam.TGPP_SGD_GDD_APP_ID, dict.Default)
-	m2.NewAVP(avp.SessionID, avp.Mbit, 0, datatype.UTF8String("session_id"))
-	m2.NewAVP(avp.DRMP, 0, 0, datatype.Enumerated(1))
-	m2.NewAVP(avp.VendorSpecificApplicationID, avp.Mbit, 0, &diam.GroupedAVP{
-		AVP: []*diam.AVP{
-			diam.NewAVP(avp.VendorID, avp.Mbit, 0, datatype.Unsigned32(10415)),
-			diam.NewAVP(avp.AuthApplicationID, avp.Mbit, 0, datatype.Unsigned32(diam.TGPP_SGD_GDD_APP_ID)),
-			diam.NewAVP(avp.AcctApplicationID, avp.Mbit, 0, datatype.Unsigned32(diam.TGPP_SGD_GDD_APP_ID)),
-		},
-	})
-	m2.NewAVP(avp.AuthSessionState, avp.Mbit, 0, datatype.Enumerated(0))
-	m2.NewAVP(avp.OriginHost, avp.Mbit, 0, datatype.DiameterIdentity("orig-host"))
-	m2.NewAVP(avp.OriginRealm, avp.Mbit, 0, datatype.DiameterIdentity("orig-realm"))
-	m2.NewAVP(avp.DestinationHost, avp.Mbit, 0, datatype.DiameterIdentity("dest-host"))
-	m2.NewAVP(avp.DestinationRealm, avp.Mbit, 0, datatype.DiameterIdentity("dest-realm"))
-	m2.NewAVP(avp.SCAddress, avp.Mbit|avp.Vbit, 10415, datatype.OctetString("1238888888"))
-	m2.NewAVP(avp.SupportedFeatures, 0, 10415, &diam.GroupedAVP{
-		AVP: []*diam.AVP{
-			diam.NewAVP(avp.VendorID, avp.Mbit, 0, datatype.Unsigned32(10415)),
-			diam.NewAVP(avp.FeatureListID, avp.Vbit, 10415, datatype.Unsigned32(1)),
-			diam.NewAVP(avp.FeatureList, avp.Vbit, 10415, datatype.Unsigned32(2)),
-		},
-	})
-	m2.NewAVP(avp.UserIdentifier, avp.Mbit|avp.Vbit, 10415, &diam.GroupedAVP{
-		AVP: []*diam.AVP{
-			diam.NewAVP(avp.MSISDN, avp.Mbit|avp.Vbit, 10415, datatype.OctetString("12345678")),
-		},
-	})
-	m2.NewAVP(avp.SMRPUI, avp.Mbit|avp.Vbit, 10415, datatype.OctetString("sm-rp-ui"))
-
-	m2.Header.HopByHopID = m1.Header.HopByHopID
-	m2.Header.EndToEndID = m1.Header.EndToEndID
-	assert.Equal(t, m1.String(), m2.String())
+func BenchmarkDecodeOFR(b *testing.B) {
+	m := createDiamOFR()
+	ofr := smparser.OFR{}
+	for n := 0; n < b.N; n++ {
+		ofr.Parse(m)
+	}
 }

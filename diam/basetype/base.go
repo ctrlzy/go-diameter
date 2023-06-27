@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/ctrlzy/go-diameter/v4/diam"
+	"github.com/ctrlzy/go-diameter/v4/diam/avp"
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
 )
 
@@ -79,4 +80,65 @@ func (info *Proxy_Info) String() string {
 
 func (result *Experimental_Result) String() string {
 	return fmt.Sprintf("VendorId: %d, ExperimentalResultCode: %d", result.VendorId, result.ExperimentalResultCode)
+}
+
+// encode Vendor-Specific-Application-Id struct to grouped AVP
+func (vsid *Vendor_Specific_Application_Id) ToDiam() *diam.GroupedAVP {
+	a := diam.GroupedAVP{
+		AVP: []*diam.AVP{},
+	}
+	if vsid.VendorId != nil {
+		a.AVP = append(a.AVP, diam.NewAVP(avp.VendorID, avp.Mbit, 0, *vsid.VendorId))
+	}
+	a.AVP = append(a.AVP, diam.NewAVP(avp.AuthApplicationID, avp.Mbit, 0, vsid.AuthApplicationId))
+	a.AVP = append(a.AVP, diam.NewAVP(avp.AcctApplicationID, avp.Mbit, 0, vsid.AcctApplicationId))
+	return &a
+}
+
+// encode Proxy-Info struct to grouped AVP
+func (pi *Proxy_Info) ToDiam() *diam.GroupedAVP {
+	return &diam.GroupedAVP{
+		AVP: []*diam.AVP{
+			diam.NewAVP(avp.ProxyHost, avp.Mbit, 0, pi.ProxyHost),
+			diam.NewAVP(avp.ProxyState, avp.Mbit, 0, pi.ProxyState),
+		},
+	}
+}
+
+// encode OC-Supported-Features struct to grouped AVP
+func (ocsf *OC_Supported_Features) ToDiam() *diam.GroupedAVP {
+	a := diam.GroupedAVP{
+		AVP: []*diam.AVP{},
+	}
+	if ocsf.OcFeatureVector != nil {
+		a.AVP = append(a.AVP, diam.NewAVP(avp.OCFeatureVector, 0, 0, *ocsf.OcFeatureVector))
+	}
+	return &a
+}
+
+// encode OC-OLR struct to grouped AVP
+func (olr *OC_OLR) ToDiam() *diam.GroupedAVP {
+	a := diam.GroupedAVP{
+		AVP: []*diam.AVP{
+			diam.NewAVP(avp.OCSequenceNumber, 0, 0, olr.OcSequenceNumber),
+			diam.NewAVP(avp.OCReportType, 0, 0, olr.OcReportType),
+		},
+	}
+	if olr.OcReductionPercentage != nil {
+		a.AVP = append(a.AVP, diam.NewAVP(avp.OCReductionPercentage, 0, 0, *olr.OcReductionPercentage))
+	}
+	if olr.OcValidityDuration != nil {
+		a.AVP = append(a.AVP, diam.NewAVP(avp.OCValidityDuration, 0, 0, *olr.OcValidityDuration))
+	}
+	return &a
+}
+
+// Encode Experimental-Result struct to grouped AVP
+func (er *Experimental_Result) ToDiam() *diam.GroupedAVP {
+	return &diam.GroupedAVP{
+		AVP: []*diam.AVP{
+			diam.NewAVP(avp.VendorID, avp.Mbit, 0, er.VendorId),
+			diam.NewAVP(avp.ExperimentalResultCode, avp.Mbit, 0, er.ExperimentalResultCode),
+		},
+	}
 }
