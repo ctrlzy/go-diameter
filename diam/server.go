@@ -196,6 +196,7 @@ func (c *conn) serve() {
 		m, err := c.readMessage()
 		if err != nil {
 			c.rwc.Close()
+			c.notifyClientGone()
 			// Report errors to the channel, except EOF.
 			if err != io.EOF && err != io.ErrUnexpectedEOF {
 				h := c.server.Handler
