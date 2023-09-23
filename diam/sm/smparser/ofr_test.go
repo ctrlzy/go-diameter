@@ -203,7 +203,7 @@ func TestOFR_PARSE_OK(t *testing.T) {
 	assert.Nil(t, ofr.UserIdentifier.Lmsi)
 	assert.Nil(t, ofr.UserIdentifier.UserName)
 	assert.Equal(t, ofr.SmRpUi, datatype.OctetString("sm-rp-ui"))
-	assert.Equal(t, ofr.SmsmiCorrelationId.HssId, datatype.UTF8String("hss-id"))
+	assert.Equal(t, *ofr.SmsmiCorrelationId.HssId, datatype.UTF8String("hss-id"))
 	assert.Equal(t, *ofr.SmsmiCorrelationId.OriginatingSipUri, datatype.UTF8String("orig-sip-uri"))
 	assert.Equal(t, *ofr.SmsmiCorrelationId.DestinationSipUri, datatype.UTF8String("dest-sip-uri"))
 	assert.Equal(t, *ofr.SmDeliveryOutcome.MmeSmDeliveryOutcome.SmDeliveryCause, datatype.Enumerated(1))

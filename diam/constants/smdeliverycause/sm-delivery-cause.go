@@ -1,4 +1,6 @@
-package resultcode
+package smdeliverycause
+
+import "github.com/ctrlzy/go-diameter/v4/diam/datatype"
 
 // TS 3GPP 29.338 5.3.3.19 SM-Delivery-Cause
 // SM-Delivery-Cause
@@ -6,10 +8,9 @@ package resultcode
 // – UE_MEMORY_CAPACITY_EXCEEDED (0)
 // – ABSENT_USER (1)
 // – SUCCESSFUL_TRANSFER (2)
-type SMDeliveryCause int32
 
 const (
-	SMDeliveryCause_UE_MEMORY_CAPACITY_EXCEEDED SMDeliveryCause = 0
-	SMDeliveryCause_ABSENT_USER                 SMDeliveryCause = 1
-	SMDeliveryCause_SUCCESSFUL_TRANSFER         SMDeliveryCause = 2
+	UE_MEMORY_CAPACITY_EXCEEDED = datatype.Enumerated(0)
+	ABSENT_USER                 = datatype.Enumerated(1)
+	SUCCESSFUL_TRANSFER         = datatype.Enumerated(2)
 )

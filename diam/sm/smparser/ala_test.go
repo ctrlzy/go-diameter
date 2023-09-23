@@ -6,9 +6,9 @@ import (
 	"github.com/ctrlzy/go-diameter/v4/diam"
 	"github.com/ctrlzy/go-diameter/v4/diam/avp"
 	"github.com/ctrlzy/go-diameter/v4/diam/basetype"
+	"github.com/ctrlzy/go-diameter/v4/diam/constants/authsessionstate"
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
 	"github.com/ctrlzy/go-diameter/v4/diam/dict"
-	"github.com/ctrlzy/go-diameter/v4/diam/resultcode"
 	"github.com/ctrlzy/go-diameter/v4/diam/sm/smparser"
 	"github.com/stretchr/testify/assert"
 )
@@ -112,7 +112,7 @@ func createStructALA() *smparser.ALA {
 		VendorSpecificApplicationId: &vsai,
 		ResultCode:                  &resultCode,
 		ExperimentalResult:          &experimentalResult,
-		AuthSessionState:            datatype.Enumerated(resultcode.AuthSessionState_NO_STATE_MAINTAINED),
+		AuthSessionState:            authsessionstate.NO_STATE_MAINTAINED,
 		OriginHost:                  datatype.DiameterIdentity("orig-host"),
 		OriginRealm:                 datatype.DiameterIdentity("orig-realm"),
 	}

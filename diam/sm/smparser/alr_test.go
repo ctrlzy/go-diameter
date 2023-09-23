@@ -7,9 +7,10 @@ import (
 	"github.com/ctrlzy/go-diameter/v4/diam"
 	"github.com/ctrlzy/go-diameter/v4/diam/avp"
 	"github.com/ctrlzy/go-diameter/v4/diam/basetype"
+	"github.com/ctrlzy/go-diameter/v4/diam/constants/authsessionstate"
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
 	"github.com/ctrlzy/go-diameter/v4/diam/dict"
-	"github.com/ctrlzy/go-diameter/v4/diam/resultcode"
+
 	"github.com/ctrlzy/go-diameter/v4/diam/sm/smparser"
 	"github.com/stretchr/testify/assert"
 )
@@ -100,7 +101,7 @@ func TestALR_PARSE_OK(t *testing.T) {
 	assert.Empty(t, alr.UserIdentifier.UserName)
 	assert.Empty(t, alr.UserIdentifier.Lmsi)
 	assert.Empty(t, alr.UserIdentifier.ExternalIdentifier)
-	assert.Equal(t, alr.SmsmiCorrelationId.HssId, datatype.UTF8String("hss-id"))
+	assert.Equal(t, *alr.SmsmiCorrelationId.HssId, datatype.UTF8String("hss-id"))
 	assert.Equal(t, *alr.SmsmiCorrelationId.DestinationSipUri, datatype.UTF8String("dest-sip-uri"))
 	assert.Equal(t, *alr.SmsmiCorrelationId.OriginatingSipUri, datatype.UTF8String("orig-sip-uri"))
 	assert.Equal(t, *alr.MaximumUeAvailabilityTime, datatype.Time(ti))
@@ -144,7 +145,7 @@ func createDiamALR() *diam.Message {
 			diam.NewAVP(avp.AcctApplicationID, avp.Mbit, 0, datatype.Unsigned32(456)),
 		},
 	})
-	m2.NewAVP(avp.AuthSessionState, avp.Mbit, 0, datatype.Enumerated(resultcode.AuthSessionState_NO_STATE_MAINTAINED))
+	m2.NewAVP(avp.AuthSessionState, avp.Mbit, 0, authsessionstate.NO_STATE_MAINTAINED)
 	m2.NewAVP(avp.OriginHost, avp.Mbit, 0, datatype.DiameterIdentity("orig-host"))
 	m2.NewAVP(avp.OriginRealm, avp.Mbit, 0, datatype.DiameterIdentity("orig-realm"))
 	m2.NewAVP(avp.DestinationHost, avp.Mbit, 0, datatype.DiameterIdentity("dest-host"))
