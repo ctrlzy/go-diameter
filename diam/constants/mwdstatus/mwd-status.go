@@ -1,7 +1,5 @@
 package mwdstatus
 
-import "github.com/ctrlzy/go-diameter/v4/diam/datatype"
-
 // 3GPP TS 29.338 section 5.3.3.8
 // The MWD-Status AVP is of type Unsigned32 and it shall contain a bit mask. The meaning of the bits shall be as defined in table 5.3.3.8/1:
 // Table 5.3.3.8/1: MWD Status
@@ -14,9 +12,9 @@ import "github.com/ctrlzy/go-diameter/v4/diam/datatype"
 // NOTE: Bits not defined in this table shall be cleared by the sending HSS and discarded by the receiving MME
 
 const (
-	SCAddressNotincluded = datatype.Unsigned32(1)
-	MNRFSet              = datatype.Unsigned32(1 << 1)
-	MCEFSet              = datatype.Unsigned32(1 << 2)
-	MNRGSet              = datatype.Unsigned32(1 << 3)
-	MNR5GSet             = datatype.Unsigned32(1 << 4)
+	SCAddressNotincluded = 1
+	MNRFSet              = 1 << 1
+	MCEFSet              = 1 << 2
+	MNRGSet              = 1 << 3
+	MNR5GSet             = 1 << 4
 )
