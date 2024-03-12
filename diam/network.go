@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ishidawataru/sctp"
+	"github.com/skill215/sctp"
 )
 
 // InvalidStreamID - const used for unspecified/uninitialized stream #

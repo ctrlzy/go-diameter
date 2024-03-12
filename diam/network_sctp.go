@@ -14,7 +14,7 @@ import (
 	"sync/atomic"
 	"unsafe"
 
-	"github.com/ishidawataru/sctp"
+	"github.com/skill215/sctp"
 )
 
 const (
@@ -343,10 +343,10 @@ func (msc *SCTPConn) Read(b []byte) (n int, err error) {
 
 // Write writes data to the association while maintaining stream continuity.
 // The write stream will be selected in the following order:
-//   1) If current write stream is set (is not InvalidStreamID), it'll be used for writing.
-//   2) If current read stream is set, it'll be used for writing.
-//   3) If neither current write nor current read streams are set, write will use default
-//      protocol stream (0 for the current SCTP implementation).
+//  1. If current write stream is set (is not InvalidStreamID), it'll be used for writing.
+//  2. If current read stream is set, it'll be used for writing.
+//  3. If neither current write nor current read streams are set, write will use default
+//     protocol stream (0 for the current SCTP implementation).
 func (msc *SCTPConn) Write(b []byte) (int, error) {
 	msc.wmu.RLock() // block changes to msc.writerStream during write
 	defer msc.wmu.RUnlock()

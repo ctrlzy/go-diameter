@@ -9,9 +9,9 @@ import (
 )
 
 type Vendor_Specific_Application_Id struct {
-	VendorId          *datatype.Unsigned32 `avp:"Vendor-Id,omitempty"`
-	AuthApplicationId datatype.Unsigned32  `avp:"Auth-Application-Id"`
-	AcctApplicationId datatype.Unsigned32  `avp:"Acct-Application-Id"`
+	VendorId          datatype.Unsigned32  `avp:"Vendor-Id"`
+	AuthApplicationId *datatype.Unsigned32 `avp:"Auth-Application-Id,omitempty"`
+	AcctApplicationId *datatype.Unsigned32 `avp:"Acct-Application-Id,omitempty"`
 }
 
 type OC_Supported_Features struct {
@@ -38,17 +38,17 @@ type Experimental_Result struct {
 type Failed_AVP []*diam.AVP
 
 func (vsa *Vendor_Specific_Application_Id) Empty() bool {
-	return vsa.AcctApplicationId == 0 && vsa.AuthApplicationId == 0
+	return vsa.AcctApplicationId == nil && vsa.AuthApplicationId == nil
 }
 
 func (vsa *Vendor_Specific_Application_Id) String() string {
-	vendorID := "nil"
-	if vsa.VendorId != nil {
-		vendorID = vsa.VendorId.String()
+	if vsa.AcctApplicationId != nil {
+		return fmt.Sprintf("VendorId: %s, AcctApplicationId: %v", vsa.VendorId.String(), vsa.AcctApplicationId.String())
 	}
-
-	return fmt.Sprintf("VendorId: %s, AuthApplicationId: %v, AcctApplicationId: %v",
-		vendorID, vsa.AuthApplicationId.String(), vsa.AcctApplicationId.String())
+	if vsa.AuthApplicationId != nil {
+		return fmt.Sprintf("VendorId: %s, AuthApplicationId: %v", vsa.VendorId.String(), vsa.AuthApplicationId.String())
+	}
+	return vsa.VendorId.String()
 }
 
 func (osf *OC_Supported_Features) String() string {
@@ -87,11 +87,14 @@ func (vsid *Vendor_Specific_Application_Id) ToDiam() *diam.GroupedAVP {
 	a := diam.GroupedAVP{
 		AVP: []*diam.AVP{},
 	}
-	if vsid.VendorId != nil {
-		a.AVP = append(a.AVP, diam.NewAVP(avp.VendorID, avp.Mbit, 0, *vsid.VendorId))
+	a.AVP = append(a.AVP, diam.NewAVP(avp.VendorID, avp.Mbit, 0, vsid.VendorId))
+
+	if vsid.AuthApplicationId != nil {
+		a.AVP = append(a.AVP, diam.NewAVP(avp.AuthApplicationID, avp.Mbit, 0, vsid.AuthApplicationId))
 	}
-	a.AVP = append(a.AVP, diam.NewAVP(avp.AuthApplicationID, avp.Mbit, 0, vsid.AuthApplicationId))
-	a.AVP = append(a.AVP, diam.NewAVP(avp.AcctApplicationID, avp.Mbit, 0, vsid.AcctApplicationId))
+	if vsid.AcctApplicationId != nil {
+		a.AVP = append(a.AVP, diam.NewAVP(avp.AcctApplicationID, avp.Mbit, 0, vsid.AcctApplicationId))
+	}
 	return &a
 }
 

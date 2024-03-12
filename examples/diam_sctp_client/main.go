@@ -15,7 +15,7 @@ import (
 	"github.com/ctrlzy/go-diameter/v4/diam"
 	"github.com/ctrlzy/go-diameter/v4/diam/avp"
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
-	"github.com/ishidawataru/sctp"
+	"github.com/skill215/sctp"
 )
 
 var addr = flag.String("addr", "192.168.60.145:3868", "server address in form of ip:port to connect to")

@@ -5,12 +5,13 @@ go 1.20
 require (
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
 	github.com/golang/protobuf v1.3.2
-	github.com/ishidawataru/sctp v0.0.0-20230406120618-7ff4192f6ff2
 	github.com/stretchr/testify v1.8.2
 	golang.org/x/net v0.11.0 // indirect
 	golang.org/x/sys v0.9.0 // indirect
 	google.golang.org/grpc v1.24.0
 )
+
+require github.com/skill215/sctp v0.0.0-20240306111250-f5dbad44113e
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
