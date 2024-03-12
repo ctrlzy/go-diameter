@@ -94,9 +94,10 @@ func createDiamTFA() *diam.Message {
 
 func createStructTFA() *smparser.TFA {
 	drmp := datatype.Enumerated(1)
+	authId := datatype.Unsigned32(123)
 	vsai := basetype.Vendor_Specific_Application_Id{
-		AuthApplicationId: 123,
-		AcctApplicationId: 456,
+		VendorId:          datatype.Unsigned32(10415),
+		AuthApplicationId: &authId,
 	}
 
 	resultCode := datatype.Unsigned32(1)

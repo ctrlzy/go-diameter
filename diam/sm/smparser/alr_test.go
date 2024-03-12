@@ -141,8 +141,8 @@ func createDiamALR() *diam.Message {
 	m2.NewAVP(avp.DRMP, 0, 0, datatype.Enumerated(1))
 	m2.NewAVP(avp.VendorSpecificApplicationID, avp.Mbit, 0, &diam.GroupedAVP{
 		AVP: []*diam.AVP{
+			diam.NewAVP(avp.VendorID, avp.Mbit, 0, datatype.Unsigned32(10415)),
 			diam.NewAVP(avp.AuthApplicationID, avp.Mbit, 0, datatype.Unsigned32(123)),
-			diam.NewAVP(avp.AcctApplicationID, avp.Mbit, 0, datatype.Unsigned32(456)),
 		},
 	})
 	m2.NewAVP(avp.AuthSessionState, avp.Mbit, 0, authsessionstate.NO_STATE_MAINTAINED)
@@ -168,9 +168,10 @@ func createDiamALR() *diam.Message {
 
 func createStructALR() *smparser.ALR {
 	drmp := datatype.Enumerated(1)
+	authId := datatype.Unsigned32(123)
 	vsai := basetype.Vendor_Specific_Application_Id{
-		AuthApplicationId: 123,
-		AcctApplicationId: 456,
+		VendorId:          datatype.Unsigned32(10415),
+		AuthApplicationId: &authId,
 	}
 	msisdn := datatype.OctetString("12345")
 	userIdentifier := basetype.User_Identifier{

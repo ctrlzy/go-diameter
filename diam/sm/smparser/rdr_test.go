@@ -110,8 +110,8 @@ func TestRDR_PARSE_OK(t *testing.T) {
 	m.NewAVP(avp.DRMP, 0, 0, datatype.Enumerated(1))
 	m.NewAVP(avp.VendorSpecificApplicationID, avp.Mbit, 0, &diam.GroupedAVP{
 		AVP: []*diam.AVP{
+			diam.NewAVP(avp.VendorID, avp.Mbit, 0, datatype.Unsigned32(10415)),
 			diam.NewAVP(avp.AuthApplicationID, avp.Mbit, 0, datatype.Unsigned32(123)),
-			diam.NewAVP(avp.AcctApplicationID, avp.Mbit, 0, datatype.Unsigned32(456)),
 		},
 	})
 	m.NewAVP(avp.AuthSessionState, avp.Mbit, 0, datatype.Enumerated(2))
@@ -142,9 +142,8 @@ func TestRDR_PARSE_OK(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, rdr.SessionId, datatype.UTF8String("session-id"))
 	assert.Equal(t, *rdr.Drmp, datatype.Enumerated(1))
-	assert.Nil(t, rdr.VendorSpecificApplicationId.VendorId)
-	assert.Equal(t, rdr.VendorSpecificApplicationId.AuthApplicationId, datatype.Unsigned32(123))
-	assert.Equal(t, rdr.VendorSpecificApplicationId.AcctApplicationId, datatype.Unsigned32(456))
+	assert.Equal(t, rdr.VendorSpecificApplicationId.VendorId, datatype.Unsigned32(10415))
+	assert.Equal(t, *rdr.VendorSpecificApplicationId.AuthApplicationId, datatype.Unsigned32(123))
 	assert.Equal(t, rdr.AuthSessionState, datatype.Enumerated(2))
 	assert.Equal(t, rdr.OriginHost, datatype.DiameterIdentity("foobar"))
 	assert.Equal(t, rdr.OriginRealm, datatype.DiameterIdentity("bar"))
@@ -185,8 +184,8 @@ func createDiamRDR() *diam.Message {
 	m2.NewAVP(avp.SessionID, avp.Mbit, 0, datatype.UTF8String("session-id"))
 	m2.NewAVP(avp.VendorSpecificApplicationID, avp.Mbit, 0, &diam.GroupedAVP{
 		AVP: []*diam.AVP{
+			diam.NewAVP(avp.VendorID, avp.Mbit, 0, datatype.Unsigned32(10415)),
 			diam.NewAVP(avp.AuthApplicationID, avp.Mbit, 0, datatype.Unsigned32(123)),
-			diam.NewAVP(avp.AcctApplicationID, avp.Mbit, 0, datatype.Unsigned32(456)),
 		},
 	})
 	m2.NewAVP(avp.AuthSessionState, avp.Mbit, 0, datatype.Enumerated(1))
@@ -215,9 +214,10 @@ func createDiamRDR() *diam.Message {
 }
 
 func createStructRDR() *smparser.RDR {
+	authId := datatype.Unsigned32(123)
 	vsai := basetype.Vendor_Specific_Application_Id{
-		AuthApplicationId: 123,
-		AcctApplicationId: 456,
+		VendorId:          datatype.Unsigned32(10415),
+		AuthApplicationId: &authId,
 	}
 	destHost := datatype.DiameterIdentity("dest-host")
 	msisdn := datatype.OctetString("12345")

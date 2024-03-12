@@ -11,11 +11,10 @@ import (
 )
 
 func TestVendorSpecificApplicationIdToDiam(t *testing.T) {
-	vid := datatype.Unsigned32(0)
+	authId := datatype.Unsigned32(123)
 	vsai := basetype.Vendor_Specific_Application_Id{
-		VendorId:          &vid,
-		AuthApplicationId: datatype.Unsigned32(123),
-		AcctApplicationId: datatype.Unsigned32(456),
+		VendorId:          datatype.Unsigned32(10415),
+		AuthApplicationId: &authId,
 	}
 	m1 := vsai.ToDiam()
 	m2 := diam.GroupedAVP{
@@ -29,9 +28,10 @@ func TestVendorSpecificApplicationIdToDiam(t *testing.T) {
 }
 
 func TestVendorSpecificApplicationIdWithoutOptionalFieldToDiam(t *testing.T) {
+	authId := datatype.Unsigned32(123)
 	vsai := basetype.Vendor_Specific_Application_Id{
-		AuthApplicationId: datatype.Unsigned32(123),
-		AcctApplicationId: datatype.Unsigned32(456),
+		VendorId:          datatype.Unsigned32(10415),
+		AuthApplicationId: &authId,
 	}
 	m1 := vsai.ToDiam()
 	m2 := diam.GroupedAVP{

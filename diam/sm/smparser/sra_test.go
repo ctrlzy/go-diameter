@@ -119,8 +119,8 @@ func createDiamSRA() *diam.Message {
 	m2.NewAVP(avp.SessionID, avp.Mbit, 0, datatype.UTF8String("session-id"))
 	m2.NewAVP(avp.VendorSpecificApplicationID, avp.Mbit, 0, &diam.GroupedAVP{
 		AVP: []*diam.AVP{
+			diam.NewAVP(avp.VendorID, avp.Mbit, 0, datatype.Unsigned32(10415)),
 			diam.NewAVP(avp.AuthApplicationID, avp.Mbit, 0, datatype.Unsigned32(123)),
-			diam.NewAVP(avp.AcctApplicationID, avp.Mbit, 0, datatype.Unsigned32(456)),
 		},
 	})
 	m2.NewAVP(avp.ResultCode, avp.Mbit, 0, datatype.Unsigned32(12))
@@ -152,9 +152,10 @@ func createDiamSRA() *diam.Message {
 }
 
 func createStructSRA() *smparser.SRA {
+	authId := datatype.Unsigned32(123)
 	vsai := basetype.Vendor_Specific_Application_Id{
-		AuthApplicationId: 123,
-		AcctApplicationId: 456,
+		VendorId:          datatype.Unsigned32(10415),
+		AuthApplicationId: &authId,
 	}
 	resultCode := datatype.Unsigned32(12)
 	experimentResult := basetype.Experimental_Result{

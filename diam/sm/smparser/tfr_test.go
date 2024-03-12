@@ -3,7 +3,7 @@ package smparser_test
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"testing"
 	"time"
 
@@ -209,9 +209,10 @@ func createDiamTFR(ti time.Time) *diam.Message {
 
 func createStructTFR() *smparser.TFR {
 	drmp := datatype.Enumerated(1)
+	authId := datatype.Unsigned32(123)
 	vsai := basetype.Vendor_Specific_Application_Id{
-		AuthApplicationId: 123,
-		AcctApplicationId: 456,
+		VendorId:          datatype.Unsigned32(10415),
+		AuthApplicationId: &authId,
 	}
 	sgsnNumber := datatype.OctetString("sgsn-num")
 	tfr := &smparser.TFR{
@@ -280,6 +281,6 @@ func BenchmarkWriteTFR(b *testing.B) {
 	tfr := createStructTFR()
 	for n := 0; n < b.N; n++ {
 		m := tfr.ToDiam()
-		m.WriteTo(ioutil.Discard)
+		m.WriteTo(io.Discard)
 	}
 }

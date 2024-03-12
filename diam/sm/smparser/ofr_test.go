@@ -138,8 +138,8 @@ func TestOFR_PARSE_OK(t *testing.T) {
 	m.NewAVP(avp.DRMP, 0, 0, datatype.Enumerated(14))
 	m.NewAVP(avp.VendorSpecificApplicationID, avp.Mbit, 0, &diam.GroupedAVP{
 		AVP: []*diam.AVP{
+			diam.NewAVP(avp.VendorID, avp.Mbit, 0, datatype.Unsigned32(10415)),
 			diam.NewAVP(avp.AcctApplicationID, avp.Mbit, 0, datatype.Unsigned32(1001)),
-			diam.NewAVP(avp.AuthApplicationID, avp.Mbit, 0, datatype.Unsigned32(1002)),
 		},
 	})
 	m.NewAVP(avp.AuthSessionState, avp.Mbit, 0, datatype.Enumerated(1))
@@ -184,9 +184,8 @@ func TestOFR_PARSE_OK(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, ofr.SessionId, datatype.UTF8String("session-id-adfa"))
 	assert.Equal(t, *ofr.Drmp, datatype.Enumerated(14))
-	assert.Nil(t, ofr.VendorSpecificApplicationId.VendorId)
-	assert.Equal(t, ofr.VendorSpecificApplicationId.AuthApplicationId, datatype.Unsigned32(1002))
-	assert.Equal(t, ofr.VendorSpecificApplicationId.AcctApplicationId, datatype.Unsigned32(1001))
+	assert.Equal(t, ofr.VendorSpecificApplicationId.VendorId, datatype.Unsigned32(10415))
+	assert.Equal(t, *ofr.VendorSpecificApplicationId.AcctApplicationId, datatype.Unsigned32(1001))
 	assert.Equal(t, ofr.AuthSessionState, datatype.Enumerated(1))
 	assert.Equal(t, ofr.OriginHost, datatype.DiameterIdentity("orig-host"))
 	assert.Equal(t, ofr.OriginRealm, datatype.DiameterIdentity("orig-realm"))
@@ -235,7 +234,6 @@ func createDiamOFR() *diam.Message {
 		AVP: []*diam.AVP{
 			diam.NewAVP(avp.VendorID, avp.Mbit, 0, datatype.Unsigned32(10415)),
 			diam.NewAVP(avp.AuthApplicationID, avp.Mbit, 0, datatype.Unsigned32(diam.TGPP_SGD_GDD_APP_ID)),
-			diam.NewAVP(avp.AcctApplicationID, avp.Mbit, 0, datatype.Unsigned32(diam.TGPP_SGD_GDD_APP_ID)),
 		},
 	})
 	m2.NewAVP(avp.AuthSessionState, avp.Mbit, 0, datatype.Enumerated(0))
@@ -262,11 +260,10 @@ func createDiamOFR() *diam.Message {
 
 func createStructOFR() *smparser.OFR {
 	drmp := datatype.Enumerated(1)
-	vendorId := datatype.Unsigned32(10415)
+	authId := datatype.Unsigned32(diam.TGPP_SGD_GDD_APP_ID)
 	vsai := basetype.Vendor_Specific_Application_Id{
-		VendorId:          &vendorId,
-		AuthApplicationId: datatype.Unsigned32(diam.TGPP_SGD_GDD_APP_ID),
-		AcctApplicationId: datatype.Unsigned32(diam.TGPP_SGD_GDD_APP_ID),
+		VendorId:          datatype.Unsigned32(10415),
+		AuthApplicationId: &authId,
 	}
 	destHost := datatype.DiameterIdentity("dest-host")
 	supportedFeatures := basetype.Supported_Features{
