@@ -10,26 +10,27 @@ import (
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
 )
 
+// refer to 3GPP TS 29.329 6.1.6 Subscribe-Notifications-Answer
 type SNA struct {
-	SessionID                   datatype.UTF8String                     `avp:"Session-Id"`
-	DRMP                        *datatype.Enumerated                    `avp:"DRMP,omitempty"`
-	VendorSpecificApplicationId basetype.Vendor_Specific_Application_Id `avp:"Vendor-Specific-Application-Id"`
-	AuthSessionState            datatype.Enumerated                     `avp:"Auth-Session-State"`
-	ResultCode                  *datatype.Unsigned32                    `avp:"Result-Code,omitempty"`
-	ExperimentalResult          *basetype.Experimental_Result           `avp:"Experimental-Result,omitempty"`
-	OriginHost                  datatype.DiameterIdentity               `avp:"Origin-Host"`
-	OriginRealm                 datatype.DiameterIdentity               `avp:"Origin-Realm"`
-	WildcardedPublicIdentity    *datatype.UTF8String                    `avp:"Wildcarded-Public-Identity,omitempty"`
-	WildcardedIMPU              *datatype.UTF8String                    `avp:"Wildcarded-IMPU,omitempty"`
-	SupportedFeatures           []basetype.Supported_Features           `avp:"Supported-Featrues,omitempty"`
-	UserData                    *datatype.OctetString                   `avp:"User-Data,omitempty"`
-	ExpiryTime                  *datatype.Time                          `avp:"Expiry-Time,omitempty"`
-	OCSupportedFeatures         *basetype.OC_Supported_Features         `avp:"OC-Supported-Features,omitempty"`
-	OCOLR                       *basetype.OC_OLR                        `avp:"OC-OLR,omitempty"`
-	Load                        []basetype.Load                         `avp:"Load,omitempty"`
-	FailedAVP                   *basetype.Failed_AVP                    `avp:"Failed-AVP,omitempty"`
-	ProxyInfo                   []basetype.Proxy_Info                   `avp:"Proxy-Info,omitempty"`
-	RouteRecord                 []datatype.DiameterIdentity             `avp:"Route-Record,omitempty"`
+	SessionID                   datatype.UTF8String                  `avp:"Session-Id"`
+	DRMP                        *datatype.Enumerated                 `avp:"DRMP,omitempty"`
+	VendorSpecificApplicationId basetype.VendorSpecificApplicationId `avp:"Vendor-Specific-Application-Id"`
+	AuthSessionState            datatype.Enumerated                  `avp:"Auth-Session-State"`
+	ResultCode                  *datatype.Unsigned32                 `avp:"Result-Code,omitempty"`
+	ExperimentalResult          *basetype.ExperimentalResult         `avp:"Experimental-Result,omitempty"`
+	OriginHost                  datatype.DiameterIdentity            `avp:"Origin-Host"`
+	OriginRealm                 datatype.DiameterIdentity            `avp:"Origin-Realm"`
+	WildcardedPublicIdentity    *datatype.UTF8String                 `avp:"Wildcarded-Public-Identity,omitempty"`
+	WildcardedIMPU              *datatype.UTF8String                 `avp:"Wildcarded-IMPU,omitempty"`
+	SupportedFeatures           []basetype.SupportedFeatures         `avp:"Supported-Features,omitempty"`
+	UserData                    *datatype.OctetString                `avp:"User-Data,omitempty"`
+	ExpiryTime                  *datatype.Time                       `avp:"Expiry-Time,omitempty"`
+	OCSupportedFeatures         *basetype.OCSupportedFeatures        `avp:"OC-Supported-Features,omitempty"`
+	OCOLR                       *basetype.OCOLR                      `avp:"OC-OLR,omitempty"`
+	Load                        []basetype.Load                      `avp:"Load,omitempty"`
+	FailedAVP                   basetype.FailedAVP                   `avp:"Failed-AVP,omitempty"`
+	ProxyInfo                   []basetype.ProxyInfo                 `avp:"Proxy-Info,omitempty"`
+	RouteRecord                 []datatype.DiameterIdentity          `avp:"Route-Record,omitempty"`
 }
 
 // Parse parses the given message.

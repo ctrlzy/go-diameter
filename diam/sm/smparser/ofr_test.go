@@ -261,18 +261,18 @@ func createDiamOFR() *diam.Message {
 func createStructOFR() *smparser.OFR {
 	drmp := datatype.Enumerated(1)
 	authId := datatype.Unsigned32(diam.TGPP_SGD_GDD_APP_ID)
-	vsai := basetype.Vendor_Specific_Application_Id{
+	vsai := basetype.VendorSpecificApplicationId{
 		VendorId:          datatype.Unsigned32(10415),
 		AuthApplicationId: &authId,
 	}
 	destHost := datatype.DiameterIdentity("dest-host")
-	supportedFeatures := basetype.Supported_Features{
+	supportedFeatures := basetype.SupportedFeatures{
 		VendorId:      datatype.Unsigned32(10415),
 		FeatureListId: datatype.Unsigned32(1),
 		FeatureList:   datatype.Unsigned32(2),
 	}
 	msisdn := datatype.OctetString("12345678")
-	userIdentifier := basetype.User_Identifier{
+	userIdentifier := basetype.UserIdentifier{
 		Msisdn: &msisdn,
 	}
 	ofr := smparser.OFR{
@@ -285,7 +285,7 @@ func createStructOFR() *smparser.OFR {
 		DestinationHost:             &destHost,
 		DestinationRealm:            datatype.DiameterIdentity("dest-realm"),
 		ScAddress:                   datatype.OctetString("1238888888"),
-		SupportedFeatures:           []basetype.Supported_Features{supportedFeatures},
+		SupportedFeatures:           []basetype.SupportedFeatures{supportedFeatures},
 		UserIdentifier:              userIdentifier,
 		SmRpUi:                      datatype.OctetString("sm-rp-ui"),
 	}

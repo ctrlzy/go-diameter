@@ -6,34 +6,34 @@ import (
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
 )
 
-type User_Identity struct {
+type UserIdentity struct {
 	PublicIdentity     *datatype.UTF8String  `avp:"Public-Identity,omitempty"`
 	MSISDN             *datatype.OctetString `avp:"MSISDN,omitempty"`
 	ExternalIdentifier *datatype.UTF8String  `avp:"External-Identifier,omitempty"`
 }
 
-type Repository_Data_ID struct {
+type RepositoryDataID struct {
 	ServiceIndication datatype.OctetString `avp:"Service-Indication"`
 	SequenceNumber    datatype.Unsigned32  `avp:"Sequence-Number"`
 }
 
-type Call_Reference_Info struct {
+type CallReferenceInfo struct {
 	CallReferenceNumber datatype.OctetString `avp:"Call-Reference-Number"`
 	AsNumber            datatype.OctetString `avp:"AS-Number"`
 }
 
-type Supported_Applications struct {
-	AuthApplicationId           *datatype.Unsigned32            `avp:"Auth-Application-Id,omitempty"`
-	AcctApplicationId           *datatype.Unsigned32            `avp:"Acct-Application-Id,omitempty"`
-	VendorSpecificApplicationId *Vendor_Specific_Application_Id `avp:"Vendor-Specific-Application-Id,omitempty"`
+type SupportedApplications struct {
+	AuthApplicationId           *datatype.Unsigned32         `avp:"Auth-Application-Id,omitempty"`
+	AcctApplicationId           *datatype.Unsigned32         `avp:"Acct-Application-Id,omitempty"`
+	VendorSpecificApplicationId *VendorSpecificApplicationId `avp:"Vendor-Specific-Application-Id,omitempty"`
 }
 
-func (ui User_Identity) Empty() bool {
+func (ui UserIdentity) Empty() bool {
 	return (ui.PublicIdentity == nil) && (ui.MSISDN == nil) && (ui.ExternalIdentifier == nil)
 }
 
-func (u *User_Identity) String() string {
-	result := "User_Identity { "
+func (u *UserIdentity) String() string {
+	result := "UserIdentity { "
 	if u.PublicIdentity != nil {
 		result += fmt.Sprintf("PublicIdentity: %s, ", u.PublicIdentity.String())
 	}
@@ -47,15 +47,15 @@ func (u *User_Identity) String() string {
 	return result
 }
 
-func (r *Repository_Data_ID) String() string {
+func (r *RepositoryDataID) String() string {
 	return fmt.Sprintf("Repository_Data_ID { ServiceIndication: %s, SequenceNumber: %d }", r.ServiceIndication.String(), r.SequenceNumber)
 }
 
-func (c *Call_Reference_Info) String() string {
+func (c *CallReferenceInfo) String() string {
 	return fmt.Sprintf("Call_Reference_Info { CallReferenceNumber: %s, AsNumber: %s }", c.CallReferenceNumber.String(), c.AsNumber.String())
 }
 
-func (s *Supported_Applications) String() string {
+func (s *SupportedApplications) String() string {
 	result := "Supported_Applications { "
 	if s.AuthApplicationId != nil {
 		result += fmt.Sprintf("AuthApplicationId: %s, ", s.AuthApplicationId.String())

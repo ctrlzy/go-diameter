@@ -8,60 +8,60 @@ import (
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
 )
 
-type Supported_Features struct {
+type SupportedFeatures struct {
 	VendorId      datatype.Unsigned32 `avp:"Vendor-Id"`
 	FeatureListId datatype.Unsigned32 `avp:"Feature-List-ID"`
 	FeatureList   datatype.Unsigned32 `avp:"Feature-List"`
 }
 
-type SMSMI_Correlation_ID struct {
+type SMSMICorrelationID struct {
 	HssId             *datatype.UTF8String `avp:"HSS-ID,omitempty"`
 	OriginatingSipUri *datatype.UTF8String `avp:"Originating-SIP-URI,omitempty"`
 	DestinationSipUri *datatype.UTF8String `avp:"Destination-SIP-URI,omitempty"`
 }
 
-type User_Identifier struct {
+type UserIdentifier struct {
 	UserName           *datatype.UTF8String  `avp:"User-Name,omitempty"`
 	Msisdn             *datatype.OctetString `avp:"MSISDN,omitempty"`
 	ExternalIdentifier *datatype.UTF8String  `avp:"External-Identifier,omitempty"`
 	Lmsi               *datatype.OctetString `avp:"LMSI,omitempty"`
 }
 
-type SM_Delivery_Failure_Cause struct {
+type SMDeliveryFailureCause struct {
 	SmEnumeratedDeliveryFailureCause datatype.Enumerated   `avp:"SM-Enumerated-Delivery-Failure-Cause"`
 	SmDiagnosticInfo                 *datatype.OctetString `avp:"SM-Diagnostic-Info,omitempty"`
 }
 
-type SM_Delivery_Outcome struct {
-	MmeSmDeliveryOutcome    *Delivery_Outcome `avp:"MME-SM-Delivery-Outcome,omitempty"`
-	MscSmDeliveryOutcome    *Delivery_Outcome `avp:"MSC-SM-Delivery-Outcome,omitempty"`
-	SgsnSmDeliveryOutcome   *Delivery_Outcome `avp:"SGSN-SM-Delivery-Outcome,omitempty"`
-	IpsmgwSmDeliveryOutcome *Delivery_Outcome `avp:"IP-SM-GW-SM-Delivery-Outcome,omitempty"`
+type SMDeliveryOutcome struct {
+	MmeSmDeliveryOutcome    *DeliveryOutcome `avp:"MME-SM-Delivery-Outcome,omitempty"`
+	MscSmDeliveryOutcome    *DeliveryOutcome `avp:"MSC-SM-Delivery-Outcome,omitempty"`
+	SgsnSmDeliveryOutcome   *DeliveryOutcome `avp:"SGSN-SM-Delivery-Outcome,omitempty"`
+	IpsmgwSmDeliveryOutcome *DeliveryOutcome `avp:"IP-SM-GW-SM-Delivery-Outcome,omitempty"`
 }
 
-type Delivery_Outcome struct {
+type DeliveryOutcome struct {
 	SmDeliveryCause        *datatype.Enumerated `avp:"SM-Delivery-Cause,omitempty"`
 	AbsentUserDiagnosticSm *datatype.Unsigned32 `avp:"Absent-User-Diagnostic-SM,omitempty"`
 }
 
-func (ui *User_Identifier) Empty() bool {
+func (ui *UserIdentifier) Empty() bool {
 	return (ui.UserName == nil) && (ui.Msisdn == nil) && (ui.ExternalIdentifier == nil) && (ui.Lmsi == nil)
 }
 
-func (do *Delivery_Outcome) Empty() bool {
+func (do *DeliveryOutcome) Empty() bool {
 	return (do.SmDeliveryCause == nil) && (do.AbsentUserDiagnosticSm == nil)
 }
 
-func (sdo *SM_Delivery_Outcome) Empty() bool {
+func (sdo *SMDeliveryOutcome) Empty() bool {
 	return (sdo.MmeSmDeliveryOutcome == nil || sdo.MmeSmDeliveryOutcome.Empty()) && (sdo.SgsnSmDeliveryOutcome == nil || sdo.SgsnSmDeliveryOutcome.Empty()) && (sdo.IpsmgwSmDeliveryOutcome == nil || sdo.IpsmgwSmDeliveryOutcome.Empty()) && (sdo.MscSmDeliveryOutcome == nil || sdo.MscSmDeliveryOutcome.Empty())
 }
 
-func (sf *Supported_Features) String() string {
+func (sf *SupportedFeatures) String() string {
 	return fmt.Sprintf("VendorId: %d, FeatureListId: %d, FeatureList: %d",
 		sf.VendorId, sf.FeatureListId, sf.FeatureList)
 }
 
-func (smi *SMSMI_Correlation_ID) String() string {
+func (smi *SMSMICorrelationID) String() string {
 	result := "SMSMI_Correlation_ID{"
 	result += fmt.Sprintf("HssId: %s, ", smi.HssId.String())
 
@@ -75,7 +75,7 @@ func (smi *SMSMI_Correlation_ID) String() string {
 	return result
 }
 
-func (ui *User_Identifier) String() string {
+func (ui *UserIdentifier) String() string {
 	result := "User_Identifier{"
 	if ui.UserName != nil {
 		result += fmt.Sprintf("UserName: %s, ", ui.UserName.String())
@@ -93,7 +93,7 @@ func (ui *User_Identifier) String() string {
 	return result
 }
 
-func (smdf *SM_Delivery_Failure_Cause) String() string {
+func (smdf *SMDeliveryFailureCause) String() string {
 	result := "SM_Delivery_Failure_Cause{"
 	result += fmt.Sprintf("SmEnumeratedDeliveryFailureCause: %s", smdf.SmEnumeratedDeliveryFailureCause.String())
 	if smdf.SmDiagnosticInfo != nil {
@@ -103,7 +103,7 @@ func (smdf *SM_Delivery_Failure_Cause) String() string {
 	return result
 }
 
-func (smo *SM_Delivery_Outcome) String() string {
+func (smo *SMDeliveryOutcome) String() string {
 	result := "SM_Delivery_Outcome{"
 	if smo.MmeSmDeliveryOutcome != nil {
 		result += fmt.Sprintf("MmeSmDeliveryOutcome: %s, ", smo.MmeSmDeliveryOutcome.String())
@@ -121,7 +121,7 @@ func (smo *SM_Delivery_Outcome) String() string {
 	return result
 }
 
-func (d *Delivery_Outcome) String() string {
+func (d *DeliveryOutcome) String() string {
 	result := "Delivery_Outcome{"
 	if d.SmDeliveryCause != nil {
 		result += fmt.Sprintf("SmDeliveryCause: %s, ", d.SmDeliveryCause.String())
@@ -134,7 +134,7 @@ func (d *Delivery_Outcome) String() string {
 }
 
 // encode Supported-Features struct to grouped AVP
-func (sf *Supported_Features) ToDiam() *diam.GroupedAVP {
+func (sf *SupportedFeatures) Serialize() *diam.GroupedAVP {
 	return &diam.GroupedAVP{
 		AVP: []*diam.AVP{
 			diam.NewAVP(avp.VendorID, avp.Mbit, 0, sf.VendorId),
@@ -145,7 +145,7 @@ func (sf *Supported_Features) ToDiam() *diam.GroupedAVP {
 }
 
 // encode SMSMI-Correlation-ID struct to grouped AVP
-func (smiId *SMSMI_Correlation_ID) ToDiam() *diam.GroupedAVP {
+func (smiId *SMSMICorrelationID) Serialize() *diam.GroupedAVP {
 	a := diam.GroupedAVP{
 		AVP: []*diam.AVP{},
 	}
@@ -162,7 +162,7 @@ func (smiId *SMSMI_Correlation_ID) ToDiam() *diam.GroupedAVP {
 }
 
 // encode User-Identifier struct to grouped AVP
-func (ui *User_Identifier) ToDiam() *diam.GroupedAVP {
+func (ui *UserIdentifier) Serialize() *diam.GroupedAVP {
 	a := diam.GroupedAVP{
 		AVP: []*diam.AVP{},
 	}

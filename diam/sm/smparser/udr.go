@@ -10,37 +10,38 @@ import (
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
 )
 
+// refer to 3GPP TS 29.329 6.1.1 User-Data-Request
 type UDR struct {
-	SessionID                   datatype.UTF8String                     `avp:"Session-Id"`
-	DRMP                        *datatype.Enumerated                    `avp:"DRMP,omitempty"`
-	VendorSpecificApplicationId basetype.Vendor_Specific_Application_Id `avp:"Vendor-Specific-Application-Id"`
-	AuthSessionState            datatype.Enumerated                     `avp:"Auth-Session-State"`
-	OriginHost                  datatype.DiameterIdentity               `avp:"Origin-Host"`
-	OriginRealm                 datatype.DiameterIdentity               `avp:"Origin-Realm"`
-	DestinationHost             *datatype.DiameterIdentity              `avp:"Destination-Host,omitempty"`
-	DestinationRealm            datatype.DiameterIdentity               `avp:"Destination-Realm"`
-	SupportedFeatures           []basetype.Supported_Features           `avp:"Supported-Featrues,omitempty"`
-	UserIdentity                basetype.User_Identity                  `avp:"User-Identity"`
-	WildcardedPublicIdentity    *datatype.UTF8String                    `avp:"Wildcarded-Public-Identity,omitempty"`
-	WildcardedIMPU              *datatype.UTF8String                    `avp:"Wildcarded-IMPU,omitempty"`
-	ServerName                  *datatype.UTF8String                    `avp:"Server-Name,omitempty"`
-	ServiceIndication           []datatype.OctetString                  `avp:"Service-Indication,omitempty"`
-	DataReference               []datatype.Enumerated                   `avp:"Data-Reference"`
-	IdentitySet                 []datatype.Enumerated                   `avp:"Identity-Set,omitempty"`
-	RequestedDomain             *datatype.Enumerated                    `avp:"Requested-Domain,omitempty"`
-	CurrentLocation             *datatype.Enumerated                    `avp:"Current-Location,omitempty"`
-	DsaiTag                     []datatype.OctetString                  `avp:"DSAI-Tag,omitempty"`
-	SessionPriority             *datatype.Enumerated                    `avp:"Session-Priority,omitempty"`
-	UserName                    *datatype.UTF8String                    `avp:"User-Name,omitempty"`
-	RequestedNodes              *datatype.Unsigned32                    `avp:"Requested-Nodes,omitempty"`
-	ServingNodeIndication       *datatype.Enumerated                    `avp:"Serving-Node-Indication,omitempty"`
-	PrePagingSupported          *datatype.Enumerated                    `avp:"Pre-paging-Supported,omitempty"`
-	LocalTimeZoneIndication     *datatype.Enumerated                    `avp:"Local-Time-Zone-Indication,omitempty"`
-	UDRFlags                    *datatype.Unsigned32                    `avp:"UDR-Flags,omitempty"`
-	CallReferenceInfo           *basetype.Call_Reference_Info           `avp:"Call-Reference-Info,omitempty"`
-	OCSupportedFeatures         *basetype.OC_Supported_Features         `avp:"OC-Supported-Features,omitempty"`
-	ProxyInfo                   []basetype.Proxy_Info                   `avp:"Proxy-Info,omitempty"`
-	RouteRecord                 []datatype.DiameterIdentity             `avp:"Route-Record,omitempty"`
+	SessionID                   datatype.UTF8String                  `avp:"Session-Id"`
+	DRMP                        *datatype.Enumerated                 `avp:"DRMP,omitempty"`
+	VendorSpecificApplicationId basetype.VendorSpecificApplicationId `avp:"Vendor-Specific-Application-Id"`
+	AuthSessionState            datatype.Enumerated                  `avp:"Auth-Session-State"`
+	OriginHost                  datatype.DiameterIdentity            `avp:"Origin-Host"`
+	OriginRealm                 datatype.DiameterIdentity            `avp:"Origin-Realm"`
+	DestinationHost             *datatype.DiameterIdentity           `avp:"Destination-Host,omitempty"`
+	DestinationRealm            datatype.DiameterIdentity            `avp:"Destination-Realm"`
+	SupportedFeatures           []basetype.SupportedFeatures         `avp:"Supported-Features,omitempty"`
+	UserIdentity                basetype.UserIdentity                `avp:"User-Identity"`
+	WildcardedPublicIdentity    *datatype.UTF8String                 `avp:"Wildcarded-Public-Identity,omitempty"`
+	WildcardedIMPU              *datatype.UTF8String                 `avp:"Wildcarded-IMPU,omitempty"`
+	ServerName                  *datatype.UTF8String                 `avp:"Server-Name,omitempty"`
+	ServiceIndication           []datatype.OctetString               `avp:"Service-Indication,omitempty"`
+	DataReference               []datatype.Enumerated                `avp:"Data-Reference"`
+	IdentitySet                 []datatype.Enumerated                `avp:"Identity-Set,omitempty"`
+	RequestedDomain             *datatype.Enumerated                 `avp:"Requested-Domain,omitempty"`
+	CurrentLocation             *datatype.Enumerated                 `avp:"Current-Location,omitempty"`
+	DsaiTag                     []datatype.OctetString               `avp:"DSAI-Tag,omitempty"`
+	SessionPriority             *datatype.Enumerated                 `avp:"Session-Priority,omitempty"`
+	UserName                    *datatype.UTF8String                 `avp:"User-Name,omitempty"`
+	RequestedNodes              *datatype.Unsigned32                 `avp:"Requested-Nodes,omitempty"`
+	ServingNodeIndication       *datatype.Enumerated                 `avp:"Serving-Node-Indication,omitempty"`
+	PrePagingSupported          *datatype.Enumerated                 `avp:"Pre-paging-Supported,omitempty"`
+	LocalTimeZoneIndication     *datatype.Enumerated                 `avp:"Local-Time-Zone-Indication,omitempty"`
+	UDRFlags                    *datatype.Unsigned32                 `avp:"UDR-Flags,omitempty"`
+	CallReferenceInfo           *basetype.CallReferenceInfo          `avp:"Call-Reference-Info,omitempty"`
+	OCSupportedFeatures         *basetype.OCSupportedFeatures        `avp:"OC-Supported-Features,omitempty"`
+	ProxyInfo                   []basetype.ProxyInfo                 `avp:"Proxy-Info,omitempty"`
+	RouteRecord                 []datatype.DiameterIdentity          `avp:"Route-Record,omitempty"`
 }
 
 // Parse parses and validates the given message, and returns nil when

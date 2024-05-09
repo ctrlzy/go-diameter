@@ -12,11 +12,11 @@ import (
 
 func TestVendorSpecificApplicationIdToDiam(t *testing.T) {
 	authId := datatype.Unsigned32(123)
-	vsai := basetype.Vendor_Specific_Application_Id{
+	vsai := basetype.VendorSpecificApplicationId{
 		VendorId:          datatype.Unsigned32(10415),
 		AuthApplicationId: &authId,
 	}
-	m1 := vsai.ToDiam()
+	m1 := vsai.Serialize()
 	m2 := diam.GroupedAVP{
 		AVP: []*diam.AVP{
 			diam.NewAVP(avp.VendorID, avp.Mbit, 0, datatype.Unsigned32(0)),
@@ -29,11 +29,11 @@ func TestVendorSpecificApplicationIdToDiam(t *testing.T) {
 
 func TestVendorSpecificApplicationIdWithoutOptionalFieldToDiam(t *testing.T) {
 	authId := datatype.Unsigned32(123)
-	vsai := basetype.Vendor_Specific_Application_Id{
+	vsai := basetype.VendorSpecificApplicationId{
 		VendorId:          datatype.Unsigned32(10415),
 		AuthApplicationId: &authId,
 	}
-	m1 := vsai.ToDiam()
+	m1 := vsai.Serialize()
 	m2 := diam.GroupedAVP{
 		AVP: []*diam.AVP{
 			diam.NewAVP(avp.AuthApplicationID, avp.Mbit, 0, datatype.Unsigned32(123)),
@@ -45,10 +45,10 @@ func TestVendorSpecificApplicationIdWithoutOptionalFieldToDiam(t *testing.T) {
 
 func TestOCSupportedFeaturesToDiam(t *testing.T) {
 	vector := datatype.Unsigned64(123)
-	ocsf := basetype.OC_Supported_Features{
+	ocsf := basetype.OCSupportedFeatures{
 		OcFeatureVector: &vector,
 	}
-	m1 := ocsf.ToDiam()
+	m1 := ocsf.Serialize()
 	m2 := diam.GroupedAVP{
 		AVP: []*diam.AVP{
 			diam.NewAVP(avp.OCFeatureVector, 0, 0, datatype.Unsigned64(123)),
@@ -60,13 +60,13 @@ func TestOCSupportedFeaturesToDiam(t *testing.T) {
 func TestOCOLRToDiam(t *testing.T) {
 	per := datatype.Unsigned32(456)
 	val := datatype.Unsigned32(789)
-	olr := basetype.OC_OLR{
+	olr := basetype.OCOLR{
 		OcSequenceNumber:      datatype.Unsigned64(123),
 		OcReportType:          datatype.Enumerated(1),
 		OcReductionPercentage: &per,
 		OcValidityDuration:    &val,
 	}
-	m1 := olr.ToDiam()
+	m1 := olr.Serialize()
 	m2 := diam.GroupedAVP{
 		AVP: []*diam.AVP{
 			diam.NewAVP(avp.OCSequenceNumber, 0, 0, datatype.Unsigned64(123)),
@@ -79,11 +79,11 @@ func TestOCOLRToDiam(t *testing.T) {
 }
 
 func TestOCOLRTWithoutOptionalFieldoDiam(t *testing.T) {
-	olr := basetype.OC_OLR{
+	olr := basetype.OCOLR{
 		OcSequenceNumber: datatype.Unsigned64(123),
 		OcReportType:     datatype.Enumerated(1),
 	}
-	m1 := olr.ToDiam()
+	m1 := olr.Serialize()
 	m2 := diam.GroupedAVP{
 		AVP: []*diam.AVP{
 			diam.NewAVP(avp.OCSequenceNumber, 0, 0, datatype.Unsigned64(123)),
@@ -94,11 +94,11 @@ func TestOCOLRTWithoutOptionalFieldoDiam(t *testing.T) {
 }
 
 func TestProxyInfoToDiam(t *testing.T) {
-	info := basetype.Proxy_Info{
+	info := basetype.ProxyInfo{
 		ProxyHost:  datatype.DiameterIdentity("abc"),
 		ProxyState: datatype.OctetString("888"),
 	}
-	m1 := info.ToDiam()
+	m1 := info.Serialize()
 	m2 := diam.GroupedAVP{
 		AVP: []*diam.AVP{
 			diam.NewAVP(avp.ProxyHost, avp.Mbit, 0, datatype.DiameterIdentity("abc")),
@@ -109,11 +109,11 @@ func TestProxyInfoToDiam(t *testing.T) {
 }
 
 func TestExperimentalResultToDiam(t *testing.T) {
-	result := basetype.Experimental_Result{
+	result := basetype.ExperimentalResult{
 		VendorId:               datatype.Unsigned32(123),
 		ExperimentalResultCode: datatype.Unsigned32(456),
 	}
-	m1 := result.ToDiam()
+	m1 := result.Serialize()
 	m2 := diam.GroupedAVP{
 		AVP: []*diam.AVP{
 			diam.NewAVP(avp.VendorID, avp.Mbit, 0, datatype.Unsigned32(123)),

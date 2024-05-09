@@ -13,28 +13,28 @@ import (
 // TFR refers to Mt-Forward-Short-Message-Request.
 // See 3GPP TS 29.338 Clause 6.3.2.5 for details
 type TFR struct {
-	SessionId                   datatype.UTF8String                      `avp:"Session-Id"`
-	Drmp                        *datatype.Enumerated                     `avp:"DRMP,omitempty"`
-	VendorSpecificApplicationId *basetype.Vendor_Specific_Application_Id `avp:"Vendor-Specific-Application-Id,omitempty"`
-	AuthSessionState            datatype.Enumerated                      `avp:"Auth-Session-State"`
-	OriginHost                  datatype.DiameterIdentity                `avp:"Origin-Host"`
-	OriginRealm                 datatype.DiameterIdentity                `avp:"Origin-Realm"`
-	DestinationHost             datatype.DiameterIdentity                `avp:"Destination-Host"`
-	DestinationRealm            datatype.DiameterIdentity                `avp:"Destination-Realm"`
-	UserName                    datatype.UTF8String                      `avp:"User-Name"`
-	SupportedFeatures           []basetype.Supported_Features            `avp:"Supported-Features,omitempty"`
-	SmsmiCorrelationId          *basetype.SMSMI_Correlation_ID           `avp:"SMSMI-Correlation-ID,omitempty"`
-	ScAddress                   datatype.OctetString                     `avp:"SC-Address"`
-	SmRpUi                      datatype.OctetString                     `avp:"SM-RP-UI"`
-	MmeNumberForMtSms           *datatype.OctetString                    `avp:"MME-Number-for-MT-SMS,omitempty"`
-	SgsnNumber                  *datatype.OctetString                    `avp:"SGSN-Number,omitempty"`
-	TfrFlags                    *datatype.Unsigned32                     `avp:"TFR-Flags,omitempty"`
-	SmDeliveryTimer             *datatype.Unsigned32                     `avp:"SM-Delivery-Timer,omitempty"`
-	SmDeliveryStartTime         *datatype.Time                           `avp:"SM-Delivery-Start-Time,omitempty"`
-	MaximumRetransmissionTime   *datatype.Time                           `avp:"Maximum-Retransmission-Time,omitempty"`
-	SmsGmscAddress              *datatype.OctetString                    `avp:"SMS-GMSC-Address,omitempty"`
-	ProxyInfo                   []basetype.Proxy_Info                    `avp:"Proxy-Info,omitempty"`
-	RouteRecord                 []datatype.DiameterIdentity              `avp:"Route-Record,omitempty"`
+	SessionId                   datatype.UTF8String                   `avp:"Session-Id"`
+	Drmp                        *datatype.Enumerated                  `avp:"DRMP,omitempty"`
+	VendorSpecificApplicationId *basetype.VendorSpecificApplicationId `avp:"Vendor-Specific-Application-Id,omitempty"`
+	AuthSessionState            datatype.Enumerated                   `avp:"Auth-Session-State"`
+	OriginHost                  datatype.DiameterIdentity             `avp:"Origin-Host"`
+	OriginRealm                 datatype.DiameterIdentity             `avp:"Origin-Realm"`
+	DestinationHost             datatype.DiameterIdentity             `avp:"Destination-Host"`
+	DestinationRealm            datatype.DiameterIdentity             `avp:"Destination-Realm"`
+	UserName                    datatype.UTF8String                   `avp:"User-Name"`
+	SupportedFeatures           []basetype.SupportedFeatures          `avp:"Supported-Features,omitempty"`
+	SmsmiCorrelationId          *basetype.SMSMICorrelationID          `avp:"SMSMI-Correlation-ID,omitempty"`
+	ScAddress                   datatype.OctetString                  `avp:"SC-Address"`
+	SmRpUi                      datatype.OctetString                  `avp:"SM-RP-UI"`
+	MmeNumberForMtSms           *datatype.OctetString                 `avp:"MME-Number-for-MT-SMS,omitempty"`
+	SgsnNumber                  *datatype.OctetString                 `avp:"SGSN-Number,omitempty"`
+	TfrFlags                    *datatype.Unsigned32                  `avp:"TFR-Flags,omitempty"`
+	SmDeliveryTimer             *datatype.Unsigned32                  `avp:"SM-Delivery-Timer,omitempty"`
+	SmDeliveryStartTime         *datatype.Time                        `avp:"SM-Delivery-Start-Time,omitempty"`
+	MaximumRetransmissionTime   *datatype.Time                        `avp:"Maximum-Retransmission-Time,omitempty"`
+	SmsGmscAddress              *datatype.OctetString                 `avp:"SMS-GMSC-Address,omitempty"`
+	ProxyInfo                   []basetype.ProxyInfo                  `avp:"Proxy-Info,omitempty"`
+	RouteRecord                 []datatype.DiameterIdentity           `avp:"Route-Record,omitempty"`
 }
 
 // Parse parses the given message.
@@ -156,7 +156,7 @@ func (t *TFR) String() string {
 	return result
 }
 
-func (tfr *TFR) ToDiam() *diam.Message {
+func (tfr *TFR) Serialize() *diam.Message {
 	// TODO: change dict.Default to base and SGD/GDD？
 	m := diam.NewRequest(diam.MTForwardShortMessage, diam.TGPP_SGD_GDD_APP_ID, dict.Default)
 	m.NewAVP(avp.SessionID, avp.Mbit, 0, tfr.SessionId)
@@ -164,7 +164,7 @@ func (tfr *TFR) ToDiam() *diam.Message {
 		m.NewAVP(avp.DRMP, 0, 0, *tfr.Drmp)
 	}
 	if tfr.VendorSpecificApplicationId != nil {
-		m.NewAVP(avp.VendorSpecificApplicationID, avp.Mbit, 0, tfr.VendorSpecificApplicationId.ToDiam())
+		m.NewAVP(avp.VendorSpecificApplicationID, avp.Mbit, 0, tfr.VendorSpecificApplicationId.Serialize())
 	}
 	m.NewAVP(avp.AuthSessionState, avp.Mbit, 0, tfr.AuthSessionState)
 	m.NewAVP(avp.OriginHost, avp.Mbit, 0, tfr.OriginHost)
@@ -174,11 +174,11 @@ func (tfr *TFR) ToDiam() *diam.Message {
 	m.NewAVP(avp.UserName, avp.Mbit, 0, tfr.UserName)
 	if len(tfr.SupportedFeatures) > 0 {
 		for _, sf := range tfr.SupportedFeatures {
-			m.NewAVP(avp.SupportedFeatures, avp.Vbit, 10415, sf.ToDiam())
+			m.NewAVP(avp.SupportedFeatures, avp.Vbit, 10415, sf.Serialize())
 		}
 	}
 	if tfr.SmsmiCorrelationId != nil {
-		m.NewAVP(avp.SMSMICorrelationID, avp.Vbit, 10415, tfr.SmsmiCorrelationId.ToDiam())
+		m.NewAVP(avp.SMSMICorrelationID, avp.Vbit, 10415, tfr.SmsmiCorrelationId.Serialize())
 	}
 	m.NewAVP(avp.SCAddress, avp.Mbit|avp.Vbit, 10415, tfr.ScAddress)
 	m.NewAVP(avp.SMRPUI, avp.Mbit|avp.Vbit, 10415, tfr.SmRpUi)
@@ -205,7 +205,7 @@ func (tfr *TFR) ToDiam() *diam.Message {
 	}
 	if len(tfr.ProxyInfo) > 0 {
 		for _, pi := range tfr.ProxyInfo {
-			m.NewAVP(avp.ProxyInfo, avp.Mbit, 0, pi.ToDiam())
+			m.NewAVP(avp.ProxyInfo, avp.Mbit, 0, pi.Serialize())
 		}
 	}
 	if len(tfr.RouteRecord) > 0 {

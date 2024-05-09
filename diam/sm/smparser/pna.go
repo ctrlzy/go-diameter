@@ -10,19 +10,20 @@ import (
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
 )
 
+// refer to 3GPP TS 29.329 6.1.8 Push-Notification-Answer
 type PNA struct {
-	SessionID                   datatype.UTF8String                     `avp:"Session-Id"`
-	DRMP                        *datatype.Enumerated                    `avp:"DRMP,omitempty"`
-	VendorSpecificApplicationId basetype.Vendor_Specific_Application_Id `avp:"Vendor-Specific-Application-Id"`
-	ResultCode                  *datatype.Unsigned32                    `avp:"Result-Code,omitempty"`
-	ExperimentalResult          *basetype.Experimental_Result           `avp:"Experimental-Result,omitempty"`
-	AuthSessionState            datatype.Enumerated                     `avp:"Auth-Session-State"`
-	OriginHost                  datatype.DiameterIdentity               `avp:"Origin-Host"`
-	OriginRealm                 datatype.DiameterIdentity               `avp:"Origin-Realm"`
-	SupportedFeatures           []basetype.Supported_Features           `avp:"Supported-Featrues,omitempty"`
-	FailedAVP                   *basetype.Failed_AVP                    `avp:"Failed-AVP,omitempty"`
-	ProxyInfo                   []basetype.Proxy_Info                   `avp:"Proxy-Info,omitempty"`
-	RouteRecord                 []datatype.DiameterIdentity             `avp:"Route-Record,omitempty"`
+	SessionID                   datatype.UTF8String                  `avp:"Session-Id"`
+	DRMP                        *datatype.Enumerated                 `avp:"DRMP,omitempty"`
+	VendorSpecificApplicationId basetype.VendorSpecificApplicationId `avp:"Vendor-Specific-Application-Id"`
+	ResultCode                  *datatype.Unsigned32                 `avp:"Result-Code,omitempty"`
+	ExperimentalResult          *basetype.ExperimentalResult         `avp:"Experimental-Result,omitempty"`
+	AuthSessionState            datatype.Enumerated                  `avp:"Auth-Session-State"`
+	OriginHost                  datatype.DiameterIdentity            `avp:"Origin-Host"`
+	OriginRealm                 datatype.DiameterIdentity            `avp:"Origin-Realm"`
+	SupportedFeatures           []basetype.SupportedFeatures         `avp:"Supported-Features,omitempty"`
+	FailedAVP                   basetype.FailedAVP                   `avp:"Failed-AVP,omitempty"`
+	ProxyInfo                   []basetype.ProxyInfo                 `avp:"Proxy-Info,omitempty"`
+	RouteRecord                 []datatype.DiameterIdentity          `avp:"Route-Record,omitempty"`
 }
 
 // Parse parses the given message.

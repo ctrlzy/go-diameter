@@ -215,19 +215,19 @@ func createDiamRDR() *diam.Message {
 
 func createStructRDR() *smparser.RDR {
 	authId := datatype.Unsigned32(123)
-	vsai := basetype.Vendor_Specific_Application_Id{
+	vsai := basetype.VendorSpecificApplicationId{
 		VendorId:          datatype.Unsigned32(10415),
 		AuthApplicationId: &authId,
 	}
 	destHost := datatype.DiameterIdentity("dest-host")
 	msisdn := datatype.OctetString("12345")
-	userIdentifier := basetype.User_Identifier{
+	userIdentifier := basetype.UserIdentifier{
 		Msisdn: &msisdn,
 	}
 	deliverCause := datatype.Enumerated(1)
 	absentUserDiagnosticSm := datatype.Unsigned32(11)
-	smDeliveryOutcome := basetype.SM_Delivery_Outcome{
-		MmeSmDeliveryOutcome: &basetype.Delivery_Outcome{
+	smDeliveryOutcome := basetype.SMDeliveryOutcome{
+		MmeSmDeliveryOutcome: &basetype.DeliveryOutcome{
 			SmDeliveryCause:        &deliverCause,
 			AbsentUserDiagnosticSm: &absentUserDiagnosticSm,
 		},

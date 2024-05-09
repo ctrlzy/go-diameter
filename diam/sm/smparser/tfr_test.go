@@ -180,7 +180,7 @@ func TestToDiam_OK(t *testing.T) {
 	assert.Nil(t, err)
 	m1s, err := m1.Serialize()
 	assert.Nil(t, err)
-	m2 := tfr.ToDiam()
+	m2 := tfr.Serialize()
 	m2.Header.EndToEndID = m1.Header.EndToEndID
 	m2.Header.HopByHopID = m1.Header.HopByHopID
 	m2s, err := m2.Serialize()
@@ -210,7 +210,7 @@ func createDiamTFR(ti time.Time) *diam.Message {
 func createStructTFR() *smparser.TFR {
 	drmp := datatype.Enumerated(1)
 	authId := datatype.Unsigned32(123)
-	vsai := basetype.Vendor_Specific_Application_Id{
+	vsai := basetype.VendorSpecificApplicationId{
 		VendorId:          datatype.Unsigned32(10415),
 		AuthApplicationId: &authId,
 	}
@@ -259,7 +259,7 @@ func BenchmarkCreateDiamTFR(b *testing.B) {
 func BenchmarkTFRToDiam(b *testing.B) {
 	tfr := createStructTFR()
 	for n := 0; n < b.N; n++ {
-		_ = tfr.ToDiam()
+		_ = tfr.Serialize()
 	}
 }
 
@@ -280,7 +280,7 @@ func BenchmarkReadTFR(b *testing.B) {
 func BenchmarkWriteTFR(b *testing.B) {
 	tfr := createStructTFR()
 	for n := 0; n < b.N; n++ {
-		m := tfr.ToDiam()
+		m := tfr.Serialize()
 		m.WriteTo(io.Discard)
 	}
 }

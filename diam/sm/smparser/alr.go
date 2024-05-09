@@ -11,23 +11,23 @@ import (
 // ALR is a Alert-Service-Centre-Request message.
 // See 3GPP TS 29.338 section 5.3.2.5 for details.
 type ALR struct {
-	SessionId                   datatype.UTF8String                      `avp:"Session-Id"`
-	Drmp                        *datatype.Enumerated                     `avp:"DRMP,omitempty"`
-	VendorSpecificApplicationId *basetype.Vendor_Specific_Application_Id `avp:"Vendor-Specific-Application-Id,omitempty"`
-	AuthSessionState            datatype.Enumerated                      `avp:"Auth-Session-State"`
-	OriginHost                  datatype.DiameterIdentity                `avp:"Origin-Host"`
-	OriginRealm                 datatype.DiameterIdentity                `avp:"Origin-Realm"`
-	DestinationHost             *datatype.DiameterIdentity               `avp:"Destination-Host,omitempty"`
-	DestinationRealm            datatype.DiameterIdentity                `avp:"Destination-Realm"`
-	ScAddress                   datatype.OctetString                     `avp:"SC-Address"`
-	UserIdentifier              basetype.User_Identifier                 `avp:"User-Identifier"`
-	SmsmiCorrelationId          *basetype.SMSMI_Correlation_ID           `avp:"SMSMI-Correlation-ID,omitempty"`
-	MaximumUeAvailabilityTime   *datatype.Time                           `avp:"Maximum-UE-Availability-Time,omitempty"`
-	SmsGmscAlertEvent           *datatype.Unsigned32                     `avp:"SMS-GMSC-Alert-Event,omitempty"`
-	ServingNode                 *basetype.Serving_Node                   `avp:"Serving-Node,omitempty"`
-	SupportedFeatures           []basetype.Supported_Features            `avp:"Supported-Features,omitempty"`
-	ProxyInfo                   []basetype.Proxy_Info                    `avp:"Proxy-Info,omitempty"`
-	RouteRecord                 []datatype.DiameterIdentity              `avp:"Route-Record,omitempty"`
+	SessionId                   datatype.UTF8String                   `avp:"Session-Id"`
+	Drmp                        *datatype.Enumerated                  `avp:"DRMP,omitempty"`
+	VendorSpecificApplicationId *basetype.VendorSpecificApplicationId `avp:"Vendor-Specific-Application-Id,omitempty"`
+	AuthSessionState            datatype.Enumerated                   `avp:"Auth-Session-State"`
+	OriginHost                  datatype.DiameterIdentity             `avp:"Origin-Host"`
+	OriginRealm                 datatype.DiameterIdentity             `avp:"Origin-Realm"`
+	DestinationHost             *datatype.DiameterIdentity            `avp:"Destination-Host,omitempty"`
+	DestinationRealm            datatype.DiameterIdentity             `avp:"Destination-Realm"`
+	ScAddress                   datatype.OctetString                  `avp:"SC-Address"`
+	UserIdentifier              basetype.UserIdentifier               `avp:"User-Identifier"`
+	SmsmiCorrelationId          *basetype.SMSMICorrelationID          `avp:"SMSMI-Correlation-ID,omitempty"`
+	MaximumUeAvailabilityTime   *datatype.Time                        `avp:"Maximum-UE-Availability-Time,omitempty"`
+	SmsGmscAlertEvent           *datatype.Unsigned32                  `avp:"SMS-GMSC-Alert-Event,omitempty"`
+	ServingNode                 *basetype.ServingNode                 `avp:"Serving-Node,omitempty"`
+	SupportedFeatures           []basetype.SupportedFeatures          `avp:"Supported-Features,omitempty"`
+	ProxyInfo                   []basetype.ProxyInfo                  `avp:"Proxy-Info,omitempty"`
+	RouteRecord                 []datatype.DiameterIdentity           `avp:"Route-Record,omitempty"`
 }
 
 // Parse parses the given message.

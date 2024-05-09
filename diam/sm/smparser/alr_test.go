@@ -169,18 +169,18 @@ func createDiamALR() *diam.Message {
 func createStructALR() *smparser.ALR {
 	drmp := datatype.Enumerated(1)
 	authId := datatype.Unsigned32(123)
-	vsai := basetype.Vendor_Specific_Application_Id{
+	vsai := basetype.VendorSpecificApplicationId{
 		VendorId:          datatype.Unsigned32(10415),
 		AuthApplicationId: &authId,
 	}
 	msisdn := datatype.OctetString("12345")
-	userIdentifier := basetype.User_Identifier{
+	userIdentifier := basetype.UserIdentifier{
 		Msisdn: &msisdn,
 	}
 	mmeName := datatype.DiameterIdentity("mme-name")
 	mmeRealm := datatype.DiameterIdentity("mme-realm")
 	mmeNumber := datatype.OctetString("mme number")
-	servingNode := basetype.Serving_Node{
+	servingNode := basetype.ServingNode{
 		MmeName:           &mmeName,
 		MmeRealm:          &mmeRealm,
 		MmeNumberForMtSms: &mmeNumber,

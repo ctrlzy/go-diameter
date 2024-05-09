@@ -8,34 +8,34 @@ import (
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
 )
 
-type Vendor_Specific_Application_Id struct {
+type VendorSpecificApplicationId struct {
 	VendorId          datatype.Unsigned32  `avp:"Vendor-Id"`
 	AuthApplicationId *datatype.Unsigned32 `avp:"Auth-Application-Id,omitempty"`
 	AcctApplicationId *datatype.Unsigned32 `avp:"Acct-Application-Id,omitempty"`
 }
 
-type OC_Supported_Features struct {
+type OCSupportedFeatures struct {
 	OcFeatureVector *datatype.Unsigned64 `avp:"OC-Feature-Vector,omitempty"`
 }
 
-type OC_OLR struct {
+type OCOLR struct {
 	OcSequenceNumber      datatype.Unsigned64  `avp:"OC-Sequence-Number"`
 	OcReportType          datatype.Enumerated  `avp:"OC-Report-Type"`
 	OcReductionPercentage *datatype.Unsigned32 `avp:"OC-Reduction-Percentage,omitempty"`
 	OcValidityDuration    *datatype.Unsigned32 `avp:"OC-Validity-Duration,omitempty"`
 }
 
-type Proxy_Info struct {
+type ProxyInfo struct {
 	ProxyHost  datatype.DiameterIdentity `avp:"Proxy-Host"`
 	ProxyState datatype.OctetString      `avp:"Proxy-State"`
 }
 
-type Experimental_Result struct {
+type ExperimentalResult struct {
 	VendorId               datatype.Unsigned32 `avp:"Vendor-Id"`
 	ExperimentalResultCode datatype.Unsigned32 `avp:"Experimental-Result-Code"`
 }
 
-type Failed_AVP []*diam.AVP
+type FailedAVP []*diam.AVP
 
 type Load struct {
 	LoadType  *datatype.Enumerated       `avp:"Load-Type,omitempty"`
@@ -43,11 +43,11 @@ type Load struct {
 	SourceID  *datatype.DiameterIdentity `avp:"SourceID,omitempty"`
 }
 
-func (vsa *Vendor_Specific_Application_Id) Empty() bool {
+func (vsa *VendorSpecificApplicationId) Empty() bool {
 	return vsa.AcctApplicationId == nil && vsa.AuthApplicationId == nil
 }
 
-func (vsa *Vendor_Specific_Application_Id) String() string {
+func (vsa *VendorSpecificApplicationId) String() string {
 	if vsa.AcctApplicationId != nil {
 		return fmt.Sprintf("VendorId: %s, AcctApplicationId: %v", vsa.VendorId.String(), vsa.AcctApplicationId.String())
 	}
@@ -57,7 +57,7 @@ func (vsa *Vendor_Specific_Application_Id) String() string {
 	return vsa.VendorId.String()
 }
 
-func (osf *OC_Supported_Features) String() string {
+func (osf *OCSupportedFeatures) String() string {
 	if osf.OcFeatureVector != nil {
 		return fmt.Sprintf("OcFeatureVector: %v", osf.OcFeatureVector.String())
 	} else {
@@ -65,7 +65,7 @@ func (osf *OC_Supported_Features) String() string {
 	}
 }
 
-func (olr *OC_OLR) String() string {
+func (olr *OCOLR) String() string {
 	redPct := "nil"
 	if olr.OcReductionPercentage != nil {
 		redPct = fmt.Sprintf("%v", olr.OcReductionPercentage.String())
@@ -80,16 +80,29 @@ func (olr *OC_OLR) String() string {
 		olr.OcSequenceNumber, olr.OcReportType, redPct, valDur)
 }
 
-func (info *Proxy_Info) String() string {
+func (info *ProxyInfo) String() string {
 	return fmt.Sprintf("ProxyHost: %s, ProxyState: %s", info.ProxyHost.String(), info.ProxyState.String())
 }
 
-func (result *Experimental_Result) String() string {
+func (result *ExperimentalResult) String() string {
 	return fmt.Sprintf("VendorId: %d, ExperimentalResultCode: %d", result.VendorId, result.ExperimentalResultCode)
 }
 
+func (a FailedAVP) String() string {
+	if len(a) > 0 {
+		s := "FailedAVP: {"
+		for _, avp := range a {
+			s += avp.String()
+			s += ", "
+		}
+		s += "}"
+		return s
+	}
+	return ""
+}
+
 // encode Vendor-Specific-Application-Id struct to grouped AVP
-func (vsid *Vendor_Specific_Application_Id) ToDiam() *diam.GroupedAVP {
+func (vsid *VendorSpecificApplicationId) Serialize() *diam.GroupedAVP {
 	a := diam.GroupedAVP{
 		AVP: []*diam.AVP{},
 	}
@@ -105,7 +118,7 @@ func (vsid *Vendor_Specific_Application_Id) ToDiam() *diam.GroupedAVP {
 }
 
 // encode Proxy-Info struct to grouped AVP
-func (pi *Proxy_Info) ToDiam() *diam.GroupedAVP {
+func (pi *ProxyInfo) Serialize() *diam.GroupedAVP {
 	return &diam.GroupedAVP{
 		AVP: []*diam.AVP{
 			diam.NewAVP(avp.ProxyHost, avp.Mbit, 0, pi.ProxyHost),
@@ -115,7 +128,7 @@ func (pi *Proxy_Info) ToDiam() *diam.GroupedAVP {
 }
 
 // encode OC-Supported-Features struct to grouped AVP
-func (ocsf *OC_Supported_Features) ToDiam() *diam.GroupedAVP {
+func (ocsf *OCSupportedFeatures) Serialize() *diam.GroupedAVP {
 	a := diam.GroupedAVP{
 		AVP: []*diam.AVP{},
 	}
@@ -126,7 +139,7 @@ func (ocsf *OC_Supported_Features) ToDiam() *diam.GroupedAVP {
 }
 
 // encode OC-OLR struct to grouped AVP
-func (olr *OC_OLR) ToDiam() *diam.GroupedAVP {
+func (olr *OCOLR) Serialize() *diam.GroupedAVP {
 	a := diam.GroupedAVP{
 		AVP: []*diam.AVP{
 			diam.NewAVP(avp.OCSequenceNumber, 0, 0, olr.OcSequenceNumber),
@@ -143,7 +156,7 @@ func (olr *OC_OLR) ToDiam() *diam.GroupedAVP {
 }
 
 // Encode Experimental-Result struct to grouped AVP
-func (er *Experimental_Result) ToDiam() *diam.GroupedAVP {
+func (er *ExperimentalResult) Serialize() *diam.GroupedAVP {
 	return &diam.GroupedAVP{
 		AVP: []*diam.AVP{
 			diam.NewAVP(avp.VendorID, avp.Mbit, 0, er.VendorId),

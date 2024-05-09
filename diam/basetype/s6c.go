@@ -6,7 +6,7 @@ import (
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
 )
 
-type Serving_Node struct {
+type ServingNode struct {
 	SgsnName          *datatype.DiameterIdentity `avp:"SGSN-Name,omitempty"`
 	SgsnRealm         *datatype.DiameterIdentity `avp:"SGSN-Realm,omitempty"`
 	SgsnNumber        *datatype.OctetString      `avp:"SGSN-Number,omitempty"`
@@ -19,7 +19,7 @@ type Serving_Node struct {
 	IpsmgwRealm       *datatype.DiameterIdentity `avp:"IP-SM-GW-Realm,omitempty"`
 }
 
-type Additional_Serving_Node struct {
+type AdditionalServingNode struct {
 	SgsnName          *datatype.DiameterIdentity `avp:"SGSN-Name,omitempty"`
 	SgsnRealm         *datatype.DiameterIdentity `avp:"SGSN-Realm,omitempty"`
 	SgsnNumber        *datatype.OctetString      `avp:"SGSN-Number,omitempty"`
@@ -29,25 +29,25 @@ type Additional_Serving_Node struct {
 	MscNumber         *datatype.OctetString      `avp:"MSC-Number,omitempty"`
 }
 
-type SMSF_SM_Delivery_Outcome struct {
+type SMSFSMDeliveryOutcome struct {
 	SmDeliveryCause         *datatype.Enumerated `avp:"Absent-User-Diagnostic-SM,omitempty"`
 	AbsentUserDiagnosticsSM *datatype.Unsigned32 `avp:"Absent-User-Diagnostic-SM,omitempty"`
 }
 
-type SMSF_3GPP_Address struct {
+type SMSF3GPPAddress struct {
 	Smsf3gppNumber *datatype.OctetString      `avp:"SMSF-3GPP-Number,omitempty"`
 	Smsf3gppName   *datatype.DiameterIdentity `avp:"SMSF-3GPP-Name,omitempty"`
 	Smsf3gppRealm  *datatype.DiameterIdentity `avp:"SMSF-3GPP-Realm,omitempty"`
 }
 
-type SMSF_Non_3GPP_Address struct {
+type SMSFNon3GPPAddress struct {
 	SmsfNon3gppNumber *datatype.OctetString      `avp:"SMSF-Non-3GPP-Number,omitempty"`
 	SmsfNon3gppName   *datatype.DiameterIdentity `avp:"SMSF-Non-3GPP-Name,omitempty"`
 	SmsfNon3gppRealm  *datatype.DiameterIdentity `avp:"SMSF-Non-3GPP-Realm,omitempty"`
 }
 
-func (s *Serving_Node) String() string {
-	result := "Serving_Node { "
+func (s *ServingNode) String() string {
+	result := "ServingNode { "
 	if s.SgsnName != nil {
 		result += fmt.Sprintf("SgsnName: %s, ", s.SgsnName.String())
 	}
@@ -82,8 +82,8 @@ func (s *Serving_Node) String() string {
 	return result
 }
 
-func (a *Additional_Serving_Node) String() string {
-	result := "Additional_Serving_Node { "
+func (a *AdditionalServingNode) String() string {
+	result := "AdditionalServingNode { "
 	if a.SgsnName != nil {
 		result += fmt.Sprintf("SgsnName: %s, ", a.SgsnName.String())
 	}
@@ -109,8 +109,8 @@ func (a *Additional_Serving_Node) String() string {
 	return result
 }
 
-func (s *SMSF_SM_Delivery_Outcome) String() string {
-	result := "SMSF_SM_Delivery_Outcome { "
+func (s *SMSFSMDeliveryOutcome) String() string {
+	result := "SMSFSMDeliveryOutcome { "
 	if s.SmDeliveryCause != nil {
 		result += fmt.Sprintf("SmDeliveryCause: %s, ", s.SmDeliveryCause.String())
 	}
@@ -121,8 +121,8 @@ func (s *SMSF_SM_Delivery_Outcome) String() string {
 	return result
 }
 
-func (s *SMSF_3GPP_Address) String() string {
-	result := "SMSF_3GPP_Address { "
+func (s *SMSF3GPPAddress) String() string {
+	result := "SMSF3GPPAddress { "
 	if s.Smsf3gppNumber != nil {
 		result += fmt.Sprintf("Smsf3gppNumber: %s, ", s.Smsf3gppNumber.String())
 	}
@@ -136,8 +136,8 @@ func (s *SMSF_3GPP_Address) String() string {
 	return result
 }
 
-func (s *SMSF_Non_3GPP_Address) String() string {
-	result := "SMSF_Non_3GPP_Address { "
+func (s *SMSFNon3GPPAddress) String() string {
+	result := "SMSFNon3GPPAddress { "
 	if s.SmsfNon3gppNumber != nil {
 		result += fmt.Sprintf("SmsfNon3gppNumber: %s, ", s.SmsfNon3gppNumber.String())
 	}

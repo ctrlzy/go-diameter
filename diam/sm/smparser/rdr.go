@@ -11,22 +11,22 @@ import (
 // RDR refers to Report-SM-Delivery-Status-Request.
 // See 3GPP TS 29.338 Clause 5.3.2.7 for details
 type RDR struct {
-	SessionId                   datatype.UTF8String                      `avp:"Session-Id"`
-	Drmp                        *datatype.Enumerated                     `avp:"DRMP,omitempty"`
-	VendorSpecificApplicationId *basetype.Vendor_Specific_Application_Id `avp:"Vendor-Specific-Application-Id,omitempty"`
-	AuthSessionState            datatype.Enumerated                      `avp:"Auth-Session-State"`
-	OriginHost                  datatype.DiameterIdentity                `avp:"Origin-Host"`
-	OriginRealm                 datatype.DiameterIdentity                `avp:"Origin-Realm"`
-	DestinationHost             *datatype.DiameterIdentity               `avp:"Destination-Host,omitempty"`
-	DestinationRealm            datatype.DiameterIdentity                `avp:"Destination-Realm"`
-	SupportedFeatures           []basetype.Supported_Features            `avp:"Supported-Features,omitempty"`
-	UserIdentifier              basetype.User_Identifier                 `avp:"User-Identifier"`
-	SmsmiCorrelationId          *basetype.SMSMI_Correlation_ID           `avp:"SMSMI-Correlation-ID,omitempty"`
-	ScAddress                   datatype.OctetString                     `avp:"SC-Address"`
-	SmDeliveryOutcome           basetype.SM_Delivery_Outcome             `avp:"SM-Delivery-Outcome"`
-	RdrFlags                    *datatype.Unsigned32                     `avp:"RDR-Flags,omitempty"`
-	ProxyInfo                   []basetype.Proxy_Info                    `avp:"Proxy-Info,omitempty"`
-	RouteRecord                 []datatype.DiameterIdentity              `avp:"Route-Record,omitempty"`
+	SessionId                   datatype.UTF8String                   `avp:"Session-Id"`
+	Drmp                        *datatype.Enumerated                  `avp:"DRMP,omitempty"`
+	VendorSpecificApplicationId *basetype.VendorSpecificApplicationId `avp:"Vendor-Specific-Application-Id,omitempty"`
+	AuthSessionState            datatype.Enumerated                   `avp:"Auth-Session-State"`
+	OriginHost                  datatype.DiameterIdentity             `avp:"Origin-Host"`
+	OriginRealm                 datatype.DiameterIdentity             `avp:"Origin-Realm"`
+	DestinationHost             *datatype.DiameterIdentity            `avp:"Destination-Host,omitempty"`
+	DestinationRealm            datatype.DiameterIdentity             `avp:"Destination-Realm"`
+	SupportedFeatures           []basetype.SupportedFeatures          `avp:"Supported-Features,omitempty"`
+	UserIdentifier              basetype.UserIdentifier               `avp:"User-Identifier"`
+	SmsmiCorrelationId          *basetype.SMSMICorrelationID          `avp:"SMSMI-Correlation-ID,omitempty"`
+	ScAddress                   datatype.OctetString                  `avp:"SC-Address"`
+	SmDeliveryOutcome           basetype.SMDeliveryOutcome            `avp:"SM-Delivery-Outcome"`
+	RdrFlags                    *datatype.Unsigned32                  `avp:"RDR-Flags,omitempty"`
+	ProxyInfo                   []basetype.ProxyInfo                  `avp:"Proxy-Info,omitempty"`
+	RouteRecord                 []datatype.DiameterIdentity           `avp:"Route-Record,omitempty"`
 }
 
 // Parse parses the given message.

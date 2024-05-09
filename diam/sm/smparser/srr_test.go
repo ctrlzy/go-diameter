@@ -107,7 +107,7 @@ func createDiamSRR() *diam.Message {
 
 func createStructSRR() *smparser.SRR {
 	authId := datatype.Unsigned32(123)
-	vsai := basetype.Vendor_Specific_Application_Id{
+	vsai := basetype.VendorSpecificApplicationId{
 		VendorId:          datatype.Unsigned32(10415),
 		AuthApplicationId: &authId,
 	}

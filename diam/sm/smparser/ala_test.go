@@ -98,12 +98,12 @@ func createDiamALA() *diam.Message {
 
 func createStructALA() *smparser.ALA {
 	acctId := datatype.Unsigned32(456)
-	vsai := basetype.Vendor_Specific_Application_Id{
+	vsai := basetype.VendorSpecificApplicationId{
 		VendorId:          datatype.Unsigned32(10415),
 		AcctApplicationId: &acctId,
 	}
 	resultCode := datatype.Unsigned32(10)
-	experimentalResult := basetype.Experimental_Result{
+	experimentalResult := basetype.ExperimentalResult{
 		VendorId:               datatype.Unsigned32(10415),
 		ExperimentalResultCode: datatype.Unsigned32(20),
 	}

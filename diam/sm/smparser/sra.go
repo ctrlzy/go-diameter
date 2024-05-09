@@ -11,31 +11,31 @@ import (
 // SRA refers to Send-Routing-info-for-SM-Answer
 // See 3GPP TS 29.338 Clause 5.3.2.4 for details
 type SRA struct {
-	SessionId                         datatype.UTF8String                      `avp:"Session-Id"`
-	Drmp                              *datatype.Enumerated                     `avp:"DRMP,omitempty"`
-	VendorSpecificApplicationId       *basetype.Vendor_Specific_Application_Id `avp:"Vendor-Specific-Application-Id,omitempty"`
-	ResultCode                        *datatype.Unsigned32                     `avp:"Result-Code,omitempty"`
-	ExperimentalResult                *basetype.Experimental_Result            `avp:"Experimental-Result,omitempty"`
-	AuthSessionState                  datatype.Enumerated                      `avp:"Auth-Session-State"`
-	OriginHost                        datatype.DiameterIdentity                `avp:"Origin-Host"`
-	OriginRealm                       datatype.DiameterIdentity                `avp:"Origin-Realm"`
-	UserName                          *datatype.UTF8String                     `avp:"User-Name,omitempty"`
-	SupportedFeatures                 []basetype.Supported_Features            `avp:"Supported-Features,omitempty"`
-	ServingNode                       *basetype.Serving_Node                   `avp:"Serving-Node,omitempty"`
-	AdditionalServingNode             *basetype.Additional_Serving_Node        `avp:"Additional-Serving-Node,omitempty"`
-	Smsf3gppAddress                   *basetype.SMSF_3GPP_Address              `avp:"SMSF-3GPP-Address,omitempty"`
-	SmsfNon3gppAddress                *basetype.SMSF_Non_3GPP_Address          `avp:"SMSF-Non-3GPP-Address,omitempty"`
-	Lmsi                              *datatype.OctetString                    `avp:"LMSI,omitempty"`
-	UserIdentifier                    *basetype.User_Identifier                `avp:"User-Identifier,omitempty"`
-	MwdStatus                         *datatype.Unsigned32                     `avp:"MWD-Status,omitempty"`
-	MmeAbsentUserDiagnosticSm         *datatype.Unsigned32                     `avp:"MME-Absent-User-Diagnostic-SM,omitempty"`
-	MscAbsentUserDiagnosticSm         *datatype.Unsigned32                     `avp:"MSC-Absent-User-Diagnostic-SM,omitempty"`
-	SgsnAbsentUserDiagnosticSm        *datatype.Unsigned32                     `avp:"SGSN-Absent-User-Diagnostic-SM,omitempty"`
-	Smsf3gppAbsentUserDiagnosticSm    *datatype.Unsigned32                     `avp:"SMSF-3GPP-Absent-User-Diagnostic-SM,omitempty"`
-	SmsfNon3gppAbsentUserDiagnosticSm *datatype.Unsigned32                     `avp:"SMSF-Non-3GPP-Absent-User-Diagnostic-SM,omitempty"`
-	FailedAvp                         []*diam.AVP                              `avp:"Failed-AVP,omitempty"`
-	ProxyInfo                         []basetype.Proxy_Info                    `avp:"Proxy-Info,omitempty"`
-	RouteRecord                       []datatype.DiameterIdentity              `avp:"Route-Record,omitempty"`
+	SessionId                         datatype.UTF8String                   `avp:"Session-Id"`
+	Drmp                              *datatype.Enumerated                  `avp:"DRMP,omitempty"`
+	VendorSpecificApplicationId       *basetype.VendorSpecificApplicationId `avp:"Vendor-Specific-Application-Id,omitempty"`
+	ResultCode                        *datatype.Unsigned32                  `avp:"Result-Code,omitempty"`
+	ExperimentalResult                *basetype.ExperimentalResult          `avp:"Experimental-Result,omitempty"`
+	AuthSessionState                  datatype.Enumerated                   `avp:"Auth-Session-State"`
+	OriginHost                        datatype.DiameterIdentity             `avp:"Origin-Host"`
+	OriginRealm                       datatype.DiameterIdentity             `avp:"Origin-Realm"`
+	UserName                          *datatype.UTF8String                  `avp:"User-Name,omitempty"`
+	SupportedFeatures                 []basetype.SupportedFeatures          `avp:"Supported-Features,omitempty"`
+	ServingNode                       *basetype.ServingNode                 `avp:"Serving-Node,omitempty"`
+	AdditionalServingNode             *basetype.AdditionalServingNode       `avp:"Additional-Serving-Node,omitempty"`
+	Smsf3gppAddress                   *basetype.SMSF3GPPAddress             `avp:"SMSF-3GPP-Address,omitempty"`
+	SmsfNon3gppAddress                *basetype.SMSFNon3GPPAddress          `avp:"SMSF-Non-3GPP-Address,omitempty"`
+	Lmsi                              *datatype.OctetString                 `avp:"LMSI,omitempty"`
+	UserIdentifier                    *basetype.UserIdentifier              `avp:"User-Identifier,omitempty"`
+	MwdStatus                         *datatype.Unsigned32                  `avp:"MWD-Status,omitempty"`
+	MmeAbsentUserDiagnosticSm         *datatype.Unsigned32                  `avp:"MME-Absent-User-Diagnostic-SM,omitempty"`
+	MscAbsentUserDiagnosticSm         *datatype.Unsigned32                  `avp:"MSC-Absent-User-Diagnostic-SM,omitempty"`
+	SgsnAbsentUserDiagnosticSm        *datatype.Unsigned32                  `avp:"SGSN-Absent-User-Diagnostic-SM,omitempty"`
+	Smsf3gppAbsentUserDiagnosticSm    *datatype.Unsigned32                  `avp:"SMSF-3GPP-Absent-User-Diagnostic-SM,omitempty"`
+	SmsfNon3gppAbsentUserDiagnosticSm *datatype.Unsigned32                  `avp:"SMSF-Non-3GPP-Absent-User-Diagnostic-SM,omitempty"`
+	FailedAvp                         basetype.FailedAVP                    `avp:"Failed-AVP,omitempty"`
+	ProxyInfo                         []basetype.ProxyInfo                  `avp:"Proxy-Info,omitempty"`
+	RouteRecord                       []datatype.DiameterIdentity           `avp:"Route-Record,omitempty"`
 }
 
 // Parse parses the given message.
@@ -144,15 +144,9 @@ func (s *SRA) String() string {
 			result += fmt.Sprintf(", SmsfNon3gppAbsentUserDiagnosticSm: %v", s.SmsfNon3gppAbsentUserDiagnosticSm.String())
 		}
 
-		if len(s.FailedAvp) > 0 {
-			result += ", FailedAvp: ["
-			for i, avp := range s.FailedAvp {
-				if i > 0 {
-					result += ", "
-				}
-				result += avp.String()
-			}
-			result += "]"
+		if s.FailedAvp != nil {
+			result += ", "
+			result += s.FailedAvp.String()
 		}
 
 		if len(s.ProxyInfo) > 0 {

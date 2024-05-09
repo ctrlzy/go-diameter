@@ -10,23 +10,24 @@ import (
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
 )
 
+// refer to 3GPP TS 29.329 6.1.7 Push-Notification-Request
 type PNR struct {
-	SessionID                   datatype.UTF8String                     `avp:"Session-Id"`
-	DRMP                        *datatype.Enumerated                    `avp:"DRMP,omitempty"`
-	VendorSpecificApplicationId basetype.Vendor_Specific_Application_Id `avp:"Vendor-Specific-Application-Id"`
-	AuthSessionState            datatype.Enumerated                     `avp:"Auth-Session-State"`
-	OriginHost                  datatype.DiameterIdentity               `avp:"Origin-Host"`
-	OriginRealm                 datatype.DiameterIdentity               `avp:"Origin-Realm"`
-	DestinationHost             datatype.DiameterIdentity               `avp:"Destination-Host"`
-	DestinationRealm            datatype.DiameterIdentity               `avp:"Destination-Realm"`
-	SupportedFeatures           []basetype.Supported_Features           `avp:"Supported-Featrues,omitempty"`
-	UserIdentity                basetype.User_Identity                  `avp:"User-Identity"`
-	WildcardedPublicIdentity    *datatype.UTF8String                    `avp:"Wildcarded-Public-Identity,omitempty"`
-	WildcardedIMPU              *datatype.UTF8String                    `avp:"Wildcarded-IMPU,omitempty"`
-	UserName                    *datatype.UTF8String                    `avp:"User-Name,omitempty"`
-	UserData                    datatype.OctetString                    `avp:"User-Data"`
-	ProxyInfo                   []basetype.Proxy_Info                   `avp:"Proxy-Info,omitempty"`
-	RouteRecord                 []datatype.DiameterIdentity             `avp:"Route-Record,omitempty"`
+	SessionID                   datatype.UTF8String                  `avp:"Session-Id"`
+	DRMP                        *datatype.Enumerated                 `avp:"DRMP,omitempty"`
+	VendorSpecificApplicationId basetype.VendorSpecificApplicationId `avp:"Vendor-Specific-Application-Id"`
+	AuthSessionState            datatype.Enumerated                  `avp:"Auth-Session-State"`
+	OriginHost                  datatype.DiameterIdentity            `avp:"Origin-Host"`
+	OriginRealm                 datatype.DiameterIdentity            `avp:"Origin-Realm"`
+	DestinationHost             datatype.DiameterIdentity            `avp:"Destination-Host"`
+	DestinationRealm            datatype.DiameterIdentity            `avp:"Destination-Realm"`
+	SupportedFeatures           []basetype.SupportedFeatures         `avp:"Supported-Features,omitempty"`
+	UserIdentity                basetype.UserIdentity                `avp:"User-Identity"`
+	WildcardedPublicIdentity    *datatype.UTF8String                 `avp:"Wildcarded-Public-Identity,omitempty"`
+	WildcardedIMPU              *datatype.UTF8String                 `avp:"Wildcarded-IMPU,omitempty"`
+	UserName                    *datatype.UTF8String                 `avp:"User-Name,omitempty"`
+	UserData                    datatype.OctetString                 `avp:"User-Data"`
+	ProxyInfo                   []basetype.ProxyInfo                 `avp:"Proxy-Info,omitempty"`
+	RouteRecord                 []datatype.DiameterIdentity          `avp:"Route-Record,omitempty"`
 }
 
 // Parse parses and validates the given message, and returns nil when

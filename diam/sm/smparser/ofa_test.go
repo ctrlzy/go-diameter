@@ -113,7 +113,7 @@ func createStructOFA() *smparser.OFA {
 		AuthSessionState: datatype.Enumerated(1),
 		OriginHost:       datatype.DiameterIdentity("orig-host"),
 		OriginRealm:      datatype.DiameterIdentity("orig-realm"),
-		SmDeliveryFailureCause: &basetype.SM_Delivery_Failure_Cause{
+		SmDeliveryFailureCause: &basetype.SMDeliveryFailureCause{
 			SmEnumeratedDeliveryFailureCause: datatype.Enumerated(1),
 		},
 	}

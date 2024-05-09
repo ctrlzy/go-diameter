@@ -153,12 +153,12 @@ func createDiamSRA() *diam.Message {
 
 func createStructSRA() *smparser.SRA {
 	authId := datatype.Unsigned32(123)
-	vsai := basetype.Vendor_Specific_Application_Id{
+	vsai := basetype.VendorSpecificApplicationId{
 		VendorId:          datatype.Unsigned32(10415),
 		AuthApplicationId: &authId,
 	}
 	resultCode := datatype.Unsigned32(12)
-	experimentResult := basetype.Experimental_Result{
+	experimentResult := basetype.ExperimentalResult{
 		VendorId:               datatype.Unsigned32(10415),
 		ExperimentalResultCode: datatype.Unsigned32(11),
 	}
@@ -167,12 +167,12 @@ func createStructSRA() *smparser.SRA {
 	mmeRealm := datatype.DiameterIdentity("mme-realm")
 	mmeNumber := datatype.OctetString("mme number")
 	mscNumber := datatype.OctetString("msc number")
-	servingNode := basetype.Serving_Node{
+	servingNode := basetype.ServingNode{
 		MmeName:           &mmeName,
 		MmeRealm:          &mmeRealm,
 		MmeNumberForMtSms: &mmeNumber,
 	}
-	additionalServingNode := basetype.Additional_Serving_Node{
+	additionalServingNode := basetype.AdditionalServingNode{
 		MscNumber: &mscNumber,
 	}
 	mwdStatus := datatype.Unsigned32(12)
