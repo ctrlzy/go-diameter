@@ -453,9 +453,9 @@
 
 		<avp name="Vendor-Specific-Application-Id" code="260" must="M" may="P" must-not="V" may-encrypt="-">
 			<data type="Grouped">
-				<rule avp="Vendor-Id" required="false" max="1"/>
-				<rule avp="Auth-Application-Id" required="true" max="1"/>
-				<rule avp="Acct-Application-Id" required="true" max="1"/>
+				<rule avp="Vendor-Id" required="true" max="1"/>
+				<rule avp="Auth-Application-Id" required="false" max="1"/>
+				<rule avp="Acct-Application-Id" required="false" max="1"/>
 			</data>
 		</avp>
 
@@ -498,6 +498,30 @@
 
 		<avp name="OC-Reduction-Percentage" code="627" must-not="V">
 			<data type="Unsigned32"/>
+		</avp>
+
+		<!-- IETF RFC 8583 - https://tools.ietf.org/html/rfc8583 -->
+		<avp name="Load" code="650" must-not="V">
+			<data type="Grouped">
+				<rule avp="Load-Type" required="false" max="1"/>
+				<rule avp="Load-Value" required="false" max="1"/>
+				<rule avp="SourceID" required="false" max="1"/>
+			</data>
+		</avp>
+		
+		<avp name="Load-Type" code="651" must-not="V">
+			<data type="Enumerated">
+				<item code="0" name="HOST"/>
+				<item code="1" name="PEER"/>
+			</data>
+		</avp>
+
+		<avp name="Load-Value" code="652" must-not="V">
+			<data type="Unsigned64"/>
+		</avp>
+
+		<avp name="SourceID" code="649" must-not="V">
+			<data type="DiameterIdentity"/>
 		</avp>
 
 		<!-- IETF RFC 7944 - https://tools.ietf.org/html/rfc7944 -->

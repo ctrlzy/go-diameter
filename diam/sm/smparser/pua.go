@@ -12,25 +12,53 @@ import (
 
 type PUA struct {
 	SessionID                   datatype.UTF8String                     `avp:"Session-Id"`
-	DRMP                        datatype.Enumerated                     `avp:"DRMP"`
+	DRMP                        *datatype.Enumerated                    `avp:"DRMP,omitempty"`
 	VendorSpecificApplicationId basetype.Vendor_Specific_Application_Id `avp:"Vendor-Specific-Application-Id"`
-	ResultCode                  datatype.Unsigned32                     `avp:"Result-Code,omitempty"`
-	ExperimentalResult          datatype.Grouped                        `avp:"Experimental-Result"`
+	ResultCode                  *datatype.Unsigned32                    `avp:"Result-Code,omitempty"`
+	ExperimentalResult          *basetype.Experimental_Result           `avp:"Experimental-Result,omitempty"`
 	AuthSessionState            datatype.Enumerated                     `avp:"Auth-Session-State"`
 	OriginHost                  datatype.DiameterIdentity               `avp:"Origin-Host"`
 	OriginRealm                 datatype.DiameterIdentity               `avp:"Origin-Realm"`
-	WildcardedPublicIdentity    datatype.UTF8String                     `avp:"Wildcarded-Public-Identity,omitempty"`
-	WildcardedIMPU              datatype.UTF8String                     `avp:"Wildcarded-IMPU,omitempty"`
+	WildcardedPublicIdentity    *datatype.UTF8String                    `avp:"Wildcarded-Public-Identity,omitempty"`
+	WildcardedIMPU              *datatype.UTF8String                    `avp:"Wildcarded-IMPU,omitempty"`
+	RepositoryDataID            *basetype.Repository_Data_ID            `avp:"Repository-Data-ID,omitempty"`
+	DataReference               datatype.Enumerated                     `avp:"Data-Reference,omitempty"`
 	SupportedFeatures           []basetype.Supported_Features           `avp:"Supported-Features,omitempty"`
-	FailedAVP                   datatype.Grouped                        `avp:"Failed-AVP,omitempty"`
-	ProxyInfo                   datatype.Grouped                        `avp:"Proxy-Info,omitempty"`
-	RouteRecord                 datatype.DiameterIdentity               `avp:"Route-Record,omitempty"`
+	OCSupportedFeatures         *basetype.OC_Supported_Features         `avp:"OC-Supported-Features,omitempty"`
+	OCOLR                       *basetype.OC_OLR                        `avp:"OC-CLR,omitempty"`
+	Load                        *basetype.Load                          `avp:"Load,omitempty"`
+	FailedAVP                   *basetype.Failed_AVP                    `avp:"Failed-AVP,omitempty"`
+	ProxyInfo                   []basetype.Proxy_Info                   `avp:"Proxy-Info,omitempty"`
+	RouteRecord                 []datatype.DiameterIdentity             `avp:"Route-Record,omitempty"`
 }
 
 // Parse parses the given message.
 func (pua *PUA) Parse(m *diam.Message) error {
 	if err := m.Unmarshal(pua); err != nil {
 		return err
+	}
+	if err := pua.sanityCheck(); err != nil {
+		return err
+	}
+	return nil
+}
+
+// sanityCheck ensures all mandatory AVPs are present.
+func (pua *PUA) sanityCheck() error {
+	if len(pua.SessionID) == 0 {
+		return ErrMissingSessionID
+	}
+	if pua.VendorSpecificApplicationId.Empty() {
+		return ErrMissingVendorSpecificAppId
+	}
+	if len(pua.OriginHost) == 0 {
+		return ErrMissingOriginHost
+	}
+	if len(pua.OriginRealm) == 0 {
+		return ErrMissingOriginRealm
+	}
+	if pua.ResultCode == nil && pua.ExperimentalResult == nil {
+		return ErrMissingResultCode
 	}
 	return nil
 }

@@ -37,6 +37,12 @@ type Experimental_Result struct {
 
 type Failed_AVP []*diam.AVP
 
+type Load struct {
+	LoadType  *datatype.Enumerated       `avp:"Load-Type,omitempty"`
+	LoadValue *datatype.Unsigned64       `avp:"Load-Value,omitempty"`
+	SourceID  *datatype.DiameterIdentity `avp:"SourceID,omitempty"`
+}
+
 func (vsa *Vendor_Specific_Application_Id) Empty() bool {
 	return vsa.AcctApplicationId == nil && vsa.AuthApplicationId == nil
 }

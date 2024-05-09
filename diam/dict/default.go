@@ -496,9 +496,9 @@ var baseXML = `<?xml version="1.0" encoding="UTF-8"?>
 
 		<avp name="Vendor-Specific-Application-Id" code="260" must="M" may="P" must-not="V" may-encrypt="-">
 			<data type="Grouped">
-				<rule avp="Vendor-Id" required="false" max="1"/>
-				<rule avp="Auth-Application-Id" required="true" max="1"/>
-				<rule avp="Acct-Application-Id" required="true" max="1"/>
+				<rule avp="Vendor-Id" required="true" max="1"/>
+				<rule avp="Auth-Application-Id" required="false" max="1"/>
+				<rule avp="Acct-Application-Id" required="false" max="1"/>
 			</data>
 		</avp>
 
@@ -541,6 +541,30 @@ var baseXML = `<?xml version="1.0" encoding="UTF-8"?>
 
 		<avp name="OC-Reduction-Percentage" code="627" must-not="V">
 			<data type="Unsigned32"/>
+		</avp>
+
+		<!-- IETF RFC 8583 - https://tools.ietf.org/html/rfc8583 -->
+		<avp name="Load" code="650" must-not="V">
+			<data type="Grouped">
+				<rule avp="Load-Type" required="false" max="1"/>
+				<rule avp="Load-Value" required="false" max="1"/>
+				<rule avp="SourceID" required="false" max="1"/>
+			</data>
+		</avp>
+		
+		<avp name="Load-Type" code="651" must-not="V">
+			<data type="Enumerated">
+				<item code="0" name="HOST"/>
+				<item code="1" name="PEER"/>
+			</data>
+		</avp>
+
+		<avp name="Load-Value" code="652" must-not="V">
+			<data type="Unsigned64"/>
+		</avp>
+
+		<avp name="SourceID" code="649" must-not="V">
+			<data type="DiameterIdentity"/>
 		</avp>
 
 		<!-- IETF RFC 7944 - https://tools.ietf.org/html/rfc7944 -->
@@ -4881,7 +4905,7 @@ var tgpprorfXML = `<?xml version="1.0" encoding="UTF-8"?>
 			</data>
 		</avp>
 
-		<avp name="User-Data" code="606" must="V,M"	may="-" must-not="-" may-encrypt="N" vendor-id="10415">
+		<avp name="User-Data-RO" code="606" must="V,M"	may="-" must-not="-" may-encrypt="N" vendor-id="10415">
 			<data type="OctetString"/>
 		</avp>
 
@@ -6696,7 +6720,7 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <rule avp="Supported-Features" required="false"/>
                 <rule avp="Wildcarded-Public-Identity" max="1" required="false"/>
                 <rule avp="Wildcarded-IMPU" max="1" required="false"/>
-                <rule avp="User-Data-Sh" max="1" required="false"/>
+                <rule avp="User-Data" max="1" required="false"/>
                 <rule avp="OC-Supported-Features" max="1" required="false"/>
                 <rule avp="OC-OLR" max="1" required="false"/>
                 <rule avp="Failed-AVP" max="1" required="false"/>
@@ -6720,7 +6744,7 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <rule avp="Wildcarded-IMPU" max="1" required="false"/>
                 <rule avp="User-Name" max="1" required="false"/>
                 <rule avp="Data-Reference" required="true"/>
-                <rule avp="User-Data-Sh" max="1" required="true"/>
+                <rule avp="User-Data" max="1" required="true"/>
                 <rule avp="OC-Supported-Features" max="1" required="false"/>
                 <rule avp="Proxy-Info" required="false"/>
                 <rule avp="Route-Record" required="false"/>
@@ -6786,7 +6810,7 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <rule avp="Supported-Features" required="false"/>
                 <rule avp="Wildcarded-Public-Identity" max="1" required="false"/>
                 <rule avp="Wildcarded-IMPU" max="1" required="false"/>
-                <rule avp="User-Data-Sh" max="1" required="false"/>
+                <rule avp="User-Data" max="1" required="false"/>
                 <rule avp="Expiry-Time" max="1" required="false"/>
                 <rule avp="OC-Supported-Features" max="1" required="false"/>
                 <rule avp="OC-OLR" max="1" required="false"/>
@@ -6810,7 +6834,7 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
                 <rule avp="Wildcarded-Public-Identity" max="1" required="false"/>
                 <rule avp="Wildcarded-IMPU" max="1" required="false"/>
                 <rule avp="User-Name" max="1" required="false"/>
-                <rule avp="User-Data-Sh" max="1" required="true"/>
+                <rule avp="User-Data" max="1" required="true"/>
                 <rule avp="Proxy-Info" required="false"/>
                 <rule avp="Route-Record" required="false"/>
             </request>
@@ -6839,7 +6863,7 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
         <avp name="MSISDN" code="701" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="OctetString"/>
         </avp>
-        <avp name="Sh-User-Data" code="702" may-encrypt="N" must="M,V" vendor-id="10415">
+        <avp name="User-Data" code="702" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="OctetString"/>
         </avp>
         <avp name="Data-Reference" code="703" may-encrypt="N" must="M,V" vendor-id="10415">
@@ -7021,7 +7045,7 @@ var tgppshXML = `<?xml version="1.0" encoding="UTF-8"?>
             <data type="UTF8String"/>
         </avp>
 
-        <avp name="User-Data-Sh" code="702" must="M,V" vendor-id="10415" may-encrypt="N">
+        <avp name="User-Data" code="702" must="M,V" vendor-id="10415" may-encrypt="N">
             <data type="OctetString"/>
         </avp>
 

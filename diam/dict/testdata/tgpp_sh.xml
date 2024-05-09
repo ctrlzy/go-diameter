@@ -47,7 +47,7 @@
                 <rule avp="Supported-Features" required="false"/>
                 <rule avp="Wildcarded-Public-Identity" max="1" required="false"/>
                 <rule avp="Wildcarded-IMPU" max="1" required="false"/>
-                <rule avp="User-Data-Sh" max="1" required="false"/>
+                <rule avp="User-Data" max="1" required="false"/>
                 <rule avp="OC-Supported-Features" max="1" required="false"/>
                 <rule avp="OC-OLR" max="1" required="false"/>
                 <rule avp="Failed-AVP" max="1" required="false"/>
@@ -71,7 +71,7 @@
                 <rule avp="Wildcarded-IMPU" max="1" required="false"/>
                 <rule avp="User-Name" max="1" required="false"/>
                 <rule avp="Data-Reference" required="true"/>
-                <rule avp="User-Data-Sh" max="1" required="true"/>
+                <rule avp="User-Data" max="1" required="true"/>
                 <rule avp="OC-Supported-Features" max="1" required="false"/>
                 <rule avp="Proxy-Info" required="false"/>
                 <rule avp="Route-Record" required="false"/>
@@ -137,7 +137,7 @@
                 <rule avp="Supported-Features" required="false"/>
                 <rule avp="Wildcarded-Public-Identity" max="1" required="false"/>
                 <rule avp="Wildcarded-IMPU" max="1" required="false"/>
-                <rule avp="User-Data-Sh" max="1" required="false"/>
+                <rule avp="User-Data" max="1" required="false"/>
                 <rule avp="Expiry-Time" max="1" required="false"/>
                 <rule avp="OC-Supported-Features" max="1" required="false"/>
                 <rule avp="OC-OLR" max="1" required="false"/>
@@ -161,7 +161,7 @@
                 <rule avp="Wildcarded-Public-Identity" max="1" required="false"/>
                 <rule avp="Wildcarded-IMPU" max="1" required="false"/>
                 <rule avp="User-Name" max="1" required="false"/>
-                <rule avp="User-Data-Sh" max="1" required="true"/>
+                <rule avp="User-Data" max="1" required="true"/>
                 <rule avp="Proxy-Info" required="false"/>
                 <rule avp="Route-Record" required="false"/>
             </request>
@@ -190,7 +190,7 @@
         <avp name="MSISDN" code="701" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="OctetString"/>
         </avp>
-        <avp name="Sh-User-Data" code="702" may-encrypt="N" must="M,V" vendor-id="10415">
+        <avp name="User-Data" code="702" may-encrypt="N" must="M,V" vendor-id="10415">
             <data type="OctetString"/>
         </avp>
         <avp name="Data-Reference" code="703" may-encrypt="N" must="M,V" vendor-id="10415">
@@ -372,7 +372,7 @@
             <data type="UTF8String"/>
         </avp>
 
-        <avp name="User-Data-Sh" code="702" must="M,V" vendor-id="10415" may-encrypt="N">
+        <avp name="User-Data" code="702" must="M,V" vendor-id="10415" may-encrypt="N">
             <data type="OctetString"/>
         </avp>
 

@@ -325,6 +325,9 @@ const (
 	LCSRequestorIDString                       = 1240
 	LIPAPermission                             = 1618
 	LMSI                                       = 2400
+	Load                                       = 650
+	LoadType                                   = 651
+	LoadValue                                  = 652
 	LocalGWInsertedIndication                  = 2604
 	LocalSequenceNumber                        = 2063
 	LocalTimeZoneIndication                    = 718
@@ -675,8 +678,8 @@ const (
 	SessionPriority                            = 650
 	SessionServerFailover                      = 271
 	SessionTimeout                             = 27
-	ShUserData                                 = 702
 	SoftwareVersion                            = 1403
+	SourceID                                   = 649
 	SpecificAPNInfo                            = 1472
 	SponsorIdentity                            = 531
 	StartTime                                  = 2041
@@ -785,8 +788,8 @@ const (
 	UsageMonitoringSupport                     = 1070
 	UsedServiceUnit                            = 446
 	UserCSGInformation                         = 2319
-	UserData                                   = 606
-	UserDataSh                                 = 702
+	UserData                                   = 702
+	UserDataRO                                 = 606
 	UserEquipmentInfo                          = 458
 	UserEquipmentInfoType                      = 459
 	UserEquipmentInfoValue                     = 460

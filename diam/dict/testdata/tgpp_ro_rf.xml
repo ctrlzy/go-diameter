@@ -2417,7 +2417,7 @@
 			</data>
 		</avp>
 
-		<avp name="User-Data" code="606" must="V,M"	may="-" must-not="-" may-encrypt="N" vendor-id="10415">
+		<avp name="User-Data-RO" code="606" must="V,M"	may="-" must-not="-" may-encrypt="N" vendor-id="10415">
 			<data type="OctetString"/>
 		</avp>
 

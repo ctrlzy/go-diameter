@@ -6,28 +6,29 @@ package smparser
 
 import (
 	"github.com/ctrlzy/go-diameter/v4/diam"
+	"github.com/ctrlzy/go-diameter/v4/diam/basetype"
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
 )
 
 type PUR struct {
-	SessionID                   datatype.UTF8String       `avp:"Session-Id"`
-	DRMP                        datatype.Enumerated       `avp:"DRMP"`
-	VendorSpecificApplicationId datatype.Grouped          `avp:"Vendor-Specific-Application-Id"`
-	AuthSessionState            datatype.Enumerated       `avp:"Auth-Session-State"`
-	OriginHost                  datatype.DiameterIdentity `avp:"Origin-Host"`
-	OriginRealm                 datatype.DiameterIdentity `avp:"Origin-Realm"`
-	DestinationHost             datatype.DiameterIdentity `avp:"Destination-Host"`
-	DestinationRealm            datatype.DiameterIdentity `avp:"Destination-Realm"`
-	SupportedFeatures           datatype.Grouped          `avp:"Supported-Features"`
-	UserIdentity                datatype.Grouped          `avp:"User-Identity"`
-	WildcardedPublicIdentity    datatype.UTF8String       `avp:"Wildcarded-Public-Identity"`
-	WildcardedIMPU              datatype.UTF8String       `avp:"Wildcarded-IMPU"`
-	UserName                    string                    `avp:"User-Name"`
-	DataReference               datatype.Enumerated       `avp:"Data-Reference"`
-	UserDataSh                  datatype.OctetString      `avp:"User-Data-Sh"`
-	OCSupportedFeatures         datatype.Grouped          `avp:"OC-Supported-Features"`
-	ProxyInfo                   datatype.Grouped          `avp:"Proxy-Info"`
-	RouteRecord                 datatype.DiameterIdentity `avp:"Route-Record"`
+	SessionID                   datatype.UTF8String                     `avp:"Session-Id"`
+	DRMP                        *datatype.Enumerated                    `avp:"DRMP,omitempty"`
+	VendorSpecificApplicationId basetype.Vendor_Specific_Application_Id `avp:"Vendor-Specific-Application-Id"`
+	AuthSessionState            datatype.Enumerated                     `avp:"Auth-Session-State"`
+	OriginHost                  datatype.DiameterIdentity               `avp:"Origin-Host"`
+	OriginRealm                 datatype.DiameterIdentity               `avp:"Origin-Realm"`
+	DestinationHost             *datatype.DiameterIdentity              `avp:"Destination-Host,omitempty"`
+	DestinationRealm            datatype.DiameterIdentity               `avp:"Destination-Realm"`
+	SupportedFeatures           []basetype.Supported_Features           `avp:"Supported-Features,omitempty"`
+	UserIdentity                basetype.User_Identity                  `avp:"User-Identity"`
+	WildcardedPublicIdentity    *datatype.UTF8String                    `avp:"Wildcarded-Public-Identity,omitempty"`
+	WildcardedIMPU              *datatype.UTF8String                    `avp:"Wildcarded-IMPU,omitempty"`
+	UserName                    *datatype.UTF8String                    `avp:"User-Name,omitempty"`
+	DataReference               []datatype.Enumerated                   `avp:"Data-Reference"`
+	UserData                    datatype.OctetString                    `avp:"User-Data"`
+	OCSupportedFeatures         *basetype.OC_Supported_Features         `avp:"OC-Supported-Features,omitempty"`
+	ProxyInfo                   []basetype.Proxy_Info                   `avp:"Proxy-Info,omitempty"`
+	RouteRecord                 []datatype.DiameterIdentity             `avp:"Route-Record,omitempty"`
 }
 
 // Parse parses and validates the given message, and returns nil when
@@ -45,11 +46,29 @@ func (pur *PUR) Parse(m *diam.Message) error {
 
 // sanityCheck ensures all mandatory AVPs are present.
 func (pur *PUR) sanityCheck() error {
+	if len(pur.SessionID) == 0 {
+		return ErrMissingSessionID
+	}
+	if pur.VendorSpecificApplicationId.Empty() {
+		return ErrMissingVendorSpecificAppId
+	}
 	if len(pur.OriginHost) == 0 {
 		return ErrMissingOriginHost
 	}
 	if len(pur.OriginRealm) == 0 {
 		return ErrMissingOriginRealm
+	}
+	if len(pur.DestinationRealm) == 0 {
+		return ErrMissingDestRealm
+	}
+	if pur.UserIdentity.Empty() {
+		return ErrMissingUserIdentity
+	}
+	if len(pur.DataReference) == 0 {
+		return ErrMissingDataReference
+	}
+	if len(pur.UserData) == 0 {
+		return ErrMissingUserData
 	}
 	return nil
 }

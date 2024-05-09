@@ -12,6 +12,10 @@ import (
 )
 
 var (
+	// ErrMissingSessionID is returned by Parse when
+	// the message does not contain a Session-Id AVP.
+	ErrMissingSessionID = errors.New("missing Session-Id")
+
 	// ErrMissingResultCode is returned by Parse when
 	// the message does nt contain a Result-Code AVP.
 	ErrMissingResultCode = errors.New("missing Result-Code")
@@ -23,6 +27,10 @@ var (
 	// ErrMissingOriginRealm is returned by Parse when
 	// the message does not contain an Origin-Realm AVP.
 	ErrMissingOriginRealm = errors.New("missing Origin-Realm")
+
+	// ErrMissingVendorSpecificAppId is returned by Parse when
+	// the message does not contain an Vendor-Specific-Application-Id AVP.
+	ErrMissingVendorSpecificAppId = errors.New("missing Vendor-Specific-Application-Id")
 
 	// ErrMissingDestHost is returned by Parse when
 	// the message does not contain an Destination-Host AVP.
@@ -47,6 +55,10 @@ var (
 	// ErrMissingUserName is returned by Parse when
 	// the message does not contain an Data-Reference AVP.
 	ErrMissingDataReference = errors.New("missing Data-Reference")
+
+	// ErrMissingUserData is returned by Parse when
+	// the message does not contain an User-Data AVP.
+	ErrMissingUserData = errors.New("missing User-Data")
 
 	// ErrMissingScAddress is returned by Parse when
 	// the message does not contain an SC-Address AVP.
