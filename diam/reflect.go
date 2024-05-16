@@ -63,7 +63,7 @@ func (m *Message) Marshal(src interface{}) error {
 	if v.Kind() != reflect.Ptr {
 		return errors.New("src is not a pointer to struct")
 	}
-	err, avps := marshalStruct(m, v)
+	avps, err := marshalStruct(m, v)
 	if err != nil {
 		return err
 	}
@@ -72,14 +72,14 @@ func (m *Message) Marshal(src interface{}) error {
 	return nil
 }
 
-func marshalStruct(m *Message, field reflect.Value) (error, []*AVP) {
+func marshalStruct(m *Message, field reflect.Value) ([]*AVP, error) {
 	var err error
 	var dictAVP *dict.AVP
 	var avps []*AVP
 
 	base := reflect.Indirect(field)
 	if base.Kind() != reflect.Struct {
-		return errors.New("src is not a pointer to struct"), nil
+		return nil, errors.New("src is not a pointer to struct")
 	}
 
 	for n := 0; n < base.NumField(); n++ {
@@ -87,9 +87,9 @@ func marshalStruct(m *Message, field reflect.Value) (error, []*AVP) {
 		bt := base.Type().Field(n)
 
 		if bt.Anonymous && bt.Type.Kind() == reflect.Struct && len(bt.Tag) == 0 {
-			err, embeddedAvps := marshalStruct(m, f)
+			embeddedAvps, err := marshalStruct(m, f)
 			if err != nil {
-				return err, nil
+				return nil, err
 			}
 			avps = append(avps, embeddedAvps...)
 			continue
@@ -105,21 +105,21 @@ func marshalStruct(m *Message, field reflect.Value) (error, []*AVP) {
 		// Relies on the fact that in the same app will not be AVPs with same code but different vendorId
 		dictAVP, err = m.Dictionary().FindAVP(m.Header.ApplicationID, avpname)
 		if err != nil {
-			return err, nil
+			return nil, err
 		}
 
-		err, avp := marshal(m, f, dictAVP)
+		avp, err := marshal(m, f, dictAVP)
 		if err != nil {
-			return err, nil
+			return nil, err
 		}
 		avps = append(avps, avp...)
 	}
 
-	return nil, avps
+	return avps, nil
 }
 
 // marshal returns a AVP type of the field
-func marshal(m *Message, field reflect.Value, fieldAVP *dict.AVP) (error, []*AVP) {
+func marshal(m *Message, field reflect.Value, fieldAVP *dict.AVP) ([]*AVP, error) {
 	var data datatype.Type
 	var avps []*AVP // avps := make([]*AVP, 0, 8)
 	fieldType := field.Type()
@@ -144,23 +144,23 @@ func marshal(m *Message, field reflect.Value, fieldAVP *dict.AVP) (error, []*AVP
 			// s.Elem().Set(field)
 			avp := field.Interface().([]*AVP)
 			avps = append(avps, avp...)
-			return nil, avps
+			return avps, nil
 		}
 
 		// 3. real array of diameter AVPs
 		// log.Print("Slice len:", field.Len())
 		for n := 0; n < field.Len(); n++ {
-			err, avp := marshal(m, field.Index(n), fieldAVP)
+			avp, err := marshal(m, field.Index(n), fieldAVP)
 			if err != nil {
-				return err, nil
+				return nil, err
 			}
 			avps = append(avps, avp...)
 		}
-		return nil, avps
+		return avps, nil
 
 	case reflect.Interface, reflect.Ptr:
 		if field.IsNil() {
-			return nil, avps // skip optional AVP
+			return avps, nil // skip optional AVP
 		}
 		return marshal(m, field.Elem(), fieldAVP)
 	}
@@ -206,7 +206,7 @@ BASIC_TYPE:
 				v := reflect.ValueOf(p).Elem()
 				v.Set(field)
 				avp := p.Interface().(*AVP)
-				return nil, append(avps, avp)
+				return append(avps, avp), nil
 			}
 
 			// 2. GroupedAVP
@@ -223,11 +223,11 @@ BASIC_TYPE:
 				// Relies on the fact that in the same app will not be AVPs with same code but different vendorId
 				d, err := m.Dictionary().FindAVP(m.Header.ApplicationID, avpname)
 				if err != nil {
-					return err, nil
+					return nil, err
 				}
-				err, avp := marshal(m, f, d)
+				avp, err := marshal(m, f, d)
 				if err != nil {
-					return err, nil
+					return nil, err
 				}
 				gAVP.AVP = append(gAVP.AVP, avp...) // gAVP.AddAVP()
 			}
@@ -239,10 +239,10 @@ BASIC_TYPE:
 			t = reflect.TypeOf((*datatype.Grouped)(nil)).Elem()
 			break
 		} else {
-			return errors.New(fieldAVP.Name + " AVP's Data type is unknown."), nil
+			return nil, errors.New(fieldAVP.Name + " AVP's Data type is unknown")
 		}
 	default:
-		return errors.New(fieldAVP.Name + " AVP's Data type is unknown."), nil
+		return nil, errors.New(fieldAVP.Name + " AVP's Data type is unknown")
 	}
 
 	if data == nil { // basic non-grouped AVP
@@ -256,12 +256,12 @@ BASIC_TYPE:
 			// log.Println("convert: ", fieldAVP.Name, " ", fieldType.String(), " => ", t.String())
 			v.Set(field.Convert(t))
 		} else {
-			return errors.New(fieldAVP.Name + " AVP type mismatched. " + fieldType.String() + " => " + t.String()), nil
+			return nil, errors.New(fieldAVP.Name + " AVP type mismatched. " + fieldType.String() + " => " + t.String())
 		}
 		var ok bool
 		data, ok = v.Interface().(datatype.Type)
 		if !ok {
-			return errors.New(fieldAVP.Name + ", failed to convert AVP data to datatype.Type"), nil
+			return nil, errors.New(fieldAVP.Name + ", failed to convert AVP data to datatype.Type")
 		}
 	}
 
@@ -280,7 +280,7 @@ BASIC_TYPE:
 		Data:     data,
 	}
 
-	return nil, append(avps, avp)
+	return append(avps, avp), nil
 }
 
 // Unmarshal stores the result of a diameter message in the struct

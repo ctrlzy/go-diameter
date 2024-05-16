@@ -43,7 +43,7 @@ func DecodeHeader(data []byte) (*Header, error) {
 // DecodeFromBytes decodes the bytes of a Diameter Header.
 func (h *Header) DecodeFromBytes(data []byte) error {
 	if n := len(data); n < HeaderLength {
-		return fmt.Errorf("Not enough data to decode Header: %d", n)
+		return fmt.Errorf("not enough data to decode Header: %d", n)
 	}
 	h.Version = data[0]
 	h.MessageLength = uint24to32(data[1:4])

@@ -14,12 +14,13 @@ import (
 	"github.com/ctrlzy/go-diameter/v4/diam/dict"
 )
 
+// RFC 3588 section 4.2. Basic AVP Data Formats
 // AVP is a Diameter attribute-value-pair.
 type AVP struct {
-	Code     uint32        // Code of this AVP
-	Flags    uint8         // Flags of this AVP
-	Length   int           // Length of this AVP's payload
-	VendorID uint32        // VendorId of this AVP
+	Code     uint32        // Code of this AVP, 4 bytes
+	Flags    uint8         // Flags of this AVP, 1 byte
+	Length   int           // Length of this AVP's payload, 3 byte
+	VendorID uint32        // VendorId of this AVP, 4 bytes
 	Data     datatype.Type // Data of this AVP (payload)
 }
 
@@ -52,18 +53,18 @@ func DecodeAVP(data []byte, application uint32, dictionary *dict.Parser) (*AVP, 
 // It uses the given application id and dictionary for decoding the bytes.
 func (a *AVP) DecodeFromBytes(data []byte, application uint32, dictionary *dict.Parser) error {
 	if len(data) < 8 {
-		return fmt.Errorf("Not enough data to decode AVP header: %d bytes", len(data))
+		return fmt.Errorf("not enough data to decode AVP header: %d bytes", len(data))
 	}
 	a.Code = binary.BigEndian.Uint32(data[0:4])
 	a.Flags = data[4]
 	a.Length = int(uint24to32(data[5:8]))
 	if len(data) < a.Length {
-		return fmt.Errorf("Not enough data to decode AVP: %d != %d",
+		return fmt.Errorf("not enough data to decode AVP: %d != %d",
 			len(data), a.Length)
 	}
 	data = data[:a.Length] // this cuts padded bytes off
 	if len(data) < 8 {
-		return fmt.Errorf("Not enough data to decode AVP header: %d bytes", len(data))
+		return fmt.Errorf("not enough data to decode AVP header: %d bytes", len(data))
 	}
 
 	var hdrLength int
@@ -85,7 +86,7 @@ func (a *AVP) DecodeFromBytes(data []byte, application uint32, dictionary *dict.
 	bodyLen := a.Length - hdrLength
 	if n := len(payload); n < bodyLen {
 		return fmt.Errorf(
-			"Not enough data to decode AVP: %d != %d",
+			"not enough data to decode AVP: %d != %d",
 			hdrLength, n,
 		)
 	}

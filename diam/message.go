@@ -124,7 +124,7 @@ func (m *Message) readBody(r io.Reader, buf *bytes.Buffer, cmd *dict.Command, st
 	if n == 0 {
 		// TODO: fail to load the dictionary instead.
 		return fmt.Errorf(
-			"Command %s (%d) has no AVPs defined in the dictionary.",
+			"command %s (%d) has no AVPs defined in the dictionary",
 			cmd.Name, cmd.Code)
 	}
 	// Pre-allocate max # of AVPs for this message.
@@ -148,7 +148,7 @@ func (m *Message) decodeAVPs(b []byte) error {
 	for n := 0; n < len(b); {
 		a, err = DecodeAVP(b[n:], m.Header.ApplicationID, m.Dictionary())
 		if err != nil {
-			return fmt.Errorf("Failed to decode AVP: %s", err)
+			return fmt.Errorf("failed to decode AVP: %s", err)
 		}
 		m.AVP = append(m.AVP, a)
 		n += a.Len()
@@ -198,15 +198,15 @@ func (m *Message) Dictionary() *dict.Parser {
 // It is not safe for concurrent calls.
 func (m *Message) NewAVP(code interface{}, flags uint8, vendor uint32, data datatype.Type) (*AVP, error) {
 	var a *AVP
-	switch code.(type) {
+	switch c := code.(type) {
 	case int:
-		a = NewAVP(uint32(code.(int)), flags, vendor, data)
+		a = NewAVP(uint32(c), flags, vendor, data)
 	case uint32:
-		a = NewAVP(code.(uint32), flags, vendor, data)
+		a = NewAVP(c, flags, vendor, data)
 	case string:
 		dictAVP, err := m.Dictionary().FindAVPWithVendor(
 			m.Header.ApplicationID,
-			code.(string),
+			c,
 			vendor,
 		)
 		if err != nil {
