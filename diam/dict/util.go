@@ -82,53 +82,48 @@ func MakeUnknownAVP(appid, code, vendorID uint32) *AVP {
 //
 // FindAVPWithVendor must never be called concurrently with LoadFile or Load.
 func (p *Parser) FindAVPWithVendor(appid uint32, code interface{}, vendorID uint32) (*AVP, error) {
-	//p.mu.Lock()
-	//defer p.mu.Unlock()
+	return p.findAVPWithVendorRecursive(appid, code, vendorID, appid)
+}
+
+// find AVP recursively in the dictionary
+func (p *Parser) findAVPWithVendorRecursive(appid uint32, code interface{}, vendorID uint32, origAppID uint32) (*AVP, error) {
 	var (
 		avp *AVP
 		ok  bool
-		err error
 	)
-	origAppID := appid
-retry:
+
 	switch codeVal := code.(type) {
 	case string:
 		avp, ok = p.avpname[nameIdx{appid, codeVal, vendorID}]
-		if !ok && appid == 0 {
-			err = fmt.Errorf("could not find AVP %T(%q) for Vendor: %d", codeVal, codeVal, vendorID)
-		}
 	case uint32:
-		avp, ok = p.avpcode[codeIdx{appid, codeVal, vendorID}]
-		if !ok && appid == 0 {
-			err = fmt.Errorf("could not find AVP %T(%d) for Vendor: %d", codeVal, codeVal, vendorID)
-		}
+		avp, ok = p.avpcode[codeIdx{appid, uint32(codeVal), vendorID}]
 	case int:
 		avp, ok = p.avpcode[codeIdx{appid, uint32(codeVal), vendorID}]
-		if !ok && appid == 0 {
-			err = fmt.Errorf("could not find AVP %T(%d) for Vendor: %d", codeVal, codeVal, vendorID)
-		}
 	default:
 		return nil, fmt.Errorf("unsupported AVP code type %T(%#v)", codeVal, code)
 	}
+
+	// return avp if found
 	if ok {
 		return avp, nil
-	} else if appid != 0 {
-		parentAppId, isScoppedApp := parentAppIds[appid]
-		if isScoppedApp {
-			// Try searching 'parent' dictionary
-			appid = parentAppId
-		} else {
-			// Try searching the base dictionary.
-			appid = 0
-		}
-		goto retry
-	} else {
-		if codeU32, isUint32 := code.(uint32); isUint32 {
-			return MakeUnknownAVP(origAppID, codeU32, vendorID), err
-		}
 	}
 
-	return nil, err
+	// return unknown AVP or error if not found in base app
+	if !ok && appid == 0 {
+		if codeU32, isUint32 := code.(uint32); isUint32 {
+			return MakeUnknownAVP(origAppID, codeU32, vendorID), nil
+		}
+		return nil, fmt.Errorf("could not find AVP %v for Vendor: %d", code, vendorID)
+	}
+
+	// didn't find in current app, go to parent app for search
+	nextApp := uint32(0)
+	if parentAppId, isScopedApp := parentAppIds[appid]; isScopedApp {
+		nextApp = parentAppId
+	}
+
+	// didn't find the parent app, go to base app for search
+	return p.findAVPWithVendorRecursive(nextApp, code, vendorID, origAppID)
 }
 
 // FindAVP is a helper function that returns a pre-loaded AVP from the Parser.
@@ -186,11 +181,12 @@ func (p *Parser) FindCommand(appid, code uint32) (*Command, error) {
 	//defer p.mu.Unlock()
 	if cmd, ok := p.command[codeIdx{appid, code, UndefinedVendorID}]; ok {
 		return cmd, nil
-	} else if cmd, ok = p.command[codeIdx{0, code, UndefinedVendorID}]; ok {
-		// Always fall back to base dict.
+	}
+	// Always fall back to base dict.
+	if cmd, ok := p.command[codeIdx{0, code, UndefinedVendorID}]; ok {
 		return cmd, nil
 	}
-	return nil, fmt.Errorf("Could not find preloaded Command with code %d", code)
+	return nil, fmt.Errorf("could not find preloaded Command with code %d", code)
 }
 
 // Enum is a helper function that returns a pre-loaded Enum item for the
@@ -203,18 +199,14 @@ func (p *Parser) Enum(appid, code uint32, n int32) (*Enum, error) {
 		return nil, err
 	}
 	if avp.Data.Type != datatype.EnumeratedType {
-		return nil, fmt.Errorf(
-			"Data of AVP %s (%d) data is not Enumerated.",
-			avp.Name, avp.Code)
+		return nil, fmt.Errorf("data of AVP %s (%d) data is not Enumerated", avp.Name, avp.Code)
 	}
 	for _, item := range avp.Data.Enum {
 		if item.Code == n {
 			return item, nil
 		}
 	}
-	return nil, fmt.Errorf(
-		"Could not find preload Enum %d for AVP %s (%d)",
-		n, avp.Name, avp.Code)
+	return nil, fmt.Errorf("could not find preload Enum %d for AVP %s (%d)", n, avp.Name, avp.Code)
 }
 
 // Rule is a helper function that returns a pre-loaded Rule item for the
@@ -227,16 +219,12 @@ func (p *Parser) Rule(appid, code uint32, n string) (*Rule, error) {
 		return nil, err
 	}
 	if avp.Data.Type != datatype.GroupedType {
-		return nil, fmt.Errorf(
-			"Data of AVP %s (%d) data is not Grouped.",
-			avp.Name, avp.Code)
+		return nil, fmt.Errorf("data of AVP %s (%d) data is not Grouped", avp.Name, avp.Code)
 	}
 	for _, item := range avp.Data.Rule {
 		if item.AVP == n {
 			return item, nil
 		}
 	}
-	return nil, fmt.Errorf(
-		"Could not find preload Rule for %s for AVP %s (%d)",
-		n, avp.Name, avp.Code)
+	return nil, fmt.Errorf("could not find preload Rule for %s for AVP %s (%d)", n, avp.Name, avp.Code)
 }

@@ -21,7 +21,7 @@ type AVP struct {
 	Flags    uint8         // Flags of this AVP, 1 byte
 	Length   int           // Length of this AVP's payload, 3 byte
 	VendorID uint32        // VendorId of this AVP, 4 bytes
-	Data     datatype.Type // Data of this AVP (payload)
+	Data     datatype.Type // Data of this AVP (payload)，must be aligned to 32-bit boundary
 }
 
 // NewAVP creates and initializes a new AVP.
@@ -59,8 +59,7 @@ func (a *AVP) DecodeFromBytes(data []byte, application uint32, dictionary *dict.
 	a.Flags = data[4]
 	a.Length = int(uint24to32(data[5:8]))
 	if len(data) < a.Length {
-		return fmt.Errorf("not enough data to decode AVP: %d != %d",
-			len(data), a.Length)
+		return fmt.Errorf("not enough data to decode AVP: %d != %d", len(data), a.Length)
 	}
 	data = data[:a.Length] // this cuts padded bytes off
 	if len(data) < 8 {
@@ -85,10 +84,7 @@ func (a *AVP) DecodeFromBytes(data []byte, application uint32, dictionary *dict.
 	}
 	bodyLen := a.Length - hdrLength
 	if n := len(payload); n < bodyLen {
-		return fmt.Errorf(
-			"not enough data to decode AVP: %d != %d",
-			hdrLength, n,
-		)
+		return fmt.Errorf("not enough data to decode AVP: %d != %d", hdrLength, n)
 	}
 	a.Data, err = datatype.Decode(dictAVP.Data.Type, payload)
 	if err != nil {
@@ -96,10 +92,7 @@ func (a *AVP) DecodeFromBytes(data []byte, application uint32, dictionary *dict.
 	}
 	// Handle grouped AVPs.
 	if a.Data.Type() == datatype.GroupedType {
-		a.Data, err = DecodeGrouped(
-			a.Data.(datatype.Grouped),
-			application, dictionary,
-		)
+		a.Data, err = DecodeGrouped(a.Data.(datatype.Grouped), application, dictionary)
 		if err != nil {
 			return err
 		}
@@ -111,7 +104,7 @@ func (a *AVP) DecodeFromBytes(data []byte, application uint32, dictionary *dict.
 // It requires at least the Code, Flags and Data fields set.
 func (a *AVP) Serialize() ([]byte, error) {
 	if a.Data == nil {
-		return nil, errors.New("Failed to serialize AVP: Data is nil")
+		return nil, errors.New("failed to serialize AVP: Data is nil")
 	}
 	b := make([]byte, a.Len())
 	err := a.SerializeTo(b)
@@ -124,7 +117,7 @@ func (a *AVP) Serialize() ([]byte, error) {
 // SerializeTo writes the byte sequence that represents this AVP to a byte array.
 func (a *AVP) SerializeTo(b []byte) error {
 	if a.Data == nil {
-		return errors.New("Failed to serialize AVP: Data is nil")
+		return errors.New("failed to serialize AVP: Data is nil")
 	}
 	binary.BigEndian.PutUint32(b[0:4], a.Code)
 	b[4] = a.Flags

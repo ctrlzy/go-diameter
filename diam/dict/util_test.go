@@ -11,7 +11,7 @@ import (
 
 func TestApps(t *testing.T) {
 	apps := Default.Apps()
-	if len(apps) != 9 {
+	if len(apps) != 11 {
 		t.Fatalf("Unexpected # of apps. Want 9, have %d", len(apps))
 	}
 	// Base protocol.
@@ -34,15 +34,29 @@ func TestApps(t *testing.T) {
 	if apps[4].ID != 1 {
 		t.Fatalf("Unexpected app.ID. Want 1, have %d", apps[4].ID)
 	}
-	// 3GPP S6a applications
-	if apps[6].ID != 16777236 {
-		t.Fatalf("Unexpected app.ID. Want 16777236, have %d", apps[6].ID)
+	// TGPP
+	if apps[5].ID != 4 {
+		t.Fatalf("Unexpected app.ID. Want 4, have %d", apps[5].ID)
 	}
-	if apps[7].ID != 16777251 {
-		t.Fatalf("Unexpected app.ID. Want 16777251, have %d", apps[7].ID)
+	// TGPP s6a
+	if apps[6].ID != 16777251 {
+		t.Fatalf("Unexpected app.ID. Want 16777251, have %d", apps[6].ID)
 	}
-	if apps[8].ID != 16777265 {
-		t.Fatalf("Unexpected app.ID. Want 16777265, have %d", apps[8].ID)
+	// TGPP SWX
+	if apps[7].ID != 16777265 {
+		t.Fatalf("Unexpected app.ID. Want 16777265, have %d", apps[7].ID)
+	}
+	// TGPP sh
+	if apps[8].ID != 16777217 {
+		t.Fatalf("Unexpected app.ID. Want 16777217, have %d", apps[8].ID)
+	}
+	// TGPP s6c
+	if apps[9].ID != 16777312 {
+		t.Fatalf("Unexpected app.ID. Want 16777312, have %d", apps[9].ID)
+	}
+	// TGPP SGd
+	if apps[10].ID != 16777313 {
+		t.Fatalf("Unexpected app.ID. Want 16777313, have %d", apps[10].ID)
 	}
 }
 
