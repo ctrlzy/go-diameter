@@ -307,3 +307,11 @@ func BenchmarkDecodeOFR(b *testing.B) {
 		ofr.Parse(m)
 	}
 }
+
+func BenchmarkMarshalOFR(b *testing.B) {
+	m := diam.NewRequest(diam.MOForwardShortMessage, diam.TGPP_SGD_GDD_APP_ID, dict.Default)
+	ofr := createStructOFR()
+	for n := 0; n < b.N; n++ {
+		m.Marshal(ofr)
+	}
+}

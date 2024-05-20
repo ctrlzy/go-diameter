@@ -2,13 +2,14 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-package diam
+package diam_test
 
 import (
 	"bytes"
 	"encoding/hex"
 	"testing"
 
+	"github.com/ctrlzy/go-diameter/v4/diam"
 	"github.com/ctrlzy/go-diameter/v4/diam/avp"
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
 	"github.com/ctrlzy/go-diameter/v4/diam/dict"
@@ -53,8 +54,12 @@ var testAVP = [][]byte{ // Body of a CER message
 	},
 }
 
+var testAVP2 = []byte{ // Body of a OFR message
+	0x00, 0x00, 0x01, 0x07, 0x40, 0x00, 0x00, 0x4e, 0x75, 0x73, 0x63, 0x65, 0x6c, 0x6c, 0x2d, 0x6d, 0x6d, 0x65, 0x2d, 0x37, 0x33, 0x39, 0x33, 0x2e, 0x65, 0x70, 0x63, 0x2e, 0x6d, 0x6e, 0x63, 0x35, 0x38, 0x38, 0x2e, 0x6d, 0x63, 0x33, 0x31, 0x31, 0x2e, 0x33, 0x67, 0x70, 0x70, 0x6e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x2e, 0x6f, 0x72, 0x67, 0x3b, 0x31, 0x36, 0x35, 0x31, 0x32, 0x30, 0x39, 0x35, 0x33, 0x37, 0x3b, 0x32, 0x32, 0x37, 0x31, 0x31, 0x38, 0x39, 0x36, 0x35, 0x00, 0x00, 0x00, 0x00, 0x01, 0x04, 0x40, 0x00, 0x00, 0x20, 0x00, 0x00, 0x01, 0x0a, 0x40, 0x00, 0x00, 0x0c, 0x00, 0x00, 0x28, 0xaf, 0x00, 0x00, 0x01, 0x02, 0x40, 0x00, 0x00, 0x0c, 0x01, 0x00, 0x00, 0x61, 0x00, 0x00, 0x01, 0x15, 0x40, 0x00, 0x00, 0x0c, 0x00, 0x00, 0x01, 0x00, 0x00, 0x0c, 0xe4, 0xc0, 0x00, 0x00, 0x12, 0x00, 0x00, 0x28, 0xaf, 0x58, 0x62, 0x62, 0x01, 0x00, 0xf2, 0x00, 0x00, 0x00, 0x00, 0x0d, 0x00, 0x80, 0x00, 0x00, 0x10, 0x00, 0x00, 0x28, 0xaf, 0x00, 0x00, 0x00, 0x00, 0x02, 0x74, 0x80, 0x00, 0x00, 0x38, 0x00, 0x00, 0x28, 0xaf, 0x00, 0x00, 0x01, 0x0a, 0x40, 0x00, 0x00, 0x0c, 0x00, 0x00, 0x28, 0xaf, 0x00, 0x00, 0x02, 0x75, 0x80, 0x00, 0x00, 0x10, 0x00, 0x00, 0x28, 0xaf, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x02, 0x76, 0x80, 0x00, 0x00, 0x10, 0x00, 0x00, 0x28, 0xaf, 0x00, 0x00, 0x00, 0x00, 0x0c,
+}
+
 func TestNewAVP(t *testing.T) {
-	a := NewAVP(
+	a := diam.NewAVP(
 		avp.OriginHost,                      // Code
 		avp.Mbit,                            // Flags
 		0,                                   // Vendor
@@ -70,7 +75,7 @@ func TestNewAVP(t *testing.T) {
 }
 
 func TestDecodeAVP(t *testing.T) {
-	a, err := DecodeAVP(testAVP[0], 1, dict.Default)
+	a, err := diam.DecodeAVP(testAVP[0], 1, dict.Default)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -88,7 +93,7 @@ func TestDecodeAVP(t *testing.T) {
 }
 
 func TestDecodeAVPMalformed(t *testing.T) {
-	_, err := DecodeAVP(testAVP[0][:1], 1, dict.Default)
+	_, err := diam.DecodeAVP(testAVP[0][:1], 1, dict.Default)
 	if err == nil {
 		t.Fatal("Malformed AVP decoded with no error")
 	}
@@ -104,12 +109,12 @@ func TestDecodeAVPWithVendorID(t *testing.T) {
   </application>
 </diameter>`
 	dict.Default.Load(bytes.NewReader([]byte(userNameVendorXML)))
-	a := NewAVP(avp.UserName, avp.Mbit|avp.Vbit, 999, datatype.UTF8String("foobar"))
+	a := diam.NewAVP(avp.UserName, avp.Mbit|avp.Vbit, 999, datatype.UTF8String("foobar"))
 	b, err := a.Serialize()
 	if err != nil {
 		t.Fatal("Failed to serialize AVP:", err)
 	}
-	a, err = DecodeAVP(b, 1, dict.Default)
+	a, err = diam.DecodeAVP(b, 1, dict.Default)
 	if err != nil {
 		t.Fatal("Failed to decode AVP:", err)
 	}
@@ -119,7 +124,7 @@ func TestDecodeAVPWithVendorID(t *testing.T) {
 }
 
 func TestEncodeAVP(t *testing.T) {
-	a := &AVP{
+	a := &diam.AVP{
 		Code:  avp.OriginHost,
 		Flags: avp.Mbit,
 		Data:  datatype.DiameterIdentity("client"),
@@ -136,7 +141,7 @@ func TestEncodeAVP(t *testing.T) {
 }
 
 func TestEncodeAVPWithoutData(t *testing.T) {
-	a := &AVP{
+	a := &diam.AVP{
 		Code:  avp.OriginHost,
 		Flags: avp.Mbit,
 	}
@@ -148,14 +153,28 @@ func TestEncodeAVPWithoutData(t *testing.T) {
 	}
 }
 
+func TestDecodeAVP2(t *testing.T) {
+	a, err := diam.DecodeAVP(testAVP2, 0, dict.Default)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(a)
+}
+
 func BenchmarkDecodeAVP(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		DecodeAVP(testAVP[0], 1, dict.Default)
+		diam.DecodeAVP(testAVP[0], 1, dict.Default)
+	}
+}
+
+func BenchmarkDecodeAVP2(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		diam.DecodeAVP(testAVP2, 1, dict.Default)
 	}
 }
 
 func BenchmarkEncodeAVP(b *testing.B) {
-	a := NewAVP(avp.OriginHost, avp.Mbit, 0, datatype.DiameterIdentity("client"))
+	a := diam.NewAVP(avp.OriginHost, avp.Mbit, 0, datatype.DiameterIdentity("client"))
 	for n := 0; n < b.N; n++ {
 		a.Serialize()
 	}

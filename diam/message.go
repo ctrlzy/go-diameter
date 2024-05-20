@@ -79,24 +79,32 @@ func (m *Message) MessageStream() uint {
 	return m.stream
 }
 
-func (m *Message) readHeader(r io.Reader, buf *bytes.Buffer) (cmd *dict.Command, stream uint, err error) {
+func (m *Message) readHeader(r io.Reader, buf *bytes.Buffer) (*dict.Command, uint, error) {
+	var (
+		err    error
+		cmd    *dict.Command
+		stream uint
+	)
 	b := buf.Bytes()[:HeaderLength]
-	msr, isMulti := r.(MultistreamReader)
-	if isMulti {
-		_, stream, err = msr.ReadAtLeast(b, HeaderLength, InvalidStreamID)
+	switch reader := r.(type) {
+	case MultistreamReader:
+		_, stream, err = reader.ReadAtLeast(b, HeaderLength, InvalidStreamID)
 		if err == nil {
-			msr.SetCurrentStream(stream)
+			reader.SetCurrentStream(stream)
 		}
-	} else {
+	default:
 		_, err = io.ReadFull(r, b)
 	}
+
 	if err != nil {
 		return nil, stream, err
 	}
+
 	m.Header, err = DecodeHeader(b)
 	if err != nil {
 		return nil, stream, err
 	}
+
 	cmd, err = m.Dictionary().FindCommand(
 		m.Header.ApplicationID,
 		m.Header.CommandCode,
@@ -111,12 +119,13 @@ func (m *Message) readBody(r io.Reader, buf *bytes.Buffer, cmd *dict.Command, st
 	var err error
 	var n int
 	b := readerBufferSlice(buf, int(m.Header.MessageLength-HeaderLength))
-	msr, isMulti := r.(MultistreamReader)
-	if isMulti {
-		n, _, err = msr.ReadAtLeast(b, len(b), stream)
-	} else {
+	switch reader := r.(type) {
+	case MultistreamReader:
+		n, _, err = reader.ReadAtLeast(b, len(b), stream)
+	default:
 		n, err = io.ReadFull(r, b)
 	}
+
 	if err != nil {
 		return fmt.Errorf("readBody Error: %v, %d bytes read", err, n)
 	}
