@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-package sm
+package sm_test
 
 import (
 	"testing"
@@ -13,13 +13,14 @@ import (
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
 	"github.com/ctrlzy/go-diameter/v4/diam/diamtest"
 	"github.com/ctrlzy/go-diameter/v4/diam/dict"
+	"github.com/ctrlzy/go-diameter/v4/diam/sm"
 	"github.com/ctrlzy/go-diameter/v4/diam/sm/smparser"
 )
 
 // These tests use dictionary, settings and functions from sm_test.go.
 
 func TestHandleDWR(t *testing.T) {
-	sm := New(serverSettings)
+	sm := sm.New(serverSettings)
 	srv := diamtest.NewServer(sm, dict.Default)
 	defer srv.Close()
 	mc := make(chan *diam.Message, 1)
@@ -81,7 +82,7 @@ func TestHandleDWR(t *testing.T) {
 }
 
 func TestHandleDWR_Fail(t *testing.T) {
-	sm := New(serverSettings)
+	sm := sm.New(serverSettings)
 	srv := diamtest.NewServer(sm, dict.Default)
 	defer srv.Close()
 	mc := make(chan *diam.Message, 1)

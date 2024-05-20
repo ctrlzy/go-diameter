@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-package sm
+package sm_test
 
 import (
 	"testing"
@@ -13,6 +13,7 @@ import (
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
 	"github.com/ctrlzy/go-diameter/v4/diam/diamtest"
 	"github.com/ctrlzy/go-diameter/v4/diam/dict"
+	"github.com/ctrlzy/go-diameter/v4/diam/sm"
 )
 
 func testResultCode(m *diam.Message, want uint32) bool {
@@ -33,11 +34,11 @@ func TestStateMachineTCP(t *testing.T) {
 	testStateMachine(t, "tcp")
 }
 
-/// TestStateMachine establishes a connection with a test server and
+// / TestStateMachine establishes a connection with a test server and
 // sends a Re-Auth-Request message to ensure the handshake was
 // completed and that the RAR handler has context from the peer.
 func testStateMachine(t *testing.T, network string) {
-	sm := New(serverSettings)
+	sm := sm.New(serverSettings)
 	if sm.Settings() != serverSettings {
 		t.Fatal("Invalid settings")
 	}

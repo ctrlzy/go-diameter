@@ -1,7 +1,7 @@
 // Copyright 2013-2018 go-diameter authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-package sm
+package sm_test
 
 import (
 	"errors"
@@ -18,6 +18,7 @@ import (
 	"github.com/ctrlzy/go-diameter/v4/diam/avp"
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
 	"github.com/ctrlzy/go-diameter/v4/diam/dict"
+	"github.com/ctrlzy/go-diameter/v4/diam/sm"
 	"github.com/ctrlzy/go-diameter/v4/diam/sm/smpeer"
 )
 
@@ -29,10 +30,6 @@ const (
 	CONCURENT_CLIENTS    = 128 // Number of clients (go routines) simultaneously using a single diameter connection
 	TEST_TIMEOUT_SECONDS = 10
 )
-
-func init() {
-	rand.Seed(time.Now().UnixNano())
-}
 
 func TestS6aClientServerTCP(t *testing.T) {
 	testS6aClientServer("tcp", t)
@@ -50,7 +47,7 @@ var (
 func testS6aClientServer(network string, t *testing.T) {
 
 	resetTestStats()
-	settings := &Settings{
+	settings := &sm.Settings{
 		OriginHost:       datatype.DiameterIdentity("test.host"),
 		OriginRealm:      datatype.DiameterIdentity("test.realm"),
 		VendorID:         VENDOR_3GPP,
@@ -61,7 +58,7 @@ func testS6aClientServer(network string, t *testing.T) {
 	results := make(chan error, CONCURENT_CLIENTS*2)
 
 	// Create the state machine (mux) and set its message handlers.
-	mux := New(settings)
+	mux := sm.New(settings)
 
 	mux.HandleIdx(
 		diam.CommandIndex{AppID: diam.TGPP_S6A_APP_ID, Code: diam.AuthenticationInformation, Request: true},
@@ -93,7 +90,7 @@ func testS6aClientServer(network string, t *testing.T) {
 	time.Sleep(time.Millisecond * 10)
 
 	// Initialize Client
-	cfg := &Settings{
+	cfg := &sm.Settings{
 		OriginHost:       datatype.DiameterIdentity("test.host"),
 		OriginRealm:      datatype.DiameterIdentity("test.realm"),
 		VendorID:         VENDOR_3GPP,
@@ -104,9 +101,9 @@ func testS6aClientServer(network string, t *testing.T) {
 	}
 
 	// Create the state machine (it's a diam.ServeMux) and client.
-	cmux := New(cfg)
+	cmux := sm.New(cfg)
 
-	cli := &Client{
+	cli := &sm.Client{
 		Dict:               dict.Default,
 		Handler:            cmux,
 		MaxRetransmits:     3,
@@ -187,7 +184,7 @@ func testHandleALL(results chan error) diam.HandlerFunc {
 }
 
 // S6a AI
-func testHandleAIR(results chan error, settings *Settings) diam.HandlerFunc {
+func testHandleAIR(results chan error, settings *sm.Settings) diam.HandlerFunc {
 	type RequestedEUTRANAuthInfo struct {
 		NumVectors        datatype.Unsigned32  `avp:"Number-Of-Requested-Vectors"`
 		ImmediateResponse datatype.Unsigned32  `avp:"Immediate-Response-Preferred"`
@@ -250,7 +247,7 @@ func testSendAIA(w io.Writer, m *diam.Message) (n int64, err error) {
 	return m.WriteTo(w)
 }
 
-func testHandleCLR(results chan error, settings *Settings) diam.HandlerFunc {
+func testHandleCLR(results chan error, settings *sm.Settings) diam.HandlerFunc {
 	type CLR struct {
 		SessionID        string                    `avp:"Session-Id"`
 		AuthSessionState int32                     `avp:"Auth-Session-State"`
@@ -292,7 +289,7 @@ func testHandleCLR(results chan error, settings *Settings) diam.HandlerFunc {
 }
 
 // S6a UL
-func testHandleULR(results chan error, settings *Settings) diam.HandlerFunc {
+func testHandleULR(results chan error, settings *sm.Settings) diam.HandlerFunc {
 
 	type ULR struct {
 		SessionID        datatype.UTF8String       `avp:"Session-Id"`
@@ -341,11 +338,11 @@ func testHandleULR(results chan error, settings *Settings) diam.HandlerFunc {
 	}
 }
 
-func testSendCLA(settings *Settings, w io.Writer, m *diam.Message) (n int64, err error) {
+func testSendCLA(settings *sm.Settings, w io.Writer, m *diam.Message) (n int64, err error) {
 	return m.WriteTo(w)
 }
 
-func testSendCLR(c diam.Conn, cfg *Settings) error {
+func testSendCLR(c diam.Conn, cfg *sm.Settings) error {
 	meta, ok := smpeer.FromContext(c.Context())
 	if !ok {
 		return errors.New("peer metadata unavailable")
@@ -364,7 +361,7 @@ func testSendCLR(c diam.Conn, cfg *Settings) error {
 	return err
 }
 
-func testSendULA(settings *Settings, w io.Writer, m *diam.Message) (n int64, err error) {
+func testSendULA(settings *sm.Settings, w io.Writer, m *diam.Message) (n int64, err error) {
 	m.NewAVP(avp.ULAFlags, avp.Mbit|avp.Vbit, VENDOR_3GPP, datatype.Unsigned32(1))
 	m.NewAVP(avp.SubscriptionData, avp.Mbit, VENDOR_3GPP, &diam.GroupedAVP{
 		AVP: []*diam.AVP{
@@ -419,7 +416,7 @@ func testSendULA(settings *Settings, w io.Writer, m *diam.Message) (n int64, err
 }
 
 // Create & send Authentication-Information Request
-func testSendAIR(c diam.Conn, cfg *Settings) error {
+func testSendAIR(c diam.Conn, cfg *sm.Settings) error {
 	meta, ok := smpeer.FromContext(c.Context())
 	if !ok {
 		return errors.New("peer metadata unavailable")
@@ -447,7 +444,7 @@ func testSendAIR(c diam.Conn, cfg *Settings) error {
 }
 
 // Create & send Update-Location Request
-func testSendULR(c diam.Conn, cfg *Settings) error {
+func testSendULR(c diam.Conn, cfg *sm.Settings) error {
 	meta, ok := smpeer.FromContext(c.Context())
 	if !ok {
 		return errors.New("peer metadata unavailable")
@@ -554,7 +551,7 @@ type CLA struct {
 	ExperimentalResult ExperimentalResult        `avp:"Experimental-Result"`
 }
 
-func testHandleAIA(results chan error, cfg *Settings) diam.HandlerFunc {
+func testHandleAIA(results chan error, cfg *sm.Settings) diam.HandlerFunc {
 	return func(c diam.Conn, m *diam.Message) {
 		if m.Header.CommandCode != diam.AuthenticationInformation {
 			results <- fmt.Errorf("Unexpected Command Code for AIA: %d", m.Header.CommandCode)

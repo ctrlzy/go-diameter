@@ -2,15 +2,17 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-package dict
+package dict_test
 
 import (
 	"bytes"
 	"testing"
+
+	"github.com/ctrlzy/go-diameter/v4/diam/dict"
 )
 
 func TestApps(t *testing.T) {
-	apps := Default.Apps()
+	apps := dict.Default.Apps()
 	if len(apps) != 11 {
 		t.Fatalf("Unexpected # of apps. Want 9, have %d", len(apps))
 	}
@@ -62,17 +64,17 @@ func TestApps(t *testing.T) {
 
 func TestApp(t *testing.T) {
 	// Base protocol.
-	if _, err := Default.App(0); err != nil {
+	if _, err := dict.Default.App(0); err != nil {
 		t.Fatal(err)
 	}
 	// Credit-Control applications.
-	if _, err := Default.App(4); err != nil {
+	if _, err := dict.Default.App(4); err != nil {
 		t.Fatal(err)
 	}
 }
 
 func findAVPCodeTest(t *testing.T, app uint32, codeStr string, vendor, expectedCode uint32) {
-	if avp, err := Default.FindAVPWithVendor(app, codeStr, vendor); err != nil {
+	if avp, err := dict.Default.FindAVPWithVendor(app, codeStr, vendor); err != nil {
 		t.Fatalf("FindAVP error: %v for app %d & %s AVP", err, app, codeStr)
 	} else if avp.Code != expectedCode {
 		t.Fatalf(
@@ -91,38 +93,38 @@ func TestFindAVPWithVendor(t *testing.T) {
     </avp>
   </application>
 </diameter>`
-	Default.Load(bytes.NewReader([]byte(nokiaXML)))
-	if _, err := Default.FindAVPWithVendor(4, 999, UndefinedVendorID); err == nil {
+	dict.Default.Load(bytes.NewReader([]byte(nokiaXML)))
+	if _, err := dict.Default.FindAVPWithVendor(4, 999, dict.UndefinedVendorID); err == nil {
 		t.Error("Should get not found")
 	}
-	findAVPCodeTest(t, 4, "Session-Id", UndefinedVendorID, 263)
+	findAVPCodeTest(t, 4, "Session-Id", dict.UndefinedVendorID, 263)
 	findAVPCodeTest(t, 43, "Session-Start-Indicator", 94, 5105)
-	findAVPCodeTest(t, 43, "Session-Start-Indicator", UndefinedVendorID, 5105)
+	findAVPCodeTest(t, 43, "Session-Start-Indicator", dict.UndefinedVendorID, 5105)
 
-	if _, err := Default.FindAVPWithVendor(4, "Session-Start-Indicator", 0); err == nil {
+	if _, err := dict.Default.FindAVPWithVendor(4, "Session-Start-Indicator", 0); err == nil {
 		t.Error("Should get not found")
 	}
-	findAVPCodeTest(t, 16777251, "Supported-Features", UndefinedVendorID, 628)
+	findAVPCodeTest(t, 16777251, "Supported-Features", dict.UndefinedVendorID, 628)
 
 	// Test 'parent' AVP find - S6a app ID, tgpp_ro_rf dictionary
-	findAVPCodeTest(t, 16777251, "GMLC-Address", UndefinedVendorID, 2405)
+	findAVPCodeTest(t, 16777251, "GMLC-Address", dict.UndefinedVendorID, 2405)
 
-	if _, err := Default.FindAVPWithVendor(43, "User-Password", UndefinedVendorID); err == nil {
+	if _, err := dict.Default.FindAVPWithVendor(43, "User-Password", dict.UndefinedVendorID); err == nil {
 		t.Error("User-Password Should not be found for app 43")
 	}
-	findAVPCodeTest(t, 1, "User-Password", UndefinedVendorID, 2)
-	findAVPCodeTest(t, 4, "User-Password", UndefinedVendorID, 2)
-	findAVPCodeTest(t, 16777251, "User-Password", UndefinedVendorID, 2)
+	findAVPCodeTest(t, 1, "User-Password", dict.UndefinedVendorID, 2)
+	findAVPCodeTest(t, 4, "User-Password", dict.UndefinedVendorID, 2)
+	findAVPCodeTest(t, 16777251, "User-Password", dict.UndefinedVendorID, 2)
 }
 
 func TestFindAVP(t *testing.T) {
-	if _, err := Default.FindAVP(999, 263); err != nil {
+	if _, err := dict.Default.FindAVP(999, 263); err != nil {
 		t.Fatal(err)
 	}
 }
 
 func TestScanAVP(t *testing.T) {
-	if avp, err := Default.ScanAVP("Session-Id"); err != nil {
+	if avp, err := dict.Default.ScanAVP("Session-Id"); err != nil {
 		t.Error(err)
 	} else if avp.Code != 263 {
 		t.Fatalf("Unexpected code %d for Session-Id AVP", avp.Code)
@@ -130,19 +132,19 @@ func TestScanAVP(t *testing.T) {
 }
 
 func TestFindCommand(t *testing.T) {
-	if cmd, err := Default.FindCommand(999, 257); err != nil {
+	if cmd, err := dict.Default.FindCommand(999, 257); err != nil {
 		t.Error(err)
 	} else if cmd.Short != "CE" {
 		t.Fatalf("Unexpected command: %#v", cmd)
 	}
 
-	if cmd, err := Default.FindCommand(16777251, 316); err != nil {
+	if cmd, err := dict.Default.FindCommand(16777251, 316); err != nil {
 		t.Error(err)
 	} else if cmd.Short != "UL" {
 		t.Fatalf("Unexpected command: %#v", cmd)
 	}
 
-	if cmd, err := Default.FindCommand(16777251, 318); err != nil {
+	if cmd, err := dict.Default.FindCommand(16777251, 318); err != nil {
 		t.Error(err)
 	} else if cmd.Short != "AI" {
 		t.Fatalf("Unexpected command: %#v", cmd)
@@ -150,7 +152,7 @@ func TestFindCommand(t *testing.T) {
 }
 
 func TestEnum(t *testing.T) {
-	if item, err := Default.Enum(0, 274, 1); err != nil {
+	if item, err := dict.Default.Enum(0, 274, 1); err != nil {
 		t.Fatal(err)
 	} else if item.Name != "AUTHENTICATE_ONLY" {
 		t.Errorf(
@@ -161,7 +163,7 @@ func TestEnum(t *testing.T) {
 }
 
 func TestRule(t *testing.T) {
-	if rule, err := Default.Rule(0, 284, "Proxy-Host"); err != nil {
+	if rule, err := dict.Default.Rule(0, 284, "Proxy-Host"); err != nil {
 		t.Fatal(err)
 	} else if !rule.Required {
 		t.Errorf("Unexpected rule %#v", rule)
@@ -170,24 +172,24 @@ func TestRule(t *testing.T) {
 
 func BenchmarkFindAVPName(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		Default.FindAVP(0, "Session-Id")
+		dict.Default.FindAVP(0, "Session-Id")
 	}
 }
 
 func BenchmarkFindAVPCode(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		Default.FindAVP(0, 263)
+		dict.Default.FindAVP(0, 263)
 	}
 }
 
 func BenchmarkScanAVPName(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		Default.ScanAVP("Session-Id")
+		dict.Default.ScanAVP("Session-Id")
 	}
 }
 
 func BenchmarkScanAVPCode(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		Default.ScanAVP(263)
+		dict.Default.ScanAVP(263)
 	}
 }

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-package sm
+package sm_test
 
 import (
 	"bytes"
@@ -11,6 +11,7 @@ import (
 
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
 	"github.com/ctrlzy/go-diameter/v4/diam/dict"
+	"github.com/ctrlzy/go-diameter/v4/diam/sm"
 )
 
 func init() {
@@ -35,7 +36,7 @@ var authDictionary = `<?xml version="1.0" encoding="UTF-8"?>
 var (
 	localhostAddress = datatype.Address(net.ParseIP("127.0.0.1"))
 
-	serverSettings = &Settings{
+	serverSettings = &sm.Settings{
 		OriginHost:       "srv",
 		OriginRealm:      "test",
 		VendorID:         13,
@@ -44,7 +45,7 @@ var (
 		FirmwareRevision: 1,
 	}
 
-	serverSettings2 = &Settings{
+	serverSettings2 = &sm.Settings{
 		OriginHost:       "srv2",
 		OriginRealm:      "test2",
 		VendorID:         13,
@@ -54,7 +55,7 @@ var (
 		HostIPAddresses:  []datatype.Address{localhostAddress},
 	}
 
-	clientSettings = &Settings{
+	clientSettings = &sm.Settings{
 		OriginHost:       "cli",
 		OriginRealm:      "test",
 		VendorID:         13,
@@ -63,7 +64,7 @@ var (
 		FirmwareRevision: 1,
 	}
 
-	clientSettings2 = &Settings{
+	clientSettings2 = &sm.Settings{
 		OriginHost:       "cli2",
 		OriginRealm:      "test2",
 		VendorID:         13,

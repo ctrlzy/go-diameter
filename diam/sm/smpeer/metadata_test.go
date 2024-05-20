@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-package smpeer
+package smpeer_test
 
 import (
 	"context"
@@ -10,6 +10,7 @@ import (
 
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
 	"github.com/ctrlzy/go-diameter/v4/diam/sm/smparser"
+	"github.com/ctrlzy/go-diameter/v4/diam/sm/smpeer"
 )
 
 func TestFromCER(t *testing.T) {
@@ -17,7 +18,7 @@ func TestFromCER(t *testing.T) {
 		OriginHost:  datatype.DiameterIdentity("foobar"),
 		OriginRealm: datatype.DiameterIdentity("test"),
 	}
-	meta := FromCER(cer)
+	meta := smpeer.FromCER(cer)
 	if meta.OriginHost != cer.OriginHost {
 		t.Fatalf("Unexpected OriginHost. Want %q, have %q",
 			cer.OriginHost, meta.OriginHost)
@@ -26,8 +27,8 @@ func TestFromCER(t *testing.T) {
 		t.Fatalf("Unexpected OriginRealm. Want %q, have %q",
 			cer.OriginRealm, meta.OriginRealm)
 	}
-	ctx := NewContext(context.Background(), meta)
-	data, ok := FromContext(ctx)
+	ctx := smpeer.NewContext(context.Background(), meta)
+	data, ok := smpeer.FromContext(ctx)
 	if !ok {
 		t.Fatal("Metadata not present in this context")
 	}
@@ -41,7 +42,7 @@ func TestFromCEA(t *testing.T) {
 		OriginHost:  datatype.DiameterIdentity("foobar"),
 		OriginRealm: datatype.DiameterIdentity("test"),
 	}
-	meta := FromCEA(cer)
+	meta := smpeer.FromCEA(cer)
 	if meta.OriginHost != cer.OriginHost {
 		t.Fatalf("Unexpected OriginHost. Want %q, have %q",
 			cer.OriginHost, meta.OriginHost)
@@ -50,8 +51,8 @@ func TestFromCEA(t *testing.T) {
 		t.Fatalf("Unexpected OriginRealm. Want %q, have %q",
 			cer.OriginRealm, meta.OriginRealm)
 	}
-	ctx := NewContext(context.Background(), meta)
-	data, ok := FromContext(ctx)
+	ctx := smpeer.NewContext(context.Background(), meta)
+	data, ok := smpeer.FromContext(ctx)
 	if !ok {
 		t.Fatal("Metadata not present in this context")
 	}

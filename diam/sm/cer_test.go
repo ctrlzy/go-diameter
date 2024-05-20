@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-package sm
+package sm_test
 
 import (
 	"testing"
@@ -13,6 +13,7 @@ import (
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
 	"github.com/ctrlzy/go-diameter/v4/diam/diamtest"
 	"github.com/ctrlzy/go-diameter/v4/diam/dict"
+	"github.com/ctrlzy/go-diameter/v4/diam/sm"
 	"github.com/ctrlzy/go-diameter/v4/diam/sm/smpeer"
 )
 
@@ -23,7 +24,7 @@ func TestHandleCER_HandshakeMetadataTCP(t *testing.T) {
 }
 
 func testHandleCER_HandshakeMetadata(t *testing.T, network string) {
-	sm := New(serverSettings)
+	sm := sm.New(serverSettings)
 	srv := diamtest.NewServerNetwork(network, sm, dict.Default)
 	defer srv.Close()
 
@@ -72,7 +73,7 @@ func testHandleCER_HandshakeMetadata(t *testing.T, network string) {
 }
 
 func TestHandleCER_HandshakeMetadata_CustomIP(t *testing.T) {
-	sm := New(serverSettings2)
+	sm := sm.New(serverSettings2)
 	srv := diamtest.NewServer(sm, dict.Default)
 	defer srv.Close()
 
@@ -122,7 +123,7 @@ func TestHandleCER_HandshakeMetadata_CustomIP(t *testing.T) {
 }
 
 func TestHandleCER_Acct(t *testing.T) {
-	sm := New(serverSettings)
+	sm := sm.New(serverSettings)
 	srv := diamtest.NewServer(sm, dict.Default)
 	defer srv.Close()
 	mc := make(chan *diam.Message, 1)
@@ -161,7 +162,7 @@ func TestHandleCER_Acct(t *testing.T) {
 }
 
 func TestHandleCER_Acct_Fail(t *testing.T) {
-	sm := New(serverSettings)
+	sm := sm.New(serverSettings)
 	srv := diamtest.NewServer(sm, dict.Default)
 	defer srv.Close()
 	mc := make(chan *diam.Message, 1)
@@ -200,7 +201,7 @@ func TestHandleCER_Acct_Fail(t *testing.T) {
 }
 
 func TestHandleCER_Acct_Fail_CustomIP(t *testing.T) {
-	sm := New(serverSettings2)
+	sm := sm.New(serverSettings2)
 	srv := diamtest.NewServer(sm, dict.Default)
 	defer srv.Close()
 	mc := make(chan *diam.Message, 1)
@@ -239,7 +240,7 @@ func TestHandleCER_Acct_Fail_CustomIP(t *testing.T) {
 }
 
 func TestHandleCER_VS_Acct(t *testing.T) {
-	sm := New(serverSettings)
+	sm := sm.New(serverSettings)
 	srv := diamtest.NewServer(sm, dict.Default)
 	defer srv.Close()
 	mc := make(chan *diam.Message, 1)
@@ -282,7 +283,7 @@ func TestHandleCER_VS_Acct(t *testing.T) {
 }
 
 func TestHandleCER_VS_Acct_Fail(t *testing.T) {
-	sm := New(serverSettings)
+	sm := sm.New(serverSettings)
 	srv := diamtest.NewServer(sm, dict.Default)
 	defer srv.Close()
 	mc := make(chan *diam.Message, 1)
@@ -325,7 +326,7 @@ func TestHandleCER_VS_Acct_Fail(t *testing.T) {
 }
 
 func TestHandleCER_Auth(t *testing.T) {
-	sm := New(serverSettings)
+	sm := sm.New(serverSettings)
 	srv := diamtest.NewServer(sm, dict.Default)
 	defer srv.Close()
 	mc := make(chan *diam.Message, 1)
@@ -364,7 +365,7 @@ func TestHandleCER_Auth(t *testing.T) {
 }
 
 func TestHandleCER_Auth_Fail(t *testing.T) {
-	sm := New(serverSettings)
+	sm := sm.New(serverSettings)
 	srv := diamtest.NewServer(sm, dict.Default)
 	defer srv.Close()
 	mc := make(chan *diam.Message, 1)
@@ -407,7 +408,7 @@ func TestHandleCER_VS_AuthTCP(t *testing.T) {
 }
 
 func testHandleCER_VS_Auth(t *testing.T, network string) {
-	sm := New(serverSettings)
+	sm := sm.New(serverSettings)
 	srv := diamtest.NewServerNetwork(network, sm, dict.Default)
 	defer srv.Close()
 	mc := make(chan *diam.Message, 1)
@@ -454,7 +455,7 @@ func TestHandleCER_VS_Auth_FailTCP(t *testing.T) {
 }
 
 func testHandleCER_VS_Auth_Fail(t *testing.T, network string) {
-	sm := New(serverSettings)
+	sm := sm.New(serverSettings)
 	srv := diamtest.NewServerNetwork(network, sm, dict.Default)
 	defer srv.Close()
 	mc := make(chan *diam.Message, 1)
@@ -497,7 +498,7 @@ func testHandleCER_VS_Auth_Fail(t *testing.T, network string) {
 }
 
 func TestHandleCER_InbandSecurity(t *testing.T) {
-	sm := New(serverSettings)
+	sm := sm.New(serverSettings)
 	srv := diamtest.NewServer(sm, dict.Default)
 	defer srv.Close()
 	mc := make(chan *diam.Message, 1)

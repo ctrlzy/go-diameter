@@ -164,7 +164,7 @@ func (cli *Client) validate() error {
 				break
 			}
 		}
-		if isSupported == false {
+		if !isSupported {
 			err := fmt.Errorf("Client attempts to advertise unsupported application - type: acct, id: %d", acctAppID)
 			return err
 		}
@@ -179,7 +179,7 @@ func (cli *Client) validate() error {
 				break
 			}
 		}
-		if isSupported == false {
+		if !isSupported {
 			err := fmt.Errorf("Client attempts to advertise unsupported application - type: auth, id: %d", authAppID)
 			return err
 		}
