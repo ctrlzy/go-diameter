@@ -1,9 +1,10 @@
-package middleware
+package middleware_test
 
 import (
 	"fmt"
 	"io"
 	"net"
+	"strings"
 	"testing"
 	"time"
 
@@ -11,14 +12,15 @@ import (
 	"github.com/ctrlzy/go-diameter/v4/diam/avp"
 	"github.com/ctrlzy/go-diameter/v4/diam/datatype"
 	"github.com/ctrlzy/go-diameter/v4/diam/diamtest"
-	"github.com/opentracing/opentracing-go"
+	"github.com/ctrlzy/go-diameter/v4/examples/middleware"
+	"go.opentelemetry.io/otel"
 )
 
 func TestTracer(t *testing.T) {
 	errc := make(chan error, 1)
 
 	smux := diam.NewServeMux()
-	smux.Handle("CER", NewTracer(newCERHandler(errc)))
+	smux.Handle("CER", middleware.NewTracer(newCERHandler(errc)))
 
 	srv := diamtest.NewServer(smux, nil)
 	defer srv.Close()
@@ -49,7 +51,7 @@ func TestTracerFunc(t *testing.T) {
 	errc := make(chan error, 1)
 
 	smux := diam.NewServeMux()
-	smux.Handle("CER", TracerFunc(handleCER(errc, false)))
+	smux.Handle("CER", middleware.TracerFunc(handleCER(errc, false)))
 
 	srv := diamtest.NewServer(smux, nil)
 	defer srv.Close()
@@ -107,7 +109,10 @@ func newCERHandler(errc chan error) diam.Handler {
 }
 
 func (h *cerHandler) ServeDIAM(c diam.Conn, m *diam.Message) {
-	span := opentracing.SpanFromContext(m.Context())
+	tracer := otel.Tracer("your-service-name") // initialize the tracer
+	// Start a new span
+	_, span := tracer.Start(m.Context(), getOp(m))
+	defer span.End()
 	if span == nil {
 		h.errc <- fmt.Errorf("Span is nil")
 	}
@@ -130,7 +135,10 @@ func (h *cerHandler) ServeDIAM(c diam.Conn, m *diam.Message) {
 
 func handleCER(errc chan error, useTLS bool) diam.HandlerFunc {
 	return func(c diam.Conn, m *diam.Message) {
-		span := opentracing.SpanFromContext(m.Context())
+		tracer := otel.Tracer("your-service-name") // initialize the tracer
+		// Start a new span
+		_, span := tracer.Start(m.Context(), getOp(m))
+		defer span.End()
 		if span == nil {
 			errc <- fmt.Errorf("Span is nil")
 		}
@@ -195,4 +203,23 @@ func handleCEA(errc chan error, wait chan struct{}) diam.HandlerFunc {
 		}()
 		c.Close()
 	}
+}
+
+func getOp(m *diam.Message) string {
+	op := "diameter_"
+	cmd, err := m.Dictionary().FindCommand(
+		m.Header.ApplicationID,
+		m.Header.CommandCode,
+	)
+	if err != nil {
+		op += "unknown_command"
+	} else {
+		op += strings.ToLower(strings.Replace(cmd.Name, "-", "_", 1))
+	}
+	if m.Header.CommandFlags&diam.RequestFlag == diam.RequestFlag {
+		op += "r"
+	} else {
+		op += "a"
+	}
+	return op
 }

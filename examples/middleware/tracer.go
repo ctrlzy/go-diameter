@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"github.com/ctrlzy/go-diameter/v4/diam"
-	"github.com/opentracing/opentracing-go"
+	"go.opentelemetry.io/otel"
 )
 
 type Tracer struct {
@@ -31,8 +31,12 @@ func getOp(m *diam.Message) string {
 }
 
 func (t *Tracer) ServeDIAM(c diam.Conn, m *diam.Message) {
-	span, ctx := opentracing.StartSpanFromContext(m.Context(), getOp(m))
-	defer span.Finish()
+	tracer := otel.Tracer("diam-tracer") // initialize the tracer
+	// Start a new span
+	ctx, span := tracer.Start(m.Context(), getOp(m))
+	defer span.End()
+	//span, ctx := opentracing.StartSpanFromContext(m.Context(), getOp(m))
+	//defer span.Finish()
 	m.SetContext(ctx)
 	t.h.ServeDIAM(c, m)
 }
@@ -45,8 +49,12 @@ func NewTracer(h diam.Handler) diam.Handler {
 
 func TracerFunc(f diam.HandlerFunc) diam.HandlerFunc {
 	return func(c diam.Conn, m *diam.Message) {
-		span, ctx := opentracing.StartSpanFromContext(m.Context(), getOp(m))
-		defer span.Finish()
+		tracer := otel.Tracer("diam-tracer") // initialize the tracer
+		// Start a new span
+		ctx, span := tracer.Start(m.Context(), getOp(m))
+		defer span.End()
+		//span, ctx := opentracing.StartSpanFromContext(m.Context(), getOp(m))
+		//defer span.Finish()
 		m.SetContext(ctx)
 		f(c, m)
 	}
