@@ -152,10 +152,8 @@ func (m *Message) maxAVPsFor(cmd *dict.Command) int {
 }
 
 func (m *Message) decodeAVPs(b []byte) error {
-	var a *AVP
-	var err error
 	for n := 0; n < len(b); {
-		a, err = DecodeAVP(b[n:], m.Header.ApplicationID, m.Dictionary())
+		a, err := DecodeAVP(b[n:], m.Header.ApplicationID, m.Dictionary())
 		if err != nil {
 			return fmt.Errorf("failed to decode AVP: %s", err)
 		}
