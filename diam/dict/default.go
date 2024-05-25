@@ -3574,11 +3574,11 @@ var tgpprorfXML = `<?xml version="1.0" encoding="UTF-8"?>
 			<data type="DiameterIdentity"/>
 		</avp>
 
-		<avp name="MME-Number-for-MT-SMS" code="1645" must="V,M" may="-" must-not="-" may-encrypt="N" vendor-id="10415">
+		<avp name="MME-Number-for-MT-SMS" code="1645" must="V" may="-" must-not="M" may-encrypt="N" vendor-id="10415">
 			<data type="OctetString"/>
 		</avp>
 
-		<avp name="MME-Realm" code="2408" must="V,M" may="-" must-not="-" may-encrypt="N" vendor-id="10415">
+		<avp name="MME-Realm" code="2408" must="V" may="-" must-not="M" may-encrypt="N" vendor-id="10415">
 			<data type="DiameterIdentity"/>
 		</avp>
 
