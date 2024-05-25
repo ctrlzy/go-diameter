@@ -81,8 +81,8 @@ func TestALR_PARSE_OK(t *testing.T) {
 	m.NewAVP(avp.ServingNode, avp.Mbit|avp.Vbit, 10415, &diam.GroupedAVP{
 		AVP: []*diam.AVP{
 			diam.NewAVP(avp.MMEName, avp.Mbit|avp.Vbit, 10415, datatype.DiameterIdentity("mme-name")),
-			diam.NewAVP(avp.MMERealm, avp.Vbit, 10415, datatype.DiameterIdentity("mme-realm")),
-			diam.NewAVP(avp.MMENumberforMTSMS, avp.Vbit, 10415, datatype.OctetString("mme number")),
+			diam.NewAVP(avp.MMERealm, avp.Mbit|avp.Vbit, 10415, datatype.DiameterIdentity("mme-realm")),
+			diam.NewAVP(avp.MMENumberforMTSMS, avp.Mbit|avp.Vbit, 10415, datatype.OctetString("mme number")),
 		},
 	})
 	alr := new(smparser.ALR)
@@ -159,8 +159,8 @@ func createDiamALR() *diam.Message {
 	m2.NewAVP(avp.ServingNode, avp.Mbit|avp.Vbit, 10415, &diam.GroupedAVP{
 		AVP: []*diam.AVP{
 			diam.NewAVP(avp.MMEName, avp.Mbit|avp.Vbit, 10415, datatype.DiameterIdentity("mme-name")),
-			diam.NewAVP(avp.MMERealm, avp.Vbit, 10415, datatype.DiameterIdentity("mme-realm")),
-			diam.NewAVP(avp.MMENumberforMTSMS, avp.Vbit, 10415, datatype.OctetString("mme number")),
+			diam.NewAVP(avp.MMERealm, avp.Mbit|avp.Vbit, 10415, datatype.DiameterIdentity("mme-realm")),
+			diam.NewAVP(avp.MMENumberforMTSMS, avp.Mbit|avp.Vbit, 10415, datatype.OctetString("mme number")),
 		},
 	})
 	return m2
