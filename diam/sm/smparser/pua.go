@@ -26,7 +26,7 @@ type PUA struct {
 	DataReference               datatype.Enumerated                  `avp:"Data-Reference,omitempty"`
 	SupportedFeatures           []basetype.SupportedFeatures         `avp:"Supported-Features,omitempty"`
 	OCSupportedFeatures         *basetype.OCSupportedFeatures        `avp:"OC-Supported-Features,omitempty"`
-	OCOLR                       *basetype.OCOLR                      `avp:"OC-CLR,omitempty"`
+	OCOLR                       *basetype.OCOLR                      `avp:"OC-OLR,omitempty"`
 	Load                        *basetype.Load                       `avp:"Load,omitempty"`
 	FailedAVP                   basetype.FailedAVP                   `avp:"Failed-AVP,omitempty"`
 	ProxyInfo                   []basetype.ProxyInfo                 `avp:"Proxy-Info,omitempty"`
