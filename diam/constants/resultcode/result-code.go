@@ -242,4 +242,83 @@ const (
 	// This result code shall be sent by the HSS over the S6c interface to indicate
 	// that the Message Waiting List is full.
 	DIAMETER_ERROR_MWD_LIST_FULL = datatype.Unsigned32(5558)
+
+	// TGPP 29.329 section 6.2.2
+	// The data received by the AS is not supported or recognized.
+	DIAMETER_ERROR_USER_DATA_NOT_RECOGNIZED = datatype.Unsigned32(5100)
+
+	// The requested operation is not allowed for the user
+	DIAMETER_ERROR_OPERATION_NOT_ALLOWED = datatype.Unsigned32(5101)
+
+	// The requested user data is not allowed to be read
+	DIAMETER_ERROR_USER_DATA_CANNOT_BE_READ = datatype.Unsigned32(5102)
+
+	// The requested user data is not allowed to be modified
+	DIAMETER_ERROR_USER_DATA_CANNOT_BE_MODIFIED = datatype.Unsigned32(5103)
+
+	// The requested user data is not allowed to be notified on changes
+	DIAMETER_ERROR_USER_DATA_CANNOT_BE_NOTIFIED = datatype.Unsigned32(5104)
+
+	// The size of the data pushed to the receiving entity exceeds its capacity.
+	// This error code is defined in 3GPP TS 29.229 [6]
+	DIAMETER_ERROR_TOO_MUCH_DATA = datatype.Unsigned32(5008)
+
+	// The request to update the repository data at the HSS could not be completed
+	// because the requested update is based on an out-of-date version of the repository data.
+	// That is, the sequence number in the Sh-Update Request message, does not match
+	// with the immediate successor of the associated sequence number stored for that
+	// repository data at the HSS. It is also used where an AS tries to create a new
+	// set of repository data when the identified repository data already exists in
+	// the HSS
+	DIAMETER_ERROR_TRANSPARENT_DATA_OUT_OF_SYNC = datatype.Unsigned32(5105)
+
+	// See 3GPP TS 29.229 [6] clause 6.2.2.11.
+	// A request application message was received indicating that the origin host requests that the command pair would be
+	// handled using a feature which is not supported by the destination host.
+	DIAMETER_ERROR_FEATURE_UNSUPPORTED = datatype.Unsigned32(5011)
+
+	// The Application Server requested to subscribe to changes to Repository Data that is not present in the HSS
+	DIAMETER_ERROR_SUBS_DATA_ABSENT = datatype.Unsigned32(5016)
+
+	// The AS received a notification of changes of some information to which it is not subscribed
+	DIAMETER_ERROR_NO_SUBSCRIPTION_TO_DATA = datatype.Unsigned32(5017)
+
+	// The Application Server addressed a DSAI not configured in the HSS
+	DIAMETER_ERROR_DSAI_NOT_AVAILABLE = datatype.Unsigned32(5018)
+
+	// See 3GPP TS 29.229 [6]
+	DIAMETER_ERROR_IDENTITIES_DONT_MATCH = datatype.Unsigned32(5002)
+
+	// The requested user data is not available at this time to satisfy the requested operation
+	DIAMETER_USER_DATA_NOT_AVAILABLE = datatype.Unsigned32(4100)
+
+	// The request to update data at the HSS could not be completed for one of the following reasons:
+	// - If the Data Reference is Repository Data, then the related Repository Data is currently being updated by another entity;
+	// - If the Data Reference is other than Repository Data, then the related data is currently being updated
+	DIAMETER_PRIOR_UPDATE_IN_PROGRESS = datatype.Unsigned32(4101)
+
+	// TGPP TS 29.229 clause 6.2.2
+	// A query for location information is received for a public identity that has not been registered before.
+	// The user to which this identity belongs cannot be given service in this situation.
+	DIAMETER_ERROR_IDENTITY_NOT_REGISTERED = datatype.Unsigned32(5003)
+
+	// The user is not allowed to roam in the visited network
+	DIAMETER_ERROR_ROAMING_NOT_ALLOWED = datatype.Unsigned32(5004)
+
+	// The identity has already a server assigned and the registration status does not allow that it is overwritten.
+	DIAMETER_ERROR_IDENTITY_ALREADY_REGISTERED = datatype.Unsigned32(5005)
+
+	// The authentication scheme indicated in an authentication request is not supported.
+	DIAMETER_ERROR_AUTH_SCHEME_NOT_SUPPORTED = datatype.Unsigned32(5006)
+
+	// The identity being registered has already the same server assigned and the registration status does not allow the server
+	// assignment type or the Public Identity type received in the request is not allowed for the indicated server-assignment-type
+	DIAMETER_ERROR_IN_ASSIGNMENT_TYPE = datatype.Unsigned32(5007)
+
+	// The S-CSCF informs HSS that the received subscription data contained information, which was not recognised or supported
+	DIAMETER_ERROR_NOT_SUPPORTED_USER_DATA = datatype.Unsigned32(5009)
+
+	// This error is used when the HSS supports the P-CSCF-Restoration-mechanism feature, but none of the user serving
+	// node(s) supports it, as described by 3GPP TS 23.380 [24] clause 5.4.
+	DIAMETER_ERROR_SERVING_NODE_FEATURE_UNSUPPORTED = datatype.Unsigned32(5012)
 )
