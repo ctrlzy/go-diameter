@@ -287,6 +287,8 @@ const (
 	DIAMETER_ERROR_DSAI_NOT_AVAILABLE = datatype.Unsigned32(5018)
 
 	// See 3GPP TS 29.229 [6]
+	// A message was received with a public identity and a private identity for a user, and the server determines that the public
+	// identity does not correspond to the private identity
 	DIAMETER_ERROR_IDENTITIES_DONT_MATCH = datatype.Unsigned32(5002)
 
 	// The requested user data is not available at this time to satisfy the requested operation
